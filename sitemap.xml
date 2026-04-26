@@ -2,26 +2,26 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <sitemap>
-    <loc>/en/sitemap.xml</loc>
+    <loc>https://shuyaoyu74-sys.github.io/en/sitemap.xml</loc>
     
   </sitemap>
   
   <sitemap>
-    <loc>/zh/sitemap.xml</loc>
+    <loc>https://shuyaoyu74-sys.github.io/zh/sitemap.xml</loc>
+    
+      <lastmod>2026-04-25T00:00:00+00:00</lastmod>
+    
+  </sitemap>
+  
+  <sitemap>
+    <loc>https://shuyaoyu74-sys.github.io/zh-hant-tw/sitemap.xml</loc>
     
       <lastmod>2026-01-26T00:00:00+00:00</lastmod>
     
   </sitemap>
   
   <sitemap>
-    <loc>/zh-hant-tw/sitemap.xml</loc>
-    
-      <lastmod>2026-01-26T00:00:00+00:00</lastmod>
-    
-  </sitemap>
-  
-  <sitemap>
-    <loc>/ja/sitemap.xml</loc>
+    <loc>https://shuyaoyu74-sys.github.io/ja/sitemap.xml</loc>
     
       <lastmod>2026-01-26T00:00:00+00:00</lastmod>
     

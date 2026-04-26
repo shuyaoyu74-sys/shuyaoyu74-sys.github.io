@@ -2,70 +2,70 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/en/categories/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/en/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="/categories/"
+                href="https://shuyaoyu74-sys.github.io/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-hant-tw"
-                href="/zh-hant-tw/categories/"
+                href="https://shuyaoyu74-sys.github.io/zh-hant-tw/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="/ja/categories/"
+                href="https://shuyaoyu74-sys.github.io/ja/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="/en/categories/"
+                href="https://shuyaoyu74-sys.github.io/en/categories/"
                 />
   </url><url>
-    <loc>/en/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/en/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="/"
+                href="https://shuyaoyu74-sys.github.io/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-hant-tw"
-                href="/zh-hant-tw/"
+                href="https://shuyaoyu74-sys.github.io/zh-hant-tw/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="/ja/"
+                href="https://shuyaoyu74-sys.github.io/ja/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="/en/"
+                href="https://shuyaoyu74-sys.github.io/en/"
                 />
   </url><url>
-    <loc>/en/tags/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/en/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="/tags/"
+                href="https://shuyaoyu74-sys.github.io/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-hant-tw"
-                href="/zh-hant-tw/tags/"
+                href="https://shuyaoyu74-sys.github.io/zh-hant-tw/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="/ja/tags/"
+                href="https://shuyaoyu74-sys.github.io/ja/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="/en/tags/"
+                href="https://shuyaoyu74-sys.github.io/en/tags/"
                 />
   </url>
 </urlset>

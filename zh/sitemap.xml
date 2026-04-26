@@ -2,180 +2,182 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/</loc>
-    <lastmod>2026-01-26T00:00:00+00:00</lastmod>
+    <loc>https://shuyaoyu74-sys.github.io/</loc>
+    <lastmod>2026-04-25T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="/en/"
+                href="https://shuyaoyu74-sys.github.io/en/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-hant-tw"
-                href="/zh-hant-tw/"
+                href="https://shuyaoyu74-sys.github.io/zh-hant-tw/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="/ja/"
+                href="https://shuyaoyu74-sys.github.io/ja/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="/"
+                href="https://shuyaoyu74-sys.github.io/"
                 />
   </url><url>
-    <loc>/page/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/post/</loc>
+    <lastmod>2026-04-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/p/%E5%88%9D%E5%A7%8B%E6%AC%B2%E6%9C%9B/</loc>
+    <lastmod>2026-04-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/page/</loc>
     <lastmod>2026-01-26T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-hant-tw"
-                href="/zh-hant-tw/page/"
+                href="https://shuyaoyu74-sys.github.io/zh-hant-tw/page/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="/ja/page/"
+                href="https://shuyaoyu74-sys.github.io/ja/page/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="/page/"
+                href="https://shuyaoyu74-sys.github.io/page/"
                 />
   </url><url>
-    <loc>/%E5%85%B3%E4%BA%8E/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/%E5%85%B3%E4%BA%8E/</loc>
     <lastmod>2026-01-26T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-hant-tw"
-                href="/zh-hant-tw/%E9%97%9C%E6%96%BC/"
+                href="https://shuyaoyu74-sys.github.io/zh-hant-tw/%E9%97%9C%E6%96%BC/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="/ja/%E3%81%93%E3%81%AE%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+                href="https://shuyaoyu74-sys.github.io/ja/%E3%81%93%E3%81%AE%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="/%E5%85%B3%E4%BA%8E/"
+                href="https://shuyaoyu74-sys.github.io/%E5%85%B3%E4%BA%8E/"
                 />
   </url><url>
-    <loc>/archives/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-hant-tw"
-                href="/zh-hant-tw/archives/"
+                href="https://shuyaoyu74-sys.github.io/zh-hant-tw/archives/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="/ja/archives/"
+                href="https://shuyaoyu74-sys.github.io/ja/archives/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="/archives/"
+                href="https://shuyaoyu74-sys.github.io/archives/"
                 />
   </url><url>
-    <loc>/categories/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="/en/categories/"
+                href="https://shuyaoyu74-sys.github.io/en/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-hant-tw"
-                href="/zh-hant-tw/categories/"
+                href="https://shuyaoyu74-sys.github.io/zh-hant-tw/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="/ja/categories/"
+                href="https://shuyaoyu74-sys.github.io/ja/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="/categories/"
+                href="https://shuyaoyu74-sys.github.io/categories/"
                 />
   </url><url>
-    <loc>/post/</loc>
-  </url><url>
-    <loc>/posts/</loc>
-  </url><url>
-    <loc>/tags/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="/en/tags/"
+                href="https://shuyaoyu74-sys.github.io/en/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-hant-tw"
-                href="/zh-hant-tw/tags/"
+                href="https://shuyaoyu74-sys.github.io/zh-hant-tw/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="/ja/tags/"
+                href="https://shuyaoyu74-sys.github.io/ja/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="/tags/"
+                href="https://shuyaoyu74-sys.github.io/tags/"
                 />
   </url><url>
-    <loc>/%E9%93%BE%E6%8E%A5/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/%E9%93%BE%E6%8E%A5/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-hant-tw"
-                href="/zh-hant-tw/%E9%8F%88%E6%8E%A5/"
+                href="https://shuyaoyu74-sys.github.io/zh-hant-tw/%E9%8F%88%E6%8E%A5/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="/ja/%E3%83%AA%E3%83%B3%E3%82%AF/"
+                href="https://shuyaoyu74-sys.github.io/ja/%E3%83%AA%E3%83%B3%E3%82%AF/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="/%E9%93%BE%E6%8E%A5/"
+                href="https://shuyaoyu74-sys.github.io/%E9%93%BE%E6%8E%A5/"
                 />
   </url><url>
-    <loc>/search/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/search/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-hant-tw"
-                href="/zh-hant-tw/search/"
+                href="https://shuyaoyu74-sys.github.io/zh-hant-tw/search/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="/ja/search/"
+                href="https://shuyaoyu74-sys.github.io/ja/search/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="/search/"
+                href="https://shuyaoyu74-sys.github.io/search/"
                 />
   </url><url>
-    <loc>/categories/documentation/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/categories/documentation/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-hant-tw"
-                href="/zh-hant-tw/categories/documentation/"
+                href="https://shuyaoyu74-sys.github.io/zh-hant-tw/categories/documentation/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="/ja/categories/documentation/"
+                href="https://shuyaoyu74-sys.github.io/ja/categories/documentation/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="/categories/documentation/"
+                href="https://shuyaoyu74-sys.github.io/categories/documentation/"
                 />
   </url>
 </urlset>

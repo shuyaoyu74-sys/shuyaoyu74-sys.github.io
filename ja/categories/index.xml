@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Categories on Hugo Theme Stack</title>
-        <link>/ja/categories/</link>
+        <link>https://shuyaoyu74-sys.github.io/ja/categories/</link>
         <description>Recent content in Categories on Hugo Theme Stack</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>ja</language><atom:link href="/ja/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>ja</language><atom:link href="https://shuyaoyu74-sys.github.io/ja/categories/index.xml" rel="self" type="application/rss+xml" /><item>
             <title>ドキュメント</title>
-            <link>/ja/categories/documentation/</link>
+            <link>https://shuyaoyu74-sys.github.io/ja/categories/documentation/</link>
             <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-            <guid>/ja/categories/documentation/</guid>
-            <description>&lt;img src=&#34;/&#34; alt=&#34;Featured image of post ドキュメント&#34; /&gt;</description>
+            <guid>https://shuyaoyu74-sys.github.io/ja/categories/documentation/</guid>
+            <description>&lt;img src=&#34;https://shuyaoyu74-sys.github.io/&#34; alt=&#34;Featured image of post ドキュメント&#34; /&gt;</description>
         </item></channel>
 </rss>

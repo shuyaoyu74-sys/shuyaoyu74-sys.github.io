@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Posts on ysy虚拟世界</title>
-        <link>/post/</link>
+        <link>https://shuyaoyu74-sys.github.io/post/</link>
         <description>Recent content in Posts on ysy虚拟世界</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>zh</language><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" /></channel>
+        <language>zh</language>
+        <lastBuildDate>Sat, 25 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://shuyaoyu74-sys.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+            <title>初始欲望</title>
+            <link>https://shuyaoyu74-sys.github.io/p/%E5%88%9D%E5%A7%8B%E6%AC%B2%E6%9C%9B/</link>
+            <pubDate>Sat, 25 Apr 2026 00:00:00 +0000</pubDate>
+            <guid>https://shuyaoyu74-sys.github.io/p/%E5%88%9D%E5%A7%8B%E6%AC%B2%E6%9C%9B/</guid>
+            <description>&lt;p&gt;ai时代，我迫切的想要找到自己在这个社会中的生态位，一个属于00后的生态位。&lt;/p&gt;&#xA;</description>
+        </item></channel>
 </rss>
