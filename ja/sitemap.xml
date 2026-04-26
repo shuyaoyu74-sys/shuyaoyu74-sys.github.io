@@ -25,8 +25,61 @@
                 href="/ja/"
                 />
   </url><url>
-    <loc>/ja/categories/</loc>
+    <loc>/ja/page/</loc>
     <lastmod>2026-01-26T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="/page/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-hant-tw"
+                href="/zh-hant-tw/page/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ja"
+                href="/ja/page/"
+                />
+  </url><url>
+    <loc>/ja/%E3%81%93%E3%81%AE%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/</loc>
+    <lastmod>2026-01-26T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="/%E5%85%B3%E4%BA%8E/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-hant-tw"
+                href="/zh-hant-tw/%E9%97%9C%E6%96%BC/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ja"
+                href="/ja/%E3%81%93%E3%81%AE%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+                />
+  </url><url>
+    <loc>/ja/archives/</loc>
+    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="/archives/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-hant-tw"
+                href="/zh-hant-tw/archives/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ja"
+                href="/ja/archives/"
+                />
+  </url><url>
+    <loc>/ja/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -48,80 +101,7 @@
                 href="/ja/categories/"
                 />
   </url><url>
-    <loc>/ja/tags/gallery/</loc>
-    <lastmod>2026-01-26T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="/tags/gallery/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-hant-tw"
-                href="/zh-hant-tw/tags/gallery/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ja"
-                href="/ja/tags/gallery/"
-                />
-  </url><url>
-    <loc>/ja/page/</loc>
-    <lastmod>2026-01-26T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="/page/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-hant-tw"
-                href="/zh-hant-tw/page/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ja"
-                href="/ja/page/"
-                />
-  </url><url>
-    <loc>/ja/tags/photoswipe/</loc>
-    <lastmod>2026-01-26T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="/tags/photoswipe/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-hant-tw"
-                href="/zh-hant-tw/tags/photoswipe/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ja"
-                href="/ja/tags/photoswipe/"
-                />
-  </url><url>
-    <loc>/ja/post/</loc>
-    <lastmod>2026-01-26T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="/post/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-hant-tw"
-                href="/zh-hant-tw/post/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ja"
-                href="/ja/post/"
-                />
-  </url><url>
     <loc>/ja/tags/</loc>
-    <lastmod>2026-01-26T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -143,44 +123,7 @@
                 href="/ja/tags/"
                 />
   </url><url>
-    <loc>/ja/%E3%81%93%E3%81%AE%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/</loc>
-    <lastmod>2026-01-26T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="/%E5%85%B3%E4%BA%8E/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-hant-tw"
-                href="/zh-hant-tw/%E9%97%9C%E6%96%BC/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ja"
-                href="/ja/%E3%81%93%E3%81%AE%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-                />
-  </url><url>
-    <loc>/ja/p/%E3%82%B7%E3%83%A7%E3%83%BC%E3%83%88%E3%82%B3%E3%83%BC%E3%83%89/</loc>
-    <lastmod>2026-01-26T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="/p/%E7%9F%AD%E4%BB%A3%E7%A0%81/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-hant-tw"
-                href="/zh-hant-tw/p/%E7%9F%AD%E4%BB%A3%E7%A2%BC/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ja"
-                href="/ja/p/%E3%82%B7%E3%83%A7%E3%83%BC%E3%83%88%E3%82%B3%E3%83%BC%E3%83%89/"
-                />
-  </url><url>
     <loc>/ja/categories/documentation/</loc>
-    <lastmod>2026-01-26T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
@@ -195,60 +138,6 @@
                 rel="alternate"
                 hreflang="ja"
                 href="/ja/categories/documentation/"
-                />
-  </url><url>
-    <loc>/ja/tags/%E9%9A%90%E7%A7%81/</loc>
-    <lastmod>2026-01-26T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="/tags/%E9%9A%90%E7%A7%81/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-hant-tw"
-                href="/zh-hant-tw/tags/%E9%9A%90%E7%A7%81/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ja"
-                href="/ja/tags/%E9%9A%90%E7%A7%81/"
-                />
-  </url><url>
-    <loc>/ja/p/image-gallery/</loc>
-    <lastmod>2026-01-26T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="/p/image-gallery/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-hant-tw"
-                href="/zh-hant-tw/p/image-gallery/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ja"
-                href="/ja/p/image-gallery/"
-                />
-  </url><url>
-    <loc>/ja/archives/</loc>
-    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="/archives/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-hant-tw"
-                href="/zh-hant-tw/archives/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ja"
-                href="/ja/archives/"
                 />
   </url><url>
     <loc>/ja/%E3%83%AA%E3%83%B3%E3%82%AF/</loc>
