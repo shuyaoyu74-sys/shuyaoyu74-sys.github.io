@@ -5,11 +5,17 @@
         <description>Recent content in Tags on ysy虚拟世界</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh</language>
-        <lastBuildDate>Sat, 25 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://shuyaoyu74-sys.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
-            <title>AI伦理</title>
-            <link>https://shuyaoyu74-sys.github.io/tags/ai%E4%BC%A6%E7%90%86/</link>
-            <pubDate>Sat, 25 Apr 2026 00:00:00 +0000</pubDate>
-            <guid>https://shuyaoyu74-sys.github.io/tags/ai%E4%BC%A6%E7%90%86/</guid>
+        <lastBuildDate>Mon, 27 Apr 2026 15:28:14 +0800</lastBuildDate><atom:link href="https://shuyaoyu74-sys.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+            <title>Agent</title>
+            <link>https://shuyaoyu74-sys.github.io/tags/agent/</link>
+            <pubDate>Mon, 27 Apr 2026 15:28:14 +0800</pubDate>
+            <guid>https://shuyaoyu74-sys.github.io/tags/agent/</guid>
+            <description></description>
+        </item><item>
+            <title>RAG</title>
+            <link>https://shuyaoyu74-sys.github.io/tags/rag/</link>
+            <pubDate>Mon, 27 Apr 2026 15:28:14 +0800</pubDate>
+            <guid>https://shuyaoyu74-sys.github.io/tags/rag/</guid>
             <description></description>
         </item><item>
             <title>老子</title>
