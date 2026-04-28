@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
 
 
-<link rel="stylesheet" href="/scss/style.min.5cf5dbd125b09209dac8cfcb72861196b89952ee13967253c94b3023d31db2ee.css"><meta property='og:title' content="agent学习与深度思考">
+<link rel="stylesheet" href="/scss/style.min.9dce60973a8de292faddc810ae3e5f1bbc1f49b0d49eb8fc73c082de1aa19e6c.css"><meta property='og:title' content="agent学习与深度思考">
 <meta property='og:description' content="记录agent学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。">
 <meta property='og:url' content='https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study/'>
 <meta property='og:site_name' content='ysy虚拟世界'>
@@ -279,7 +279,45 @@
     </ol>
 </aside>
 
-    
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav class="toc-nav" id="TableOfContents">
+                
+  <ol>
+    <li><a href="#1prompt-tech-提示技术">1、Prompt Tech 提示技术</a>
+      <ol>
+        <li><a href="#11上下文学习">1.1、上下文学习</a></li>
+        <li></li>
+      </ol>
+    </li>
+  </ol>
+
+            </nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
 
             <main class="main full-width">
     <article class="has-image main-article">
@@ -350,7 +388,7 @@
 
 
                     <time class="article-time--reading">
-                        阅读时长: 1 分钟
+                        阅读时长: 3 分钟
                     </time>
                 
             </div>
@@ -366,12 +404,75 @@
 </header>
 
     
+    <aside class="article-toc">
+        <details>
+            <summary>
+                <div class="article-toc-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>
+                    <span>目录</span>
+                </div>
+            </summary>
+            <nav class="toc-nav">
+                
+  <ol>
+    <li><a href="#1prompt-tech-提示技术">1、Prompt Tech 提示技术</a>
+      <ol>
+        <li><a href="#11上下文学习">1.1、上下文学习</a></li>
+        <li></li>
+      </ol>
+    </li>
+  </ol>
+
+            </nav>
+        </details>
+    </aside>
+    
 
     <section class="article-content">
     
     
-    <p>测试使用，怎么这么多问题，呵呵</p>
+    <h1 id="大模型应用系列">大模型应用系列
+</h1><h2 id="1prompt-tech-提示技术">1、Prompt Tech 提示技术
+</h2><p>这个提示技术也可以被破译为提示词工程，是一门在不改变大模型底层权重参数的前提下，通过设计和优化文本，来激发模型能力，引导其输出符号预期结果的技术。</p>
+<p>大模型的本质是预测下一个 Token 的概率分布 $P(y|x)$。提示技术的本质，就是通过精心构建上下文 $x$，来降低目标输出 $y$ 的信息熵（不确定性），把模型逼进我们预期的概率空间里。</p>
+<p>Prompt 技术有很多分支（如指令格式化、RAG、CoT等），我们率先介绍上下文学习。</p>
+<h3 id="11上下文学习">1.1、上下文学习
+</h3><p>in-context-learning 上下文学习允许模型在给定的上下文中进行学习和推理，而无需真正更新模型参数，这种方式充分利用模型的预训练知识，并通过在推理阶段提供相关的上下文信息来生成或调整模型输出。</p>
 
+
+<div class="notice notice-info">
+    
+    <div class="notice-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 6px; position: relative; top: 2px;">
+          <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+        </svg>
+        Question
+    </div>
+    
+    <div class="notice-content">
+        为什么参数固定，模型还能学习？数学原理是啥？
+    </div>
+</div>
+<p>目前学术界主流的解释是“注意力机制即隐式梯度下降”</p>
+<p>假设我们在上下文中提供了示例 $s = {(x_1,y_1),(x_2,y_2),&hellip;,(x_k,y_k)}$ ，并给出一个新查询$X_test$。在Transformer架构内部，自注意力机制的公式为：</p>
+$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$<p>当进行前向传播时：</p>
+<ul>
+<li>新输入$x_test$被映射为Query ($Q$)</li>
+<li>上下文中的示例 $x_i$ 和 $y_i$ 被映射为 Key ($K$) 和 Value ($V$)</li>
+<li>通过点积 $\frac{QK^T}{\sqrt{d_k}}$，模型在计算 $x_{test}$ 与之前看到的各个示例 $x_i$ 的相似度。</li>
+<li>最终的输出是由这些示例的标签 $y_i$ (对应的 $V$) 加权求和得到的。</li>
+</ul>
+<p>更深层次的理论认为，Transformer的前向自注意力计算，在数学形式上等价于在一个局部的，由Prompt构成的“临时数据集”上，进行了一步或多步的线性回归梯度下降。模型利用KVCache中存储的历史动态，动态地构建了一个临时的假设函数$f(x)$，对当前的词元进行预测。</p>
+<p>理解了上述底层的数学黑盒过程，我们就能明白：In-Context Learning 能否成功，完全取决于我们在 KVCache 中存入了什么样的历史状态（即上下文中的 $K$ 和 $V$）如果我们给的示例逻辑混乱，模型通过注意力机制计算出的权重就会失效。</p>
+<p>因此，回到 Prompt Engineering 的应用层，为了让这个“隐式梯度下降”发挥最大效用，我们在具体操作上，必须通过规范化的字符串拼接，人为地为模型构建出一个清晰、高质量的“临时数据集”。</p>
+<p>具体操作就是拼接字符串，我们需要精心构造输入：</p>
+<ul>
+<li><em>操作模板</em>：<code>[任务指令] + [示例1: 输入+输出] + [示例2: 输入+输出] + [新输入: 等待模型补全输出]</code></li>
+</ul>
+<p>未完待续&hellip;</p>
+<h3 id="">
+</h3>
 </section>
 
 
@@ -402,6 +503,38 @@
     </footer>
 
 
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const elementsToRender = [".main-article", ".widget--toc"];
+
+        elementsToRender.forEach(selector => {
+            const element = document.querySelector(selector);
+            if (element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        { left: "$$", right: "$$", display: true },
+                        { left: "$", right: "$", display: false },
+                        { left: "\\(", right: "\\)", display: false },
+                        { left: "\\[", right: "\\]", display: true }
+                    ],
+                    ignoredClasses: ["gist"]
+                });
+            }
+        });
+    });
+</script>
     
 </article>
 
