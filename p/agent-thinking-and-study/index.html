@@ -2,7 +2,7 @@
 <html lang="zh" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="记录agent学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。">
-<title>agent学习与深度思考</title>
+<title>agent学习与深度思考--01Prompt Tech 提示技术</title>
 
 
 <link rel="canonical" href="https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study/">
@@ -12,12 +12,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
 
 
-<link rel="stylesheet" href="/scss/style.min.9dce60973a8de292faddc810ae3e5f1bbc1f49b0d49eb8fc73c082de1aa19e6c.css"><meta property='og:title' content="agent学习与深度思考">
+<link rel="stylesheet" href="/scss/style.min.9dce60973a8de292faddc810ae3e5f1bbc1f49b0d49eb8fc73c082de1aa19e6c.css"><meta property='og:title' content="agent学习与深度思考--01Prompt Tech 提示技术">
 <meta property='og:description' content="记录agent学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。">
 <meta property='og:url' content='https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study/'>
 <meta property='og:site_name' content='ysy虚拟世界'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='agent' /><meta property='article:tag' content='RAG' /><meta property='article:published_time' content='2026-04-27T15:28:14&#43;08:00'/><meta property='article:modified_time' content='2026-04-27T15:28:14&#43;08:00'/><meta property='og:image' content='https://shuyaoyu74-sys.github.io/' />
-<meta name="twitter:title" content="agent学习与深度思考">
+<meta name="twitter:title" content="agent学习与深度思考--01Prompt Tech 提示技术">
 <meta name="twitter:description" content="记录agent学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://shuyaoyu74-sys.github.io/' />
     <link rel="shortcut icon" href="/img/cursor_text.png" />
@@ -302,10 +302,14 @@
             <nav class="toc-nav" id="TableOfContents">
                 
   <ol>
-    <li><a href="#1prompt-tech-提示技术">1、Prompt Tech 提示技术</a>
+    <li><a href="#prompt-tech-提示技术">Prompt Tech 提示技术</a>
       <ol>
-        <li><a href="#11上下文学习">1.1、上下文学习</a></li>
-        <li></li>
+        <li><a href="#上下文学习icl">上下文学习（ICL）</a>
+          <ol>
+            <li><a href="#icl示例设计">ICL示例设计</a></li>
+          </ol>
+        </li>
+        <li><a href="#chain-of-thought思维链">Chain-of-Thought思维链</a></li>
       </ol>
     </li>
   </ol>
@@ -324,7 +328,7 @@
     <header class="article-header">
     <div class="article-image">
         <a href="/p/agent-thinking-and-study/">
-            <img alt="Featured image of post agent学习与深度思考" height="1080" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study/cover.jpg" srcset="/p/agent-thinking-and-study/cover_hu_de9dd2ff56d7fcd4.jpg 800w, /p/agent-thinking-and-study/cover.jpg 1600w" width="1600">
+            <img alt="Featured image of post agent学习与深度思考--01Prompt Tech 提示技术" height="1080" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study/cover.jpg" srcset="/p/agent-thinking-and-study/cover_hu_de9dd2ff56d7fcd4.jpg 800w, /p/agent-thinking-and-study/cover.jpg 1600w" width="1600">
         </a>
     </div>
     
@@ -345,7 +349,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/agent-thinking-and-study/">agent学习与深度思考</a>
+            <a href="/p/agent-thinking-and-study/">agent学习与深度思考--01Prompt Tech 提示技术</a>
         </h2>
     
         
@@ -388,7 +392,7 @@
 
 
                     <time class="article-time--reading">
-                        阅读时长: 3 分钟
+                        阅读时长: 9 分钟
                     </time>
                 
             </div>
@@ -415,10 +419,14 @@
             <nav class="toc-nav">
                 
   <ol>
-    <li><a href="#1prompt-tech-提示技术">1、Prompt Tech 提示技术</a>
+    <li><a href="#prompt-tech-提示技术">Prompt Tech 提示技术</a>
       <ol>
-        <li><a href="#11上下文学习">1.1、上下文学习</a></li>
-        <li></li>
+        <li><a href="#上下文学习icl">上下文学习（ICL）</a>
+          <ol>
+            <li><a href="#icl示例设计">ICL示例设计</a></li>
+          </ol>
+        </li>
+        <li><a href="#chain-of-thought思维链">Chain-of-Thought思维链</a></li>
       </ol>
     </li>
   </ol>
@@ -432,11 +440,11 @@
     
     
     <h1 id="大模型应用系列">大模型应用系列
-</h1><h2 id="1prompt-tech-提示技术">1、Prompt Tech 提示技术
+</h1><h2 id="prompt-tech-提示技术">Prompt Tech 提示技术
 </h2><p>这个提示技术也可以被破译为提示词工程，是一门在不改变大模型底层权重参数的前提下，通过设计和优化文本，来激发模型能力，引导其输出符号预期结果的技术。</p>
 <p>大模型的本质是预测下一个 Token 的概率分布 $P(y|x)$。提示技术的本质，就是通过精心构建上下文 $x$，来降低目标输出 $y$ 的信息熵（不确定性），把模型逼进我们预期的概率空间里。</p>
 <p>Prompt 技术有很多分支（如指令格式化、RAG、CoT等），我们率先介绍上下文学习。</p>
-<h3 id="11上下文学习">1.1、上下文学习
+<h3 id="上下文学习icl">上下文学习（ICL）
 </h3><p>in-context-learning 上下文学习允许模型在给定的上下文中进行学习和推理，而无需真正更新模型参数，这种方式充分利用模型的预训练知识，并通过在推理阶段提供相关的上下文信息来生成或调整模型输出。</p>
 
 
@@ -470,8 +478,67 @@ $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)
 <ul>
 <li><em>操作模板</em>：<code>[任务指令] + [示例1: 输入+输出] + [示例2: 输入+输出] + [新输入: 等待模型补全输出]</code></li>
 </ul>
-<p>未完待续&hellip;</p>
-<h3 id="">
+<p>那么在拼接之前，当我们手里有一个包含上万条数据的题库时，面临一个问题，那就是我该挑哪几个例子拿出来拼？插一嘴，整个过程发生在推理阶段，而不是训练阶段，整个过程，模型的底层权重参数绝对冻结。</p>
+<p>如果每次都靠人工手写或者随机挑选示例，效果会很差，因为随机挑选的例子可能跟当前的问题毫无关系，所以我们需要找一种动态的，自动化的示例检索机制（这其实也是RAG&ndash;检索增强生成技术在Prompt构造阶段的早期应用）</p>
+<h4 id="icl示例设计">ICL示例设计
+</h4><p>假设我们现在的任务是让大模型做一个复杂的法律文本分类，我的手里有一个包含10万条已分类的法律文本的本地数据库，现在用户输入一句话：“本合同因不可抗力接触”</p>
+<p>第一步，示例挑选，我们要解决谁来教模型这个问题，因为我们不可能把10万条数据都塞进去。</p>
+<p>首先要做的就是向量化表示，系统会先调用一个轻量级的编码模型（如 BERT），将用户的 Test Query 转化为一个高维稠密向量 $V_{query}$。同时，你本地的 10 万条历史数据，早就被转化为向量 $V_{doc_i}$ 存放在向量数据库中了。</p>
+<p>然后进行相似度计算，计算的核心通常是余弦相似度 或 欧式距离 。以余弦相似度为例，计算 $V_{query}$ 和每一个历史数据向量 $V_{doc_i}$ 的夹角余弦值：</p>
+$$\text{Similarity}(V_{query}, V_{doc\_i}) = \frac{V_{query} \cdot V_{doc\_i}}{||V_{query}|| \times ||V_{doc\_i}||}$$<p>值越接近 1，说明两句话在语义上越相似。</p>
+<p>最后，系统根据计算出的相似度得分从高到低排序，挑出得分最高的 $K$ 个例子（就是KNN 算法）。为了避免你选出来的几个例子语义高度重复（模式坍塌），此时会引入多样性计算，比如计算入选示例之间的相互距离，剔除太近的。</p>
+<p>经过上述第一步，我们要进行第二步格式融合，也就是prompt组装，来解决怎么教模型这个问题。</p>
+<p>现在，算法已经帮你挑出了最相关的 3 个法律文本分类例子。接下来的动作就是纯粹的工程化字符串拼接。</p>
+<p>一个高质量的 Prompt 不是随便拼在一块的，它有一个严谨的结构：</p>
+<ul>
+<li><strong>Task Definition (任务定义)</strong>：最开头，你要给模型一个清晰的全局指令。
+<ul>
+<li><em>文本：<code>你是一个专业的法律助手。请判断以下文本属于哪种合同解除类型。</code></em></li>
+</ul>
+</li>
+<li><strong>Positive Examples (正样本)</strong>：把你刚才用 KNN 算出来、选出来的 3 个正确例子，按照特定的分隔符塞进来。
+<ul>
+<li><em>文本：<code>示例1：[甲方违约导致解除] -&gt; 违约解除 \n 示例2：[双方协商一致解除] -&gt; 协议解除</code></em></li>
+</ul>
+</li>
+<li><strong>Negative Examples (负样本 - 视情况添加)</strong>：为了明确边界，有时会人为写入几个容易混淆的错误示范，告诉模型“不要这样做”。</li>
+<li><strong>Target Query (目标输入)</strong>：最后，把用户真正的问题接在末尾，留下悬念，触发模型生成。
+<ul>
+<li><em>文本：<code>现在，请分类以下文本：\n [本合同因不可抗力解除] -&gt; </code></em></li>
+</ul>
+</li>
+</ul>
+<p>当然上述只是一部分格式，还有其他的，详见论文：Cross-task generalization via natural language crowdsourcing instructions\</p>
+<p>这篇论文提出了一个新的跨任务Instruction数据集。他们使用总包的方式，按照规定的instruction格式，对多个开源数据集进行改造。针对每一个promt，其格式包含：</p>
+<ul>
+<li><strong>title:</strong> 包含一个high-level的任务描述，以及其相关技能，如question generation，answer generation等</li>
+<li><strong>prompt:</strong> 单独的文本命令，一般出现在输入示例之前</li>
+<li><strong>definition:</strong> 指令的补充内容，更加详细地描述指令的具体执行细节</li>
+<li><strong>things to avoid:</strong> 包含模型应该避免的内容，或规则</li>
+<li><strong>emphasis and caution:</strong> 警告或反对的内容</li>
+<li><strong>positive examples:</strong> 提供一个类似系统期望的输入、输出例子，使得众包人员更好地理解任务</li>
+<li><strong>negative examples:</strong> 提供一个类似系统期望的输入、输出的负例，让众包人员尽量避免</li>
+<li><strong>reason:</strong> 解释为什么例子是positive或negative</li>
+<li><strong>suggestion:</strong> 包含一些建议，主要用于指导如何将负例改成正例。</li>
+</ul>
+<p>模型在经过上述instruction数据集微调后，能在unseen样本上，达到较好的生成效果。在新样本推断时，将demonstrations加入到task instances即可</p>
+<p>第三步，我们进行前向传播，上面组装好的这个巨大且结构严密的字符串，被 Tokenize 之后输入给大语言模型。 接下来的事情就是模型计算出长长的 KVCache，然后利用注意力机制，末尾的 Target Query 通过点积去关注前面精挑细选且排版整齐的 Positive Examples。</p>
+<p>输出最终答案：<em><code>不可抗力解除</code></em>。</p>
+<p>这就是ICL的整个过程。</p>
+<p>再扩展一点，第一步示例挑选那里，不只有knn，还有多种其他方法。knn属于启发式方法，它的核心假设是在字面或语义上越相似的句子，作为示例的效果就越好。但这其实存在一个巨大的盲区：人类认为相似的句子，大模型在计算自注意力时未必觉得好用。有时候，稍微有点差异化的例子反而更能激发模型的推理能力。</p>
+<p>为了打破这种“只看表面相似度”的局限，学术界引入了进阶方案：LLM-based 方法。这类方法的核心思想是“用魔法打败魔法”——直接利用大模型自身的反馈，来决定到底哪些示例才是好示例。</p>
+<p>LLM-based 方法主要有三种技术流派。</p>
+<p>第一种基于 Prompt 召回，KNN 用的 BERT 编码器根本不懂大模型喜欢什么， 所以我们要专门训练一个极度懂当前 LLM 口味”的检索器。首先从题库中拿出一个样本作为示例，拼接到输入上喂给 LLM。看 LLM 输出正确答案的概率有多高。概率越高，说明这个示例越“对胃口”。因为不能把题库里几万条数据都过一遍大模型（算力成本太高），所以先用传统的 BM25 或 SBERT 粗筛出一小批候选集。在粗筛的候选集中，把让 LLM 预测概率最高的 $k$ 条作为<strong>正样本</strong>，概率最低的 $k$ 条作为<strong>负样本</strong>。然后使用对比学习，分别训练两个编码器：一个是输入编码器（Utterance encoder），一个是示例编码器（Prompt encoder）。目标是让输入向量在连续空间中，无限靠近“好示例”的向量，远离“坏示例”的向量。训练好之后，再来一个新问题，直接用这个专属 Retriever 结合 Faiss（Meta 开源的高效相似度搜索库）进行向量检索。此时找出来的示例，就完全是按照 LLM 的喜好量身定制的了。</p>
+<p>第二种是 基于主动学习/强化学习 (RL 序列决策)，有时候即便我们知道哪些单个示例好用，但 ICL 通常需要拼接多个示例（比如 5-shot）。这 5 个示例组合在一起的效果，可不是单个示例效果的简单相加。这引发了指数级的“组合爆炸”问题。所以我们把挑选示例的过程，看作是一个走迷宫或下棋的**马尔可夫决策过程 **，用强化学习（RL）来寻找最优组合。具体做法如下</p>
+<ul>
+<li><strong>状态 State ($s_t$)</strong>：当前已经选好的示例组合。比如第一步选了 $(x_1, y_1)$，这就是当前状态。</li>
+<li><strong>动作 Action ($a_t$)</strong>：从庞大的样本库中挑选下一个示例 $(x_2, y_2)$ 加入组合，或者选择输出“停止符号（$\bot$）”表示选够了。</li>
+<li><strong>奖励 Reward ($r$)</strong>：这是最关键的。当遇到停止符号后，把当前组合的示例拼接成完整的 Prompt，扔进大模型里跑验证集。模型在验证集上的<strong>准确率</strong>，就是给强化学习算法的 Reward。</li>
+<li><strong>训练过程</strong>：你可以使用任何经典的 RL 算法（比如类似你在做对齐时可能接触过的策略梯度法），不断试错，最终训练出一个策略网络。这个网络知道在当前已经有什么示例的情况下，下一步抓取哪个示例能让最终组合的 Reward 最大化。</li>
+</ul>
+<p>第三种就是基于自生成 (Self-Generation / SG-ICL)，前两种方法再怎么精妙，都极度依赖你手头必须有一个庞大且高质量的<strong>外部样本库</strong>。如果没有呢？ 没有就让大模型自己凭空捏造出示例，然后再用这些自己生成的示例去解题。第一阶段：系统先用一个极其简单的预设指令，逼迫 LLM 现场写例子。比如，系统输入：<code>Generate a &quot;Negative&quot; review:</code>（生成一个差评：），LLM 根据自身知识权重吐出：<code>it's slow -- very, very slow.</code>，这一步重复几次，凑齐需要的几个 Few-shot 示例。进而将刚才 LLM 自己生成的文本，作为 Context 示例拼接到真正的 Prompt 中。最后附带上用户真实的输入（比如那句很难懂的 <code>movie is so poorly written...</code>）。经过底层 Attention 计算，模型参考着自己刚才生成的示例格式和逻辑，输出了准确的最终预测。</p>
+<p>最后，ICL也面临一些挑战，比如大模型对上下文长度有一定限制，处理非常长的上下文可能会受到影响，如何选择适当的上下文是一个关键挑战之一，而且在不同上下文中，模型生成的内容可能会有所不同，确保生成结果的一致性和准确性也是需要关注的问题之一。</p>
+<h3 id="chain-of-thought思维链">Chain-of-Thought思维链
 </h3>
 </section>
 
