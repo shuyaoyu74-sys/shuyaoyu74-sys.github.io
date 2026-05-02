@@ -541,7 +541,7 @@ $$\text{Similarity}(V_{query}, V_{doc\_i}) = \frac{V_{query} \cdot V_{doc\_i}}{|
 <p>那么在标准的上下文学习中，输入和输出的范式是直接映射的：<code>&lt;Input&gt; -&gt; &lt;Output&gt;</code>。 对于情感分类、翻译等<strong>浅层模式匹配</strong>任务，大模型只需做一次前向传播，通过注意力机制就能轻松算出答案。</p>
 <p>但如果你问它一道复杂的数学题，或者一个需要多步推理的逻辑题，直接让它输出最终答案，它大概率会出错。 <strong>为什么？因为 Transformer 的层数是固定的。</strong> 假设你的模型有 32 层（比如 Llama-2-7B），当它试图直接生成最终答案那个 Token 时，它只能进行 32 次非线性变换。对于极其复杂的逻辑运算来说，这 32 步计算的“深度”根本不足以完成从问题到答案的推导。因此就出现了思维链这种操作。</p>
 <h3 id="chain-of-thoughtcot思维链">Chain-of-Thought（CoT）思维链
-</h3><p>CoT是一种改进的Prompt技术，目的在于提升大模型在复杂推理任务的表现。这种方式完成了从输入到思维链再到输出的映射，即    <Input> -&gt;<reasoning chain>-&gt;<Output></p>
+</h3><p>CoT是一种改进的Prompt技术，目的在于提升大模型在复杂推理任务的表现。这种方式完成了从输入到思维链再到输出的映射。</p>
 <p>让我们从概率论的角度来看这一动机，在标准的直接问答任务中，输入是问题 $x$，输出是答案 $y$。模型试图直接拟合一个高度复杂且非凸的条件概率分布 $P(y|x)$。对于复杂的逻辑推理题，$x$ 和 $y$ 之间的跨度极大。在预训练语料库中，直接从 $x$ 映射到 $y$ 的数据分布极其稀疏。因此，$P(y|x)$ 的概率地形充满了陡峭的局部最优解，模型极易陷入“幻觉”。CoT 引入了一系列隐变量（Latent Variables） $z = {z_1, z_2, \dots, z_n}$，这些 $z$ 就是中间推理步骤。根据概率论的链式法则，我们将极难拟合的 $P(y|x)$ 进行了分解：</p>
 $$P(y, z_1, \dots, z_n | x) = P(z_1|x) \prod_{i=2}^{n} P(z_i | x, z_{<i}) \cdot P(y | x, z_1, \dots, z_n)$$<p>因此CoT 将一个“长距离、低概率”的全局跳跃，分解为一系列“短距离、高概率”的局部条件概率连乘**。因为预训练语料（如维基百科、代码、论文）中充满了这种一步接一步的 $P(z_i | z_{i-1})$ 局部推导逻辑，模型拟合这些单步分布的难度呈指数级下降。</p>
 <p>再让我们从流行学习的视角来看cot的动机，在深度学习的表征空间中，每一层网络都在对高维流形进行扭曲和拉伸，以实现线性可分。如果强行要求模型直接从 $x$ 的隐空间表征跳跃到 $y$ 的表征，这要求网络映射函数 $f_{\theta}: \mathbb{R}^d \to \mathbb{R}^d$ 具有极端的曲率。这在梯度下降优化中是非常困难的。cot的做法是使中间生成的 Token $z_i$ 重新 Embedding，作为新的输入向量注入到网络中。这就相当于在 $x$ 和 $y$ 之间的高维流形上，打下了一系列“锚点。<strong>将一条曲率极高、难以优化的直接映射路径，替换为分段的、局部平滑的线性或低曲率路径</strong>（$x \to z_1 \to z_2 \to y$）。</p>
@@ -550,8 +550,8 @@ $$P(y, z_1, \dots, z_n | x) = P(z_1|x) \prod_{i=2}^{n} P(z_i | x, z_{<i}) \cdot 
 <p>逻辑依据：指cot的中间推理过程，可以包含问题的解决方案、中间推理步骤以及问题相关的任何外部知识。</p>
 <p>示例：指以少样本的方式为大模型提供输入输出对的基本格式，每一个示例都包含问题、推理过程与答案。</p>
 <p>根据<strong>是否在 Prompt 中人为提供“示例”</strong>，CoT 被严格划分为两大流派：Zero-Shot-CoT 和 Few-Shot-CoT。</p>
-<p>先来看Zero-Shot-CoT：它不提供任何人类写好的示例，而是将原始问题，拼接上一句经典的魔法咒语 <strong>&ldquo;Let&rsquo;s think step by step&rdquo;</strong>，输入给大模型。下面第一张图是生成一个思维链，第二张图则接收来自第一个提示的输出，并从思维链中提取答案，第二个提示是一个自我增强提示。<img alt="image-20260502113225357" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px"></p>
-<p><img alt="image-20260502113245391" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px"></p>
+<p>先来看Zero-Shot-CoT：它不提供任何人类写好的示例，而是将原始问题，拼接上一句经典的魔法咒语 <strong>&ldquo;Let&rsquo;s think step by step&rdquo;</strong>，输入给大模型。下面第一张图是生成一个思维链，第二张图则接收来自第一个提示的输出，并从思维链中提取答案，第二个提示是一个自我增强提示。<img alt="image-20260502113225357" class="gallery-image" data-flex-basis="570px" data-flex-grow="237" height="381" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study/image-20260502113225357.png" srcset="/p/agent-thinking-and-study/image-20260502113225357_hu_efdca484ad483dcf.png 800w, /p/agent-thinking-and-study/image-20260502113225357.png 906w" width="906"></p>
+<p><img alt="image-20260502113245391" class="gallery-image" data-flex-basis="478px" data-flex-grow="199" height="379" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study/image-20260502113245391.png" width="756"></p>
 
 
 <div class="notice notice-info">
@@ -568,16 +568,16 @@ $$P(y, z_1, \dots, z_n | x) = P(z_1|x) \prod_{i=2}^{n} P(z_i | x, z_{<i}) \cdot 
         为什么偏偏是 &ldquo;Let&rsquo;s think step by step&rdquo;？
     </div>
 </div>
-<p>做实验得来的结果。<img alt="image-20260502113932061" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px"></p>
+<p>做实验得来的结果。<img alt="image-20260502113932061" class="gallery-image" data-flex-basis="434px" data-flex-grow="180" height="421" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study/image-20260502113932061.png" width="762"></p>
 <p>Few-Shot-CoT与 Zero-Shot 需要模型“自力更生”写草稿不同，Few-Shot-CoT 是人类直接下场。就是人类在输入真实问题前，先手写几个极度详尽的 <code>[问题 -&gt; 解题步骤 -&gt; 答案]</code> 示例喂给模型。理解了这个两阶段的 Pipeline，你在未来调用 API 开发复杂的 Agent 或写代码时就会明白：为了得到最准确的结果，你可能需要向大模型发起两次 API 请求，第一次要过程，第二次要结果。</p>
 <p>当然，cot并不是完美的，在它身上有许多的改进。</p>
 <p>改进方法1，CoT-SC: Self Consistency：</p>
 <p>论文：《Self-Consistency Improves Chain of Thought Reasoning in Language Models》</p>
-<p>主要改进是对答案进行了多数投票，生成多个思路链，取多数答案作为最终答案。<img alt="image-20260502114939094" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px"></p>
+<p>主要改进是对答案进行了多数投票，生成多个思路链，取多数答案作为最终答案。<img alt="image-20260502114939094" class="gallery-image" data-flex-basis="445px" data-flex-grow="185" height="404" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study/image-20260502114939094.png" width="750"></p>
 <p>改进方法2，ToT: Tree-of-Thoughts ：</p>
 <p>论文：《Tree of Thoughts: Deliberate Problem Solving with Large Language Models》</p>
 <p>主要改进是引入多分支探索与启发式搜索（回溯机制），其做法是通过树来建模LLM推理过程，让模型使用不同的思维路径，并提供全新的功能。</p>
-<p><img alt="image-20260502115307896" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px"></p>
+<p><img alt="image-20260502115307896" class="gallery-image" data-flex-basis="496px" data-flex-grow="206" height="389" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study/image-20260502115307896.png" srcset="/p/agent-thinking-and-study/image-20260502115307896_hu_51d876e673a5770d.png 800w, /p/agent-thinking-and-study/image-20260502115307896.png 805w" width="805"></p>
 <p>改进方法3，GoT: Graph-of-Thoughts (思维图)</p>
 <p>论文：《Graph of Thoughts: Solving Elaborate Problems with Large Language Models》</p>
 <p>主要核心思想是有向无环图 (DAG)，允许思维的交叉、合并与协同。这里弄明白还是好好去看论文吧。</p>
