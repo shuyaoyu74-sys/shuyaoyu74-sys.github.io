@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://shuyaoyu74-sys.github.io/</loc>
-    <lastmod>2026-04-27T15:28:14+08:00</lastmod>
+    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -26,16 +26,16 @@
                 />
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/tags/agent/</loc>
-    <lastmod>2026-04-27T15:28:14+08:00</lastmod>
+    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
   </url><url>
-    <loc>https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study/</loc>
-    <lastmod>2026-04-27T15:28:14+08:00</lastmod>
+    <loc>https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study-01/</loc>
+    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/categories/ai/</loc>
-    <lastmod>2026-04-27T15:28:14+08:00</lastmod>
+    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/categories/</loc>
-    <lastmod>2026-04-27T15:28:14+08:00</lastmod>
+    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -58,13 +58,13 @@
                 />
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/post/</loc>
-    <lastmod>2026-04-27T15:28:14+08:00</lastmod>
+    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/tags/rag/</loc>
-    <lastmod>2026-04-27T15:28:14+08:00</lastmod>
+    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/tags/</loc>
-    <lastmod>2026-04-27T15:28:14+08:00</lastmod>
+    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -85,6 +85,9 @@
                 hreflang="zh"
                 href="https://shuyaoyu74-sys.github.io/tags/"
                 />
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study/</loc>
+    <lastmod>2026-04-27T15:28:14+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/tags/%E8%80%81%E5%AD%90/</loc>
     <lastmod>2026-04-25T00:00:00+00:00</lastmod>
