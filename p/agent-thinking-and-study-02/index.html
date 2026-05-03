@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="记录 AI学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。">
+<title>AI应用 -- 02 基于大模型的智能体（LLM-based-Agent）</title>
+
+
+<link rel="canonical" href="https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study-02/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
+
+
+<link rel="stylesheet" href="/scss/style.min.9dce60973a8de292faddc810ae3e5f1bbc1f49b0d49eb8fc73c082de1aa19e6c.css"><meta property='og:title' content="AI应用 -- 02 基于大模型的智能体（LLM-based-Agent）">
+<meta property='og:description' content="记录 AI学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。">
+<meta property='og:url' content='https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study-02/'>
+<meta property='og:site_name' content='ysy虚拟世界'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='agent' /><meta property='article:tag' content='RAG' /><meta property='article:published_time' content='2026-05-02T19:21:45&#43;08:00'/><meta property='article:modified_time' content='2026-05-02T19:21:45&#43;08:00'/><meta property='og:image' content='https://shuyaoyu74-sys.github.io/' />
+<meta name="twitter:title" content="AI应用 -- 02 基于大模型的智能体（LLM-based-Agent）">
+<meta name="twitter:description" content="记录 AI学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://shuyaoyu74-sys.github.io/' />
+    <link rel="shortcut icon" href="/img/cursor_text.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        <figure class="site-avatar">
+                <a href="/">
+                    <img src="/img/avatar.jpg" 
+                        width="690"
+                        height="690"
+                        class="site-logo"
+                        loading="lazy"
+                        alt="Avatar">
+                </a>
+                
+                    <span class="emoji">💻</span>
+                
+            </figure>
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">ysy虚拟世界</a></h1>
+            <h2 class="site-description">ai时代精神世界的建立</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E9%93%BE%E6%8E%A5/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    <li id="i18n-switch">  
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                        <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                            
+                                
+                                
+                                    
+                                
+                                <option value="/en/" >English</option>
+                            
+                                
+                                
+                                    
+                                        
+                                    
+                                
+                                <option value="/p/agent-thinking-and-study-02/" selected>简体中文</option>
+                            
+                                
+                                
+                                    
+                                
+                                <option value="/zh-hant-tw/" >正體中文</option>
+                            
+                                
+                                
+                                    
+                                
+                                <option value="/ja/" >日本語</option>
+                            
+                        </select>
+                    </li>
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav class="toc-nav" id="TableOfContents">
+                
+  <ol>
+    <li><a href="#agent定义与原理">Agent定义与原理</a>
+      <ol>
+        <li><a href="#定义">定义</a></li>
+        <li><a href="#llm-agent原理">LLM Agent原理</a></li>
+      </ol>
+    </li>
+    <li><a href="#agent分类">Agent分类</a>
+      <ol>
+        <li><a href="#按照数量分类">按照数量分类</a></li>
+        <li><a href="#按照行为模式分类">按照行为模式分类</a></li>
+      </ol>
+    </li>
+    <li><a href="#智能体系统分类">智能体系统分类</a>
+      <ol>
+        <li><a href="#从结构上分类">从结构上分类</a></li>
+      </ol>
+    </li>
+    <li><a href="#智能体框架应用">智能体框架、应用</a>
+      <ol>
+        <li><a href="#框架">框架</a></li>
+        <li><a href="#应用">应用</a></li>
+      </ol>
+    </li>
+  </ol>
+
+            </nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+    <div class="article-image">
+        <a href="/p/agent-thinking-and-study-02/">
+            <img alt="Featured image of post AI应用 -- 02 基于大模型的智能体（LLM-based-Agent）" height="1928" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study-02/cover.jpg" srcset="/p/agent-thinking-and-study-02/cover_hu_4cfc8b23c89f37a2.jpg 800w, /p/agent-thinking-and-study-02/cover.jpg 1080w" width="1080">
+        </a>
+    </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/ai/" style="background-color: hsl(167, 60%, 84%); color: hsl(167, 60%, 15%);">
+                AI
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/agent-thinking-and-study-02/">AI应用 -- 02 基于大模型的智能体（LLM-based-Agent）</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            记录 AI学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    
+    
+    
+    <footer class="article-meta">
+        
+            <div class="inline-meta">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                    <time class="article-time--published" datetime='2026-05-02T19:21:45&#43;08:00'>2026年5月2日星期六</time>
+                
+
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                    <time class="article-time--reading">
+                        阅读时长: 15 分钟
+                    </time>
+                
+            </div>
+        
+
+        
+
+        
+    </footer>
+    
+</div>
+
+</header>
+
+    
+    <aside class="article-toc">
+        <details>
+            <summary>
+                <div class="article-toc-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>
+                    <span>目录</span>
+                </div>
+            </summary>
+            <nav class="toc-nav">
+                
+  <ol>
+    <li><a href="#agent定义与原理">Agent定义与原理</a>
+      <ol>
+        <li><a href="#定义">定义</a></li>
+        <li><a href="#llm-agent原理">LLM Agent原理</a></li>
+      </ol>
+    </li>
+    <li><a href="#agent分类">Agent分类</a>
+      <ol>
+        <li><a href="#按照数量分类">按照数量分类</a></li>
+        <li><a href="#按照行为模式分类">按照行为模式分类</a></li>
+      </ol>
+    </li>
+    <li><a href="#智能体系统分类">智能体系统分类</a>
+      <ol>
+        <li><a href="#从结构上分类">从结构上分类</a></li>
+      </ol>
+    </li>
+    <li><a href="#智能体框架应用">智能体框架、应用</a>
+      <ol>
+        <li><a href="#框架">框架</a></li>
+        <li><a href="#应用">应用</a></li>
+      </ol>
+    </li>
+  </ol>
+
+            </nav>
+        </details>
+    </aside>
+    
+
+    <section class="article-content">
+    
+    
+    <h2 id="agent定义与原理">Agent定义与原理
+</h2><h3 id="定义">定义
+</h3><p>OpenAI 将通向通用人工智能（AGI）之路分为五个等级，这决定了技术进化的终极目标。</p>
+<ol>
+<li><strong>Level 1: 聊天机器人 (Chatbots)</strong> - 具备自然语言交互能力（如基础款 ChatGPT），能聊天但执行力弱。</li>
+<li><strong>Level 2: 推理者 (Reasoners)</strong> - 能够解决人类水平的问题，具备深度的逻辑推理。</li>
+<li><strong>Level 3: 智能体 (Agents)</strong> - <strong>核心分水岭</strong>。它不仅能思考，还能在长达数天的时间内自主执行任务、做决策并采取行动。</li>
+<li><strong>Level 4: 创新者 (Innovators)</strong> - 能够产生新的知识和科学发现。</li>
+<li><strong>Level 5: 组织者 (Organizers)</strong> - 能够像一个组织一样独立完成复杂的、高价值的协作任务。</li>
+</ol>
+<p>Agent 为能够感知环境、自主决策、主动行动和学习进化的 AI 程序。它模仿了生物的反馈机制：</p>
+<ul>
+<li><strong>感知 (眼睛)</strong>：通过传感器（摄像头、麦克风、API 接口）获取环境数据。</li>
+<li><strong>决策 (大脑)</strong>：基于数据和逻辑进行判断（如深度学习、强化学习）。</li>
+<li><strong>执行 (手)</strong>：通过机械臂、软件指令（发邮件、写代码、调接口）产生后果。</li>
+<li><strong>学习 (进化)</strong>：通过反馈优化算法，不断迭代提升效率。</li>
+</ul>
+<p>传统的软件是“输入 A 得到 B”，而 Agent 是“根据当前情况 A，决定做 B，如果 B 失败了再尝试 C”。这种自主性是其核心价值。</p>
+<p>Agent 的概念并非新事物，它经历了三个主要阶段：</p>
+<ol>
+<li><strong>规则驱动/符号驱动 (1960s-1990s)</strong>：基于“IF-THEN”逻辑。<strong>局限</strong>：只能处理预设好的、简单明确的环境。</li>
+<li><strong>强化学习驱动 (1990s-2010s)</strong>：通过试错学习（如 AlphaGo）。<strong>局限</strong>：在特定博弈环境很强，但缺乏通用常识和自然语言交互。</li>
+<li><strong>大模型驱动 (LLM-based Agents, 2023年至今)</strong>：以大模型为大脑。<strong>突破</strong>：拥有了海量的常识、逻辑推理能力和理解人类复杂指令的能力。</li>
+</ol>
+<p>LLM 的出现解决了 Agent 过去最难解决的两个问题：<strong>语义理解</strong>（听懂要干嘛）和<strong>逻辑规划</strong>（知道分几步走）</p>
+<p>与其讨论 Agent，不如讨论 Agentic</p>
+<p>这是一个非常前沿的观点：<strong>智能体不是一种“全或无”的状态，而是一个“光谱”。</strong></p>
+<p>系统中具备的智能体属性程度，被称为 <strong>Agentic（智能体化程度）</strong>。图中借用 LangChain 的分类将其分为 6 个等级：</p>
+<p><img alt="image-20260503120754780" class="gallery-image" data-flex-basis="370px" data-flex-grow="154" height="499" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study-02/image-20260503120754780.png" width="771"></p>
+<ol>
+<li><strong>Human Driven (完全人控)</strong>：纯代码，没有 LLM 介入。</li>
+<li><strong>LLM Cell</strong>：LLM 只负责处理单步指令（如翻译一句话）。</li>
+<li><strong>Chain (链式)</strong>：多步固定流程，LLM 负责每一环。</li>
+<li><strong>Router (路由)</strong>：LLM 具备了一点点判断力，决定接下来走哪条路径。</li>
+<li><strong>State Machine (状态机)</strong>：具备循环和逻辑判断，直到达成某个状态。</li>
+<li><strong>Autonomous (自主智能体)</strong>：最强级别。系统能<strong>自主选择工具、具备记忆、并能自我纠错</strong>。</li>
+</ol>
+<p>现实中很多应用并不需要 100% 的自主（太危险或不可控），开发者应该根据场景选择合适的“智能体化程度”。例如，自动驾驶 L1-L4 的逻辑同样适用于 AI 系统。</p>
+<h3 id="llm-agent原理">LLM Agent原理
+</h3><p>我们可以把 Agent 理解为一个拥有“大脑”的数字员工。大模型充当其推理的大脑，它并不直接执行每一个操作，而是指挥和协调整个系统。</p>
+<p>整个智能体架构的核心可以总结为以下四个核心组件：</p>
+<p><img alt="image-20260503121823158" class="gallery-image" data-flex-basis="624px" data-flex-grow="260" height="310" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study-02/image-20260503121823158.png" srcset="/p/agent-thinking-and-study-02/image-20260503121823158_hu_afece1339da31c09.png 800w, /p/agent-thinking-and-study-02/image-20260503121823158.png 806w" width="806"></p>
+<p>1、大脑llm</p>
+<p>实现语义理解，常识推理，规划指令等</p>
+<p>2、工具使用</p>
+<p>它允许 Agent 通过一套 API、脚本或应用程序接口来感知外部世界，并与其进行交互。通过调用搜索 API 网页检索、调用数据库查询 API，让 Agent 能够“读”和“听”到外部世界的实时信息。通过代码执行解释器、网页自动化工具、社交媒体 API（如发推、发邮件），让 Agent 能够产生可观测的行动后果，而不仅仅是说。</p>
+<p>3、规划</p>
+<p>对于复杂的长期任务，大脑不能像简单的问答那样一次性完成，必须经过严密的规划。这可以分为两个主要阶段：</p>
+<p>A. 任务分解</p>
+<p>大脑会把一个复杂的大目标拆解为可执行的小步骤。</p>
+<ul>
+<li><strong>思维链 (Chain of Thought, CoT):</strong> 这是最基本的规划方法。它指示 LLM 不要直接跳到答案，而是先生成一连串连贯的思维步骤，通过逐步推理来解决问题。</li>
+<li><strong>思维树 (Tree of Thoughts, ToT):</strong> 在 CoT 的基础上，它允许 Agent 在推理过程中产生多个分支（备选方案），并对不同的路径进行自我评估和选择。</li>
+</ul>
+<p>B. 自我反思</p>
+<p>这是一个关键的反馈循环。Agent 在执行特定动作后，大脑会获得外部世界的反馈（观察结果），然后自我评估动作的成效，并动态调整后续的规划。</p>
+<ul>
+<li><strong>ReAct (Reason + Act):</strong> 这是一个经典的规划模式。Agent 会生成一个思考步骤，明确接下来要做什么以及为什么，然后执行具体的工具动作 ，最后观察动作的结果并开始下一个循环。它将推理和行动紧密交织在一起。</li>
+</ul>
+<p>4、记忆</p>
+<p>智能体的记忆系统非常关键，它决定了 Agent 能否处理长期任务，并根据过去的经验优化当前决策。</p>
+<p>短期记忆</p>
+<ul>
+<li><strong>大模型上下文窗口 :</strong> 它是大模型自身的“内存”，存储了当前任务中最近一次对话的历史、中间步骤的规划以及所使用的工具所返回的临时信息。它是临时的、有限的，随着对话的进行会被新信息覆盖。</li>
+</ul>
+<p>长期记忆</p>
+<ul>
+<li><strong>外部知识库:</strong> Agent 可以利用外部向量数据库永久存储海量的、结构化的知识。当需要时，它可以通过语义检索技术（RAG）快速调取相关的背景信息，并注入到短期记忆中。</li>
+<li><strong>记忆管理：</strong> Agent 还需要具备对长期记忆的管理能力：</li>
+</ul>
+<p>当 Agent 拥有了长期记忆，能够连接外部知识库时，它在能力上实现了质的飞跃，但也同时面临着一个严峻的工程挑战：<strong>检索效率</strong>。</p>
+<p>想象一下，当我们将海量的文档、业务数据以向量的形式灌入 Agent 的长期记忆库中，大模型在进行思考和规划时，就需要去“回忆”相关的知识。在这个高维向量空间中，寻找与当前问题最相关的记忆，其数学本质就是进行<strong>最大内部产品搜索</strong>。</p>
+<p>然而，在真实的业务场景下，知识库动辄百万、千万级。如果让 Agent 在每次反思时，都去跟数据库里的每一条知识做一遍精确的内积计算（暴力遍历），计算量会引发灾难性的延迟，让原本聪明的 Agent 变得极其迟钝。</p>
+<p>为了打破这个检索瓶颈，保证系统的实时反馈，工程实现上必须做出取舍：<strong>用少量的精度损失，换取搜索速度的极大提升</strong>。这就是近似最近邻算法（ANN）成为 Agent 长期记忆底层标配的原因。</p>
+<p>目前主流的向量数据库和 Agent 框架中，主要依赖以下几种核心的 ANN 算法结构来实现高效捞取数据：</p>
+<ul>
+<li><strong>LSH (局部敏感哈希)：用“碰撞”做聚类</strong> 传统的哈希算法是为了防止碰撞，而 LSH 则是故意设计一种特殊的哈希函数，让高维空间中相邻（相似）的向量“撞”进同一个桶中，且桶的数量远小于数据总量。搜索时，只需计算当前输入属于哪个桶，直接在桶内寻找，大幅缩小了关注范围。</li>
+<li><strong>ANNOY：基于随机投影树的空间切割</strong> 它的核心数据结构是随机投影树。每次通过一个随机超平面将高维空间一分为二，直到每个子空间（叶子节点）的数据量足够小。为了提高准确率，通常会构建一个“森林”（多棵独立的树）进行并行搜索，然后聚合结果。它的思想类似传统的 KD 树，但在高维空间的扩展性上表现更优。</li>
+<li><strong>HNSW (分层可导航小世界)：图结构的检索巅峰</strong> 这是目前应用最广、性能极佳的算法之一。它借鉴了社交网络中的“六度分隔”理论，构建了多层的小世界网络。最底层包含所有的实际数据点，越往上层节点越少、“快捷键”跨度越大。检索时，从顶层粗略定位，逐层向下精细导航，完美平衡了跨越距离与搜索质量。</li>
+<li><strong>FAISS：基于高斯分布的向量量化</strong> FAISS 建立在这样一个假设上：高维空间中的节点距离遵循高斯分布。它通过“向量量化”来实现降维打击，先将庞大的向量空间划分（粗聚类）为若干个集群，然后在每个集群内部再进行更精细的量化。检索时，先锁定潜在的集权候选，再进入候选内部详查。</li>
+<li><strong>ScaNN：各向异性向量量化的突破</strong> 一般的量化算法在压缩数据时，往往只选择绝对距离最接近的质心。但 ScaNN 算法发现，在计算内积时，向量的<strong>方向</strong>比长度影响更大。因此它采用了“各向异性”的量化策略，使得量化后的向量在方向上尽可能贴近原始向量，极大提升了 MIPS 的最终还原精度。</li>
+</ul>
+
+
+<div class="notice notice-info">
+    
+    <div class="notice-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 6px; position: relative; top: 2px;">
+          <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+        </svg>
+        Question
+    </div>
+    
+    <div class="notice-content">
+        智能体、LLM、强化学习智能体有啥区别？
+    </div>
+</div>
+<p>和LLM对话：输入一个提示，大模型生成一个回答。</p>
+<p>和Agent对话：就像是你有一个助手，助手会先询问你是否进行网络研究，然后写下初稿，然后回顾初稿，并思考哪些部分需要修改，然后修改草稿，不断进行思考和迭代的过程。输入为<strong>文字（多模态场景下也会有视觉、语音等信息）</strong>，策略为预训练的具备<strong>世界知识的大语言模型</strong>，输出动作为<strong>文本</strong>，但可以<strong>通过结构化输出和提取实现 function_call，进一步与现实环境进行交互</strong>。</p>
+<p>与强化学习智能体对话： 输入为<strong>预设好的向量化的环境状态（或者图像）</strong>，策略通常由简单的<strong>神经网络结构</strong>进行初始化，输出动作多为<strong>底层控制（移动、攻击等）</strong></p>
+<h2 id="agent分类">Agent分类
+</h2><h3 id="按照数量分类">按照数量分类
+</h3><p><strong>单智能体 (Single Agent)</strong>：分为<strong>任务导向型</strong>（如 AutoGPT、BabyAGI）和<strong>角色扮演型</strong>。</p>
+<p><strong>多智能体 (Multi-Agent)</strong>：分为<strong>合作型</strong>、<strong>辩论型</strong>和<strong>竞争型</strong>（竞争型通常基于强化学习）。强调多样化的agent profiles ,agents间交流相互作用与集体决策过程。每个智能体都具有独特的策略和行为，并相互之间进行通信。</p>
+<h3 id="按照行为模式分类">按照行为模式分类
+</h3><ol>
+<li>Tool Use Agent (工具调用智能体)</li>
+</ol>
+<p>此类 Agent 的核心逻辑在于打破大模型“在真空中预测下一个 Token”的局限，将其动作空间扩展至外部 API 和计算引擎。</p>
+<ul>
+<li>
+<p><strong>核心机制</strong>：模型不仅输出文本，还输出可解析的工具调用指令。以CRITIC框架为例，其引入了<strong>自我修正闭环</strong>。</p>
+</li>
+<li>
+<p><strong>数学逻辑抽象</strong>：</p>
+<p>传统的生成为 $y = \text{LLM}(x)$。Tool Use 范式将其转化为一个交互验证过程：</p>
+<ol>
+<li><strong>初始生成</strong>：$y_0 = \text{LLM}(x)$</li>
+<li><strong>工具验证</strong>：$o = \text{Tool}(y_0)$ （如调用计算器或搜索引擎获取真实反馈 $o$）</li>
+<li><strong>多轮修正</strong>：$y_{t+1} = \text{LLM}(x, y_t, o_t)</li>
+</ol>
+</li>
+</ul>
+<p>该范式强调模型对工具返回结果的批判能力。这与我们在构建数据管道时使用 LLM-as-judge 来评估和清洗数据质量的逻辑非常契合，本质都是将 LLM 用作一个具有鉴别能力的仲裁者。典型模型还包括 WebGPT、HuggingGPT 和 Toolformer。</p>
+<ol start="2">
+<li>Code Generation Agent (代码生成智能体)</li>
+</ol>
+<p>此类 Agent 将“代码”不仅视为一种输出文本格式，而是将其作为一种<strong>可执行的、确定性的状态环境</strong>。</p>
+<ul>
+<li><strong>核心机制</strong>：利用代码解释器（如 Python Sandbox）提供确定性的执行反馈（Traceback / Stdout），驱动模型进行迭代优化。</li>
+<li><strong>重点范式 (如 Self-debug, SWE-agent)</strong>：
+<ul>
+<li><strong>Self-debugging</strong>：模型生成代码后，直接将其送入沙盒执行。如果报错，模型会捕获错误堆栈信息作为新的 Observation，再次推断并修改代码。</li>
+<li><strong>逻辑流转</strong>：状态转移可表示为 $C_{t+1} = \pi_\theta(C_t \mid \text{Execution_Result}(C_t))$，这是一个极其高效的强化学习过程，其 Reward 信号（通过/失败/报错日志）比传统的自然语言反馈更加精准和稠密。</li>
+<li><strong>工程挑战</strong>：如 SWE-agent 所展示的，此类系统在处理真实仓库级任务时，需要应对极长的上下文。随着交互轮数的增加，如何优雅地管理 KV Cache 并在长序列中保持核心意图的 Attention 权重，是底层架构设计的一个关键点。</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>Observation-based Agent (基于观察的智能体)</li>
+</ol>
+<p>此类 Agent 侧重于在复杂多步环境中（如游戏、网页导航、生活模拟）进行马尔可夫决策过程（MDP）。它强调规划与记忆。</p>
+<p>三种核心子类：</p>
+<ul>
+<li><strong>ReAct (Reasoning and Acting)</strong>：
+<ul>
+<li><strong>逻辑</strong>：将内部推理与外部动作交织。其轨迹可以表示为 $\tau = (s_1, t_1, a_1, o_1, s_2, t_2&hellip;)$。Thought 迫使模型在行动前进行显式的中间状态推导，有效缓解了幻觉和错误累积。</li>
+</ul>
+</li>
+<li><strong>Reflexion (反思机制)</strong>：
+<ul>
+<li><strong>逻辑</strong>：一种基于语言的强化学习。在任务失败后，模型生成一段自然语言的反思作为上下文补充到下一次尝试中：$a_{t+1} \sim \pi(a \mid x, \text{memory}_{reflection})$。</li>
+</ul>
+</li>
+<li><strong>Memory-based Agent (记忆智能体)</strong>：
+<ul>
+<li>以 Generative Agents 为代表。引入了 <strong>Record（记录） -&gt; Retrieve（检索） -&gt; Reflect（反思）</strong> 的长期记忆机制。它将海量历史交互转化为高维度的洞察，使得 Agent 的行为具备时间连贯性。</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>RAG Agent (检索增强智能体)</li>
+</ol>
+<p>传统的 RAG 只是一个静态的“检索-阅读”流水线。而 RAG Agent 则将其升级为主动的、自适应的动态网络。</p>
+<ul>
+<li><strong>Standard RAG</strong>：$P(y \mid x) \approx P(y \mid x, z)$，其中 $z$ 是从向量数据库中检索出的 Top-K 文档。</li>
+<li><strong>Iterative / Active RAG (如 FLARE)</strong>：
+<ul>
+<li><strong>机制</strong>：前向主动检索。当模型在生成过程中对其预测的下一个 Token 或短语的置信度 $P(y_t \mid y_{&lt;t}, x)$ 低于设定阈值 $\tau$ 时，主动触发检索操作，获取新知识后再继续生成。</li>
+</ul>
+</li>
+<li><strong>Self-RAG (自我反思 RAG)</strong>：
+<ul>
+<li><strong>机制</strong>：通过在训练阶段（如 SFT 或 DPO 对齐阶段）向模型注入特定的 Reflection Tokens（例如 <code>[Retrieve]</code>, <code>[Relevant]</code>, <code>[Supported]</code>）。</li>
+<li><strong>逻辑</strong>：这使得模型在推理时能够<strong>自主判断</strong>是否需要检索、检索到的文档是否相关、生成的答案是否有依据支撑。这相当于将一个微型的 LLM-as-judge 机制内置到了模型的自回归生成过程中，极大提高了输出的忠实度。</li>
+</ul>
+</li>
+</ul>
+<h2 id="智能体系统分类">智能体系统分类
+</h2><h3 id="从结构上分类">从结构上分类
+</h3><p>1、<strong>工作流</strong>：通过预设的逻辑路径（如 IF-ELSE、编排引擎等）驱动，逻辑具有高度确定性。</p>
+<ul>
+<li>工作流 1：提示链 Prompt Chaining</li>
+</ul>
+<p>Prompt Chaining 适合将复杂任务拆解为多个步骤，每个步骤由一个 LLM 调用完成，输出作为下一个步骤的输入。这种模式增加了系统的透明度和可控性，同时降低了单次 LLM 调用的复杂度。</p>
+<p>适用场景：当任务可以明确拆解为多个顺序完成的子任务时。例如撰写长篇文章，先让模型生成大纲，确认后再分别生成每个段落；或者先进行信息提取，再根据提取的信息进行问答。</p>
+<p>优势：</p>
+<p>提高系统稳定性和可控性，每一步都可以进行 Prompt 优化。</p>
+<p>便于 Debug 和调优，可以清晰定位是哪一步的输出导致了最终结果的错误。</p>
+<ul>
+<li>工作流 2：路由 Routing</li>
+</ul>
+<p>Routing 模式引入了一个路由器，负责将输入分发给不同的处理单元。每个处理单元可以是一个特定领域的 LLM 或专门的工具。这种模式提高了系统的效率和灵活性。路由器本身也是一个 LLM，负责根据输入内容和任务需求决定分发策略。</p>
+<ul>
+<li>工作流 3：并行 Parallelization</li>
+</ul>
+<p>并行模式下，一个输入会同时传递给多个处理单元（如不同的 LLM 或者不同的 Prompt），并在最后将结果进行汇总。</p>
+<p>Sectioning（分块）：将任务分解成多个独立的部分，并行处理。</p>
+<p>Voting（投票）：同一个任务由多个独立的 Worker 并行执行，根据多数投票或其他机制选出最终结果。</p>
+<p>适用场景：对于可以通过分块并行处理来提高效率的任务，或通过多路并行投票来提高结果可靠性的场景。比如审查一份长代码，可以将代码分成多个函数并行检查。在复杂的分析任务中，不同的专家 Agent（如数据分析师、行业研究员等）可以并行给出分析意见。</p>
+<p>优势：</p>
+<p>Sectioning：显著提升系统运行效率，特别是对于可以拆解且子任务之间没有强依赖关系的情况。同时也可以绕过部分模型对于超长文本输入限制的问题（例如将长文本分段后分别提取摘要）。</p>
+<p>Voting：利用“群体智慧”，提升结果的准确率和鲁棒性，适用于容错率极低的场景。</p>
+<ul>
+<li>工作流 4：编排器-工作者 Orchestrator-Workers</li>
+</ul>
+<p>在 Orchestrator-Workers 模式下，一个中央的 Orchestrator 负责将任务分配给多个 Workers，并协调它们的工作。</p>
+<p>适用场景：当任务非常复杂，且包含多个相互依赖的子任务时。Orchestrator 可以根据任务的进度和 Workers 的反馈动态调整计划。这种模式在复杂的软件开发、大型项目管理等领域有广泛应用。例如在开发一个软件项目时，Orchestrator 可以分配需求分析、代码编写、测试等任务给不同的 Worker Agent。</p>
+<p>优势：</p>
+<p>可以处理极度复杂的、包含动态依赖关系的任务。</p>
+<p>系统的扩展性强，可以随时增加新的 Worker 来扩展系统的能力。</p>
+<ul>
+<li>工作流 5：评估-优化器 Evaluator-Optimizer</li>
+</ul>
+<p>在该模式中，一个生成器负责生成初步结果，一个评估器负责对结果进行评估并提供反馈，生成器根据反馈进行优化。</p>
+<p>适用场景：当任务的结果需要满足特定的标准或质量要求时。例如在机器翻译、代码生成等领域。</p>
+<p>Generator 负责生成初稿，Evaluator 负责审核。</p>
+<p>如果没有通过审核，Evaluator 会给出具体的修改意见。</p>
+<p>Generator 根据修改意见重新生成初稿，进入下一轮迭代。</p>
+<p>优势：</p>
+<p>能够显著提高生成结果的质量和可靠性，特别是在那些对“正确性”有明确标准的场景下（如代码生成是否能通过测试用例），形成了一个闭环的自我迭代过程，能够不断优化结果。</p>
+<p>2、<strong>自主智能体</strong>：LLM 动态决定操作序列与工具，具有“思考”能力，面对复杂未知场景表现更好，但存在一定的不确定性。</p>
+<p>由模型完全控制运行过程：规划、反思、工具调用等均由大模型动态决策。其工作流不是预先设定好的，而是根据当前状态和目标实时生成的。适用于开放式任务，不需要人工干预，大语言模型充当“大脑”进行决策。</p>
+<p>在此模式中，大语言模型决定控制流：包含它所需的步骤、是否需要循环迭代等。</p>
+<p>智能体会在完成一个操作后重新思考“我接下来应该做什么？”并持续进行环境交互，直到达成目标。</p>
+<p>优势在于灵活，面对未知场景适应能力强；劣势在于过程不可控，如果大模型能力不够容易陷入死循环。</p>
+<h2 id="智能体框架应用">智能体框架、应用
+</h2><h3 id="框架">框架
+</h3><p><img alt="image-20260503171112146" class="gallery-image" data-flex-basis="320px" data-flex-grow="133" height="615" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study-02/image-20260503171112146.png" srcset="/p/agent-thinking-and-study-02/image-20260503171112146_hu_ae9d035146975257.png 800w, /p/agent-thinking-and-study-02/image-20260503171112146.png 821w" width="821"></p>
+<h3 id="应用">应用
+</h3><p>1、RAG应用</p>
+<p><strong>GraphRAG</strong>：通过构建知识图谱增强RAG检索准确率</p>
+<p><strong>LightRAG</strong>：轻量化的GraphRAG实现</p>
+<p><strong>DeepSearcher</strong>：采用树状结构而非图结构存储</p>
+<p><img alt="image-20260503171526585" class="gallery-image" data-flex-basis="386px" data-flex-grow="160" height="540" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study-02/image-20260503171526585.png" srcset="/p/agent-thinking-and-study-02/image-20260503171526585_hu_82539d41f235b9eb.png 800w, /p/agent-thinking-and-study-02/image-20260503171526585.png 869w" width="869"></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>传统RAG(如同在图书馆找书)</strong></th>
+          <th><strong>GraphRAG(如同在查族谱)</strong></th>
+          <th><strong>DeepSearcher(如同在玩RPG游戏)</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>【文档向量化】</strong> <em>(图示：扁平的文本块列表)</em></td>
+          <td><strong>【图结构存储】</strong> <em>(图示：通过线段连接的节点图)</em></td>
+          <td><strong>【树形层次结构】</strong> <em>(图示：自顶向下的树状分支结构)</em></td>
+      </tr>
+      <tr>
+          <td><strong>【检索过程】</strong> 问题 $\rightarrow$ 相似度</td>
+          <td><strong>【检索过程】</strong> 问题 $\rightarrow$ 定位图节点并寻路</td>
+          <td><strong>【检索过程】</strong> 问题 $\rightarrow$ 第一层 $\rightarrow$ 第二层 $\rightarrow$ 第三层</td>
+      </tr>
+      <tr>
+          <td><strong>【特点】</strong> • 扁平化向量空间 • 单次向量相似度检索 • 直接基于相关文本生成 • 简单直接，可能错过关联</td>
+          <td><strong>【特点】</strong> • 图结构存储 • 图遍历+路径查询 • 基于图结构化信息生成 • 发现潜在关联关系</td>
+          <td><strong>【特点】</strong> • 树形层次结构 • 多层并行检索+过滤 • 基于多层次信息综合生成 • 层次分明，易于理解</td>
+      </tr>
+  </tbody>
+</table></div>
+<p>2、单智能体应用</p>
+<p>BabyAGI、AutoGPT、HuggingGPT等，通过设计不同的prompt和工作流，利用OpenAI模型或者huggingface上的模型，实现任务规划、任务执行、任务排序等功能。<img alt="image-20260503171653409" class="gallery-image" data-flex-basis="350px" data-flex-grow="146" height="513" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study-02/image-20260503171653409.png" width="750"></p>
+<p>3、多智能体应用</p>
+<p>generative_agents, MetaGPT, GPT-researcher, STORM / Co-STORM，多智能体协作交流完成任务。</p>
+<p>RL和Agent作为目前基座训练和应用最重要的两个方向，开发者们将 LLM 当作 Agent 来进行 RL 后训练，有望进一步提升其回答质量、交互表现，或在特定任务上进一步微调，获得更适合应用场景的行为；另一方面，LLM 也能帮助 RL，当 RL 游戏遇到输入的复杂信息，LLM 可以用其强大的表示与推理能力来预处理信息，或者充当奖励函数、世界模型等各种模块，让 RL Agent 更快地学会完成任务。</p>
+<p>4、GAIR/ToRL</p>
+<p>ToRL通过RL使LLM能够自主探索和改进工具使用策略，让LLM能够自主学习何时以及如何调用工具，减少对人类启发式工具调用模式的依赖。</p>
+<p>5、OpenManus/OpenManus-RL</p>
+<p>借鉴了RAGEN和RICO，并在此基础上进一步探索了新的算法架构、多样的推理范式、复杂的奖励策略以及丰富的后训练策略组合。</p>
+<p>6、RAGEN</p>
+<p>RAGEN通过MDP框架及自建环境“推理-交互最佳化”算法，解决了多轮交互和随机环境中的关键挑战；其进阶的优化策略进一步增强了模型在不同复杂任务中的稳定性和表现。</p>
+<p>7、eleurent/RL-Agents</p>
+<p>RL-Agents为研究人员提供了一个全面的框架来实现和测试多种先进的强化学习算法，包括值迭代、蒙特卡罗树搜索和深度Q网络等。</p>
+
+</section>
+
+
+    <footer class="article-meta article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/agent/">Agent</a>
+        
+            <a href="/tags/rag/">RAG</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright inline-meta">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under <a class="link" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"  target="_blank" rel="noopener"
+    >CC BY-NC-SA 4.0</a></span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const elementsToRender = [".main-article", ".widget--toc"];
+
+        elementsToRender.forEach(selector => {
+            const element = document.querySelector(selector);
+            if (element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        { left: "$$", right: "$$", display: true },
+                        { left: "$", right: "$", display: false },
+                        { left: "\\(", right: "\\)", display: false },
+                        { left: "\\[", right: "\\]", display: true }
+                    ],
+                    ignoredClasses: ["gist"]
+                });
+            }
+        });
+    });
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside>
+    <h2 class="section-title">相关文章</h2>
+    <div class="subsection-list">
+        <div class="article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/agent-thinking-and-study/">
+        
+        <div class="article-image">
+            <img alt="Featured image of post AI应用--01Prompt Tech 提示技术" height="150" loading="lazy" src="/p/agent-thinking-and-study/cover_hu_beb8ba9f4c8a94d4.jpg" srcset="/p/agent-thinking-and-study/cover_hu_beb8ba9f4c8a94d4.jpg 1x, /p/agent-thinking-and-study/cover_hu_9290710e4c250f06.jpg 2x" width="250">
+
+        </div>
+        
+
+        <div class="article-details"style="background: linear-gradient(0deg, #b0a9af80 0%, #35353bC0 100%);">
+            <h2 class="article-title">AI应用--01Prompt Tech 提示技术</h2>
+        </div>
+    </a>
+</article>
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+        <div class="disqus-container">
+    
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 ysy虚拟世界
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="4.0.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+
+
+
+<script type="module">
+    import gallery from '\/ts\/gallery.js';
+
+    const articleContent = document.querySelector('.article-content');
+    const shouldLoad = articleContent && (articleContent.querySelectorAll('figure').length > 0 || articleContent.querySelectorAll('img.gallery-image').length > 0);
+    
+    if (shouldLoad) {
+        gallery(articleContent);
+
+        const PhotoSwipeLightbox = (await import("https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js")).default;
+        const styleHref = "https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe.css";
+
+        const styleTag = document.createElement('link');
+        styleTag.rel = 'stylesheet';
+        styleTag.href = styleHref;
+        document.head.appendChild(styleTag);
+
+        const lightbox = new PhotoSwipeLightbox({
+            gallerySelector: '.article-content',
+            childSelector: 'figure a.image-link',
+            pswpModule: () => import("https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js")
+        });
+        lightbox.init();
+    }
+</script>
+    
+
+            </main>
+        </div>
+        
+<script type="text/javascript" src="/ts/main.acaf849f2b273f6a8368a58b001f336738d0c948d92e79b116467d0c7515f932.js" defer></script>
+<style>
+    :root {
+        --body-background: transparent !important;
+        --card-background: rgba(255, 255, 255, 0.85) !important;  
+    }
+    [data-scheme="dark"] {
+        --card-background: rgba(30, 30, 40, 0.85) !important;  
+    }
+    body { background-color: transparent !important; }
+    #vanta-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+</style>
+
+<div id="vanta-bg"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const htmlEl = document.documentElement;
+        
+        
+        const getBgColor = () => htmlEl.dataset.scheme === 'dark' ? 0x161718 : 0xffffff;
+
+        if (typeof VANTA !== 'undefined') {
+            
+            let vantaEffect = VANTA.GLOBE({
+                el: "#vanta-bg",
+                mouseControls: true,
+                touchControls: true,
+                gyroControls: false,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: 0x3f51b5,   
+                color2: 0x00bcd4,  
+                size: 1.00,
+                backgroundColor: getBgColor() 
+            });
+
+            
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.attributeName === "data-scheme") {
+                        
+                        vantaEffect.setOptions({
+                            backgroundColor: getBgColor()
+                        });
+                    }
+                });
+            });
+            
+            observer.observe(htmlEl, { attributes: true });
+        }
+    });
+</script>
+
+    </body>
+</html>
