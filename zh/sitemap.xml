@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://shuyaoyu74-sys.github.io/</loc>
-    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
+    <lastmod>2026-05-06T19:21:45+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -25,17 +25,11 @@
                 href="https://shuyaoyu74-sys.github.io/"
                 />
   </url><url>
-    <loc>https://shuyaoyu74-sys.github.io/tags/agent/</loc>
-    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
-  </url><url>
-    <loc>https://shuyaoyu74-sys.github.io/categories/ai/</loc>
-    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
-  </url><url>
-    <loc>https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study-02/</loc>
-    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
+    <loc>https://shuyaoyu74-sys.github.io/p/ysy-thinking/</loc>
+    <lastmod>2026-05-06T19:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/categories/</loc>
-    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
+    <lastmod>2026-05-06T19:21:45+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -58,13 +52,10 @@
                 />
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/post/</loc>
-    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
-  </url><url>
-    <loc>https://shuyaoyu74-sys.github.io/tags/rag/</loc>
-    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
+    <lastmod>2026-05-06T19:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/tags/</loc>
-    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
+    <lastmod>2026-05-06T19:21:45+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -85,6 +76,24 @@
                 hreflang="zh"
                 href="https://shuyaoyu74-sys.github.io/tags/"
                 />
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/tags/%E6%84%9F%E6%82%9F/</loc>
+    <lastmod>2026-05-06T19:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/categories/%E6%97%A5%E8%AE%B0/</loc>
+    <lastmod>2026-05-06T19:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/tags/agent/</loc>
+    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/categories/ai/</loc>
+    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study-02/</loc>
+    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/tags/rag/</loc>
+    <lastmod>2026-05-02T19:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study/</loc>
     <lastmod>2026-04-27T15:28:14+08:00</lastmod>
