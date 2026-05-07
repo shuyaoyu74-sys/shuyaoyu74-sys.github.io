@@ -206,22 +206,5 @@
                 hreflang="zh"
                 href="https://shuyaoyu74-sys.github.io/search/"
                 />
-  </url><url>
-    <loc>https://shuyaoyu74-sys.github.io/categories/documentation/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-hant-tw"
-                href="https://shuyaoyu74-sys.github.io/zh-hant-tw/categories/documentation/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ja"
-                href="https://shuyaoyu74-sys.github.io/ja/categories/documentation/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://shuyaoyu74-sys.github.io/categories/documentation/"
-                />
   </url>
 </urlset>
