@@ -477,7 +477,7 @@
 <p>1、<strong>知识文档的准备</strong>：</p>
 <p>就是前置数据处理，我们面对的知识源可能包含多种格式，比如word，txt，csv等等，因此第一步需要使用专门的文档加载器将丰富的 知识源转换为大语言模型可理解的纯文本数据。此外，对于文档可能存在过长的问题，我们还需要进行切片，将长篇文档分割成多个文本块，以便于高效处理信息。</p>
 <p>2、<strong>Embedding向量化</strong>：</p>
-<p>将文本块和用户的查询（Query）通过Embedding模型转化为多维向量，存入向量数据库。</p>
+<p>将文本块和用户的查询通过Embedding模型转化为多维向量，存入向量数据库。</p>
 <p>3、<strong>数据库检索</strong>：</p>
 <p>计算用户查询向量与数据库中文档向量的相似度，召回最相关的Top-K个文档块。</p>
 <p>4、<strong>答案生成</strong>：</p>
@@ -492,22 +492,22 @@
 <p><img alt="image-20260507090909157" class="gallery-image" data-flex-basis="383px" data-flex-grow="159" height="622" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study-03/image-20260507090909157.png" srcset="/p/agent-thinking-and-study-03/image-20260507090909157_hu_e7dfd74b58a1d1ca.png 800w, /p/agent-thinking-and-study-03/image-20260507090909157.png 995w" width="995"></p>
 <h3 id="rag评估">RAG评估
 </h3><p>通过上面的论述，我们发现rag包含检索和生成。我们需要对其进行系统化评估。</p>
-<p>当 RAG 系统给出一个糟糕的回答时，评估可以帮助我们定位问题出在哪里。是检索器（Retriever）没有找到相关的背景文档？还是生成器（LLM）理解错了文档、产生了幻觉，或者答非所问？ RAG 系统中有大量的超参数和组件（如 Chunk Size 分块大小、Embedding 模型选择、Top-K 数量、是否加入 Reranker、Prompt 的设计、选择哪个 LLM 等）。只有建立定量的评估指标，才能科学地对比不同策略的效果，指导后续的系统迭代。并且确保模型回答的“忠实度”（没有脱离知识库胡编乱造），这对于企业级应用（如医疗、法律客服）至关重要。</p>
+<p>当 RAG 系统给出一个糟糕的回答时，评估可以帮助我们定位问题出在哪里。是检索器没有找到相关的背景文档？还是生成器理解错了文档、产生了幻觉，或者答非所问？ RAG 系统中有大量的超参数和组件（如 Chunk Size 分块大小、Embedding 模型选择、Top-K 数量、是否加入 Reranker、Prompt 的设计、选择哪个 LLM 等）。只有建立定量的评估指标，才能科学地对比不同策略的效果，指导后续的系统迭代。并且确保模型回答的“忠实度”（没有脱离知识库胡编乱造），这对于企业级应用（如医疗、法律客服）至关重要。</p>
 <h4 id="针对检索环节的评估">针对检索环节的评估
-</h4><p>在构建 RAG（检索增强生成）系统时，整个流水线通常被划分为两部分：<strong>检索器和生成器</strong>。</p>
+</h4><p>在构建 RAG系统时，整个流水线通常被划分为两部分：<strong>检索器和生成器</strong>。</p>
 <p>如果在生成阶段，大模型输出了幻觉或答非所问的内容，问题常常并不出在模型本身，而是因为检索器喂给大模型的“参考资料”质量太差。所谓“Garbage in, Garbage out（垃圾进，垃圾出）”。</p>
-<p>因此，针对检索环节的独立评估至关重要。它的核心目的就是回答一个问题：<strong>从庞大知识库中召回的 Top-K 个文档块（Chunks），究竟准不准、全不全、排序好不好？</strong></p>
+<p>因此，针对检索环节的独立评估至关重要。它的核心目的就是回答一个问题：<strong>从庞大知识库中召回的 Top-K 个文档块，究竟准不准、全不全、排序好不好？</strong></p>
 <p>我们将这几个核心指标拆解为三个递进的层次：<strong>找没找到（Hit Rate/Recall） -&gt; 第一个找到的有多快（MRR） -&gt; 整体排序质量有多好（NDCG）</strong>。</p>
 <p>第一层：基础的“找没找到” (Hit Rate / Precision / Recall)</p>
 <p>这是最基础的评估维度，只看检索出的文档集合里有没有我们要的内容，暂时不关心排名先后。</p>
-<p>为了严谨定义这三个指标，我们需要先确立三个基础的数学集合参量。设针对某次特定的用户查询（Query）：</p>
+<p>为了严谨定义这三个指标，我们需要先确立三个基础的数学集合参量。设针对某次特定的用户查询：</p>
 <ul>
 <li><strong>$R$ (Relevant)</strong>：知识库中<strong>所有真正相关</strong>的文档构成的集合。</li>
 <li><strong>$K$ (Retrieved)</strong>：系统经过检索，最终<strong>召回并输入</strong>给大模型的文档集合（通常为系统设定的 Top-K 阈值）。</li>
-<li><strong>$R \cap K$ (交集)</strong>：系统召回的文档中，<strong>确属相关</strong>的有效文档集合。</li>
+<li><strong>$R \cap K$</strong>：系统召回的文档中，<strong>确属相关</strong>的有效文档集合。</li>
 </ul>
 <p>基于以上定义，该阶段主要涉及以下三个核心概念：</p>
-<p><strong>1. 精确率 (Precision) —— 衡量检索结果的纯净度</strong></p>
+<p><strong>1. 精确率—— 衡量检索结果的纯净度</strong></p>
 <ul>
 <li>
 <p><strong>逻辑定义</strong>：精确率计算的是在系统召回的 $K$ 个文档中，真正相关的文档所占的比例。</p>
@@ -516,16 +516,16 @@
 <p><strong>数学表达</strong>：$Precision = \frac{|R \cap K|}{|K|}$</p>
 </li>
 </ul>
-<p><strong>在 RAG 中的工程意义</strong>：精确率的高低直接决定了构建给大模型（LLM）的 Prompt 质量。精确率越低，意味着大模型的上下文中充斥着越多的无效“噪音”。这些无关信息不仅会大量占用有限的 Token 窗口上限，更容易干扰大模型自身的注意力机制（Attention Mechanism），使其偏离核心问题，从而大幅增加生成“幻觉（Hallucination）”的风险。</p>
+<p><strong>在 RAG 中的工程意义</strong>：精确率的高低直接决定了构建给大模型（LLM）的 Prompt 质量。精确率越低，意味着大模型的上下文中充斥着越多的无效“噪音”。这些无关信息不仅会大量占用有限的 Token 窗口上限，更容易干扰大模型自身的注意力机制，使其偏离核心问题，从而大幅增加生成“幻觉”的风险。</p>
 <p><strong>2. 召回率 (Recall) —— 衡量检索结果的完备性</strong></p>
 <ul>
 <li><strong>逻辑定义</strong>：召回率计算的是在知识库所有实际相关的 $R$ 个文档中，被系统成功检索出来并包含在 $K$ 中的比例。</li>
 <li><strong>数学表达</strong>：$Recall = \frac{|R \cap K|}{|R|}$</li>
 </ul>
-<p><strong>在 RAG 中的工程意义</strong>：当面临复杂的、需要多跳推理（Multi-hop reasoning）或跨文档总结的问答任务时，召回率至关重要。如果召回率不足（例如回答问题需要综合 3 篇文档，系统只找出了 1 篇），意味着大模型缺失了生成完整答案的必要前置条件（即信息孤岛效应），这必然会导致最终输出的答案存在严重的片面性或关键信息遗漏。</p>
+<p><strong>在 RAG 中的工程意义</strong>：当面临复杂的、需要多跳推理或跨文档总结的问答任务时，召回率至关重要。如果召回率不足（例如回答问题需要综合 3 篇文档，系统只找出了 1 篇），意味着大模型缺失了生成完整答案的必要前置条件（即信息孤岛效应），这必然会导致最终输出的答案存在严重的片面性或关键信息遗漏。</p>
 <p><strong>3. 命中率 (Hit Rate) —— 衡量单次查询的底线有效性</strong></p>
 <ul>
-<li><strong>逻辑定义</strong>：与精确率和召回率关注连续的“比例”不同，命中率针对单次查询是一个二值化（Binary）的非黑即白指标。它不关心召回了多少篇相关文档，只判定检索结果集中是否<strong>至少包含一篇</strong>有效文档。</li>
+<li><strong>逻辑定义</strong>：与精确率和召回率关注连续的“比例”不同，命中率针对单次查询是一个二值化的非黑即白指标。它不关心召回了多少篇相关文档，只判定检索结果集中是否<strong>至少包含一篇</strong>有效文档。</li>
 <li><strong>数学表达</strong>：当 $|R \cap K| &gt; 0$ 时，单次查询得分为 1；当 $|R \cap K| = 0$ 时，得分为 0。系统整体的命中率即为所有查询测试用例中得分为 1 的占比。</li>
 </ul>
 <p><strong>在 RAG 中的工程意义</strong>：命中率是 RAG 工业界最关注的实用基准指标。得益于现代大语言模型极强的阅读理解与信息抽取能力，系统往往不需要实现 100% 的召回率。只要在检索出的 Top-K 文档中，包含了哪怕一条正确的背景线索，大模型就足以推理出正确答案。因此，命中率衡量的是检索器是否跨过了保证 RAG 流水线“基本可用”的最低及格线。</p>
@@ -569,23 +569,23 @@ $$MRR = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{rank_i}$$<ul>
 <li>如果你在调试 Reranker（重排序模型）或者复杂的双塔 Embedding 模型，想要极致的排序效果，<strong>NDCG</strong> 是最综合、最科学的指标。</li>
 </ul>
 <h4 id="针对生成环节评估">针对生成环节评估
-</h4><p>生成环节的评估目标，是衡量 LLM 在接收到检索出的 Context（上下文）和用户的 Query（查询）后，最终输出的文本质量。这部分主要分为基于字面统计的量化评估和基于语义的非量化评估。</p>
+</h4><p>生成环节的评估目标，是衡量 LLM 在接收到检索出的 Context和用户的 Query后，最终输出的文本质量。这部分主要分为基于字面统计的量化评估和基于语义的非量化评估。</p>
 <p><strong>1. 量化评估：基于词法重合度的传统指标</strong></p>
 <ul>
 <li><strong>代表指标</strong>：ROUGE (Recall-Oriented Understudy for Gisting Evaluation)、BLEU (Bilingual Evaluation Understudy)。</li>
 </ul>
-<p>这类指标的核心逻辑是计算 <strong>N-Gram（N元语法）的重合率</strong>。通过统计模型生成的文本与标准答案（Ground Truth）之间，有多少个词元（Token）或词组是完全相同的。</p>
+<p>这类指标的核心逻辑是计算 <strong>N-Gram（N元语法）的重合率</strong>。通过统计模型生成的文本与标准答案之间，有多少个词元或词组是完全相同的。</p>
 <p>但是存在一些局限性，在现代 LLM 评估中，纯量化指标的权重正在急剧下降。因为大模型具备极强的同义词替换、句式重构和总结能力。即使生成的答案在字面上与参考答案毫无重合（导致 ROUGE/BLEU 分数极低），其在语义逻辑上依然可能是完全正确甚至更优的。</p>
 <p><strong>2. 非量化评估：基于多维度的语义指标</strong></p>
 <p>为了克服字面量化的缺陷，业界目前的主流方案是采用 <strong>LLM-as-a-Judge（大模型作为裁判）</strong> 范式，通过高维度的语义对齐来评估以下四个核心指标：</p>
 <ul>
 <li><strong>完整性与正确性</strong>：生成的文本是否精准、无遗漏地回答了 Query 的核心诉求，且不存在事实性错误。</li>
 <li><strong>上下文相关性</strong>：生成的回答是否强依赖于检索器提供的 Context。如果模型脱离了给定的上下文进行作答，即使答案是正确的，在该指标下也会被判定为低分。</li>
-<li><strong>答案忠实性 (Faithfulness)</strong>：这是防范模型“幻觉（Hallucination）”的最关键防线。它严格审查最终答案中的每一个论点，是否都能在提供的 Context 中找到直接的证据支撑（Entailment）。禁止模型夹带其预训练权重中的未验证信息。</li>
-<li><strong>答案相关性 (Answer Relevance)</strong>：衡量回答的精炼度与聚焦度。严厉惩罚大模型常见的“冗长废话”、“车轱辘话”或答非所问的现象。</li>
+<li>**答案忠实性 **：这是防范模型“幻觉”的最关键防线。它严格审查最终答案中的每一个论点，是否都能在提供的 Context 中找到直接的证据支撑。禁止模型夹带其预训练权重中的未验证信息。</li>
+<li><strong>答案相关性</strong>：衡量回答的精炼度与聚焦度。严厉惩罚大模型常见的“冗长废话”、“车轱辘话”或答非所问的现象。</li>
 </ul>
 <h4 id="意图分流评估">意图分流评估
-</h4><p>在 Agentic RAG 中，意图分流（Intent Routing）是整个数据链路的咽喉。Agent 需要通过 Function Call（工具调用）能力，决定是将问题抛给通用大模型，还是调用内部数据库 API、联网搜索工具等。</p>
+</h4><p>在 Agentic RAG 中，意图分流是整个数据链路的咽喉。Agent 需要通过 Function Call（工具调用）能力，决定是将问题抛给通用大模型，还是调用内部数据库 API、联网搜索工具等。</p>
 <p>如果这一步的决策发生偏移，下游的所有生成都是无效的。图片中展示的是一个<strong>级联式的错误诊断模型</strong>，用于精确定位 Agent 在“感知 -&gt; 规划 -&gt; 执行”链路中的具体失效点。</p>
 <p><img alt="image-20260507105400024" class="gallery-image" data-flex-basis="419px" data-flex-grow="174" height="486" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study-03/image-20260507105400024.png" srcset="/p/agent-thinking-and-study-03/image-20260507105400024_hu_866a18ec3d9e617e.png 800w, /p/agent-thinking-and-study-03/image-20260507105400024.png 849w" width="849"></p>
 <p>设整个评估集中的总工具调用期望次数为 $N_{total}$。</p>
@@ -594,15 +594,15 @@ $$Accuracy = \frac{N_{success}}{N_{total}}$$<p>这是对 Agent 意图分流能�
 <p><strong>2. 感知层失效：工具意图识别失败占比</strong></p>
 $$Rate_{intent\_fail} = \frac{N_{intent\_fail}}{N_{total}}$$<p><strong>逻辑定义</strong>：Agent 未能从 Query 中识别出需要调用工具的意图（本该调用却没调用），或者在无需工具的场景下错误触发了工具。这通常意味着 Prompt 中对工具应用场景边界的定义（Description）存在歧义。</p>
 <p><strong>3. 路由层失效：工具名识别失败占比</strong></p>
-$$Rate_{name\_fail} = \frac{N_{wrong\_name}}{N_{total}}$$<p><strong>逻辑定义</strong>：Agent 成功识别了调用意图，但在可用的工具池（Tool Schema）中<strong>选错了具体的工具</strong>。例如，应该调用 <code>search_arxiv_paper</code>，却调用了 <code>search_google_news</code>。这说明工具池中的各项工具语义存在重叠，导致模型路由混乱。</p>
+$$Rate_{name\_fail} = \frac{N_{wrong\_name}}{N_{total}}$$<p><strong>逻辑定义</strong>：Agent 成功识别了调用意图，但在可用的工具池中<strong>选错了具体的工具</strong>。例如，应该调用 <code>search_arxiv_paper</code>，却调用了 <code>search_google_news</code>。这说明工具池中的各项工具语义存在重叠，导致模型路由混乱。</p>
 <p><strong>4. 抽取层失效：工具参数识别失败占比</strong></p>
-$$Rate_{param\_fail} = \frac{N_{correct\_name \cap wrong\_param}}{N_{total}}$$<p><strong>逻辑定义</strong>：Agent 选对了正确的工具，但在依据工具 Schema <strong>提取执行参数（Arguments）时发生了遗漏或类型错误</strong>。这是最常见的工程断点，通常需要通过增强大模型的 In-Context Learning（上下文学习）示例或约束 JSON 输出格式来解决。</p>
+$$Rate_{param\_fail} = \frac{N_{correct\_name \cap wrong\_param}}{N_{total}}$$<p><strong>逻辑定义</strong>：Agent 选对了正确的工具，但在依据工具 Schema <strong>提取执行参数时发生了遗漏或类型错误</strong>。这是最常见的工程断点，通常需要通过增强大模型的 In-Context Learning示例或约束 JSON 输出格式来解决。</p>
 <p><strong>5. 边界失控：工具幻觉识别失败占比</strong></p>
 $$Rate_{hallucination} = \frac{N_{hallucinated\_tool}}{N_{total}}$$<p><strong>逻辑定义</strong>：Agent 捏造并尝试调用了一个<strong>根本不在预设工具池中</strong>的工具名。这属于严重的安全性失效，表明模型的内部逻辑完全脱离了开发者设定的 Schema 约束。</p>
 <h4 id="答案评估">答案评估
 </h4><p>这是对大模型最终输出文本的基础质量把控，分为两个核心维度：</p>
 <ol>
-<li>事实性评估 (Factuality) —— 核心目的是“防幻觉”</li>
+<li>事实性评估 —— 核心目的是“防幻觉”</li>
 </ol>
 <ul>
 <li><strong>逻辑原理</strong>：不再依赖单纯的字面比对，而是引入了一套<strong>自动化的事实核查流水线</strong>。</li>
@@ -610,9 +610,9 @@ $$Rate_{hallucination} = \frac{N_{hallucinated\_tool}}{N_{total}}$$<p><strong>�
 <p><img alt="image-20260507110129199" class="gallery-image" data-flex-basis="597px" data-flex-grow="248" height="323" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study-03/image-20260507110129199.png" srcset="/p/agent-thinking-and-study-03/image-20260507110129199_hu_40faa6e4eb6f46f6.png 800w, /p/agent-thinking-and-study-03/image-20260507110129199.png 804w" width="804"></p>
 <p><strong>拆解流程</strong>：</p>
 <ul>
-<li><strong>论点提取 (Claim Filtering)</strong>：首先把大模型生成的长篇大论拆解成一个个独立的“声明”或“论点”。</li>
-<li><strong>证据检索 (Evidence Selection)</strong>：针对这些论点，去外部可信数据库（如 Wiki）或检索出的上下文中寻找证据。</li>
-<li><strong>推理验证 (NLI 模型)</strong>：使用<strong>自然语言推理 (Natural Language Inference, NLI)</strong> 模型来判断关系。NLI 专门用于判断“前提”是否能推导出“假设”。如果生成的答案与检索出的事实存在“矛盾（Contradiction）”，则判定事实性不合格；如果存在“蕴含（Entailment）”关系，则事实性过关。</li>
+<li><strong>论点提取</strong>：首先把大模型生成的长篇大论拆解成一个个独立的“声明”或“论点”。</li>
+<li>**证据检索：针对这些论点，去外部可信数据库（如 Wiki）或检索出的上下文中寻找证据。</li>
+<li><strong>推理验证</strong>：使用<strong>自然语言推理 (Natural Language Inference, NLI)</strong> 模型来判断关系。NLI 专门用于判断“前提”是否能推导出“假设”。如果生成的答案与检索出的事实存在“矛盾”，则判定事实性不合格；如果存在“蕴含”关系，则事实性过关。</li>
 </ul>
 <ol start="2">
 <li>答案相关性 —— 核心目的是“防废话”</li>
@@ -621,7 +621,7 @@ $$Rate_{hallucination} = \frac{N_{hallucinated\_tool}}{N_{total}}$$<p><strong>�
 <li><strong>逻辑原理</strong>：评估大模型的回答是否直接击中了用户的痛点，而不是长篇大论却不解决问题。</li>
 <li><strong>演进方法</strong>：
 <ul>
-<li><em>传统方法</em>：计算生成的答案与人工标注的标准答案（Ground Truth）之间的余弦相似度等字面量化指标。</li>
+<li><em>传统方法</em>：计算生成的答案与人工标注的标准答案之间的余弦相似度等字面量化指标。</li>
 <li><em>现代方法 (LLM-as-a-Judge)</em>：由于语言表达的多样性，现在更倾向于编写一套严格的 Prompt，<strong>让另一个能力更强的 LLM（如 GPT-4）来做裁判</strong>。裁判不仅比对答案与 Ground Truth 的语义一致性，还会直接结合用户的原始 Prompt，评估答案的切题程度。</li>
 </ul>
 </li>
