@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="记录 AI学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。">
+<title>AI应用 -- 03 RAG检索增强生成</title>
+
+
+<link rel="canonical" href="https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study-03/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
+
+
+<link rel="stylesheet" href="/scss/style.min.9dce60973a8de292faddc810ae3e5f1bbc1f49b0d49eb8fc73c082de1aa19e6c.css"><meta property='og:title' content="AI应用 -- 03 RAG检索增强生成">
+<meta property='og:description' content="记录 AI学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。">
+<meta property='og:url' content='https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study-03/'>
+<meta property='og:site_name' content='ysy虚拟世界'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='agent' /><meta property='article:tag' content='RAG' /><meta property='article:published_time' content='2026-05-07T11:21:45&#43;08:00'/><meta property='article:modified_time' content='2026-05-07T11:21:45&#43;08:00'/><meta property='og:image' content='https://shuyaoyu74-sys.github.io/' />
+<meta name="twitter:title" content="AI应用 -- 03 RAG检索增强生成">
+<meta name="twitter:description" content="记录 AI学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://shuyaoyu74-sys.github.io/' />
+    <link rel="shortcut icon" href="/img/cursor_text.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        <figure class="site-avatar">
+                <a href="/">
+                    <img src="/img/avatar.jpg" 
+                        width="690"
+                        height="690"
+                        class="site-logo"
+                        loading="lazy"
+                        alt="Avatar">
+                </a>
+                
+                    <span class="emoji">💻</span>
+                
+            </figure>
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">ysy虚拟世界</a></h1>
+            <h2 class="site-description">ai时代精神世界的建立</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E9%93%BE%E6%8E%A5/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    <li id="i18n-switch">  
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                        <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                            
+                                
+                                
+                                    
+                                
+                                <option value="/en/" >English</option>
+                            
+                                
+                                
+                                    
+                                        
+                                    
+                                
+                                <option value="/p/agent-thinking-and-study-03/" selected>简体中文</option>
+                            
+                                
+                                
+                                    
+                                
+                                <option value="/zh-hant-tw/" >正體中文</option>
+                            
+                                
+                                
+                                    
+                                
+                                <option value="/ja/" >日本語</option>
+                            
+                        </select>
+                    </li>
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav class="toc-nav" id="TableOfContents">
+                
+  <ol>
+    <li><a href="#啥是rag">啥是RAG？</a>
+      <ol>
+        <li><a href="#rag流程与分类">RAG流程与分类</a></li>
+        <li><a href="#rag评估">RAG评估</a>
+          <ol>
+            <li><a href="#针对检索环节的评估">针对检索环节的评估</a></li>
+            <li><a href="#针对生成环节评估">针对生成环节评估</a></li>
+            <li><a href="#意图分流评估">意图分流评估</a></li>
+            <li><a href="#答案评估">答案评估</a></li>
+            <li><a href="#噪音评估">噪音评估</a></li>
+            <li><a href="#分专项能力评估">分专项能力评估</a></li>
+            <li><a href="#开源rag评估框架">开源RAG评估框架</a></li>
+          </ol>
+        </li>
+        <li><a href="#rag优化">RAG优化</a>
+          <ol>
+            <li><a href="#文档知识准备阶段">文档知识准备阶段</a></li>
+            <li><a href="#embedding插入向量数据库阶段">Embedding插入向量数据库阶段</a></li>
+            <li><a href="#查询索引阶段">查询索引阶段</a></li>
+            <li><a href="#生成回答阶段">生成回答阶段</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+            </nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+    <div class="article-image">
+        <a href="/p/agent-thinking-and-study-03/">
+            <img alt="Featured image of post AI应用 -- 03 RAG检索增强生成" height="1080" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study-03/cover.jpg" srcset="/p/agent-thinking-and-study-03/cover_hu_58d7eca9a3d43517.jpg 800w, /p/agent-thinking-and-study-03/cover.jpg 1554w" width="1554">
+        </a>
+    </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/ai/" style="background-color: hsl(167, 60%, 84%); color: hsl(167, 60%, 15%);">
+                AI
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/agent-thinking-and-study-03/">AI应用 -- 03 RAG检索增强生成</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            记录 AI学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    
+    
+    
+    <footer class="article-meta">
+        
+            <div class="inline-meta">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                    <time class="article-time--published" datetime='2026-05-07T11:21:45&#43;08:00'>2026年5月7日星期四</time>
+                
+
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                    <time class="article-time--reading">
+                        阅读时长: 19 分钟
+                    </time>
+                
+            </div>
+        
+
+        
+
+        
+    </footer>
+    
+</div>
+
+</header>
+
+    
+    <aside class="article-toc">
+        <details>
+            <summary>
+                <div class="article-toc-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>
+                    <span>目录</span>
+                </div>
+            </summary>
+            <nav class="toc-nav">
+                
+  <ol>
+    <li><a href="#啥是rag">啥是RAG？</a>
+      <ol>
+        <li><a href="#rag流程与分类">RAG流程与分类</a></li>
+        <li><a href="#rag评估">RAG评估</a>
+          <ol>
+            <li><a href="#针对检索环节的评估">针对检索环节的评估</a></li>
+            <li><a href="#针对生成环节评估">针对生成环节评估</a></li>
+            <li><a href="#意图分流评估">意图分流评估</a></li>
+            <li><a href="#答案评估">答案评估</a></li>
+            <li><a href="#噪音评估">噪音评估</a></li>
+            <li><a href="#分专项能力评估">分专项能力评估</a></li>
+            <li><a href="#开源rag评估框架">开源RAG评估框架</a></li>
+          </ol>
+        </li>
+        <li><a href="#rag优化">RAG优化</a>
+          <ol>
+            <li><a href="#文档知识准备阶段">文档知识准备阶段</a></li>
+            <li><a href="#embedding插入向量数据库阶段">Embedding插入向量数据库阶段</a></li>
+            <li><a href="#查询索引阶段">查询索引阶段</a></li>
+            <li><a href="#生成回答阶段">生成回答阶段</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+            </nav>
+        </details>
+    </aside>
+    
+
+    <section class="article-content">
+    
+    
+    <h2 id="啥是rag">啥是RAG？
+</h2><p>先翻译一下，Retrieval Augmented Generation ,检索增强生成。</p>
+<p>类似于搜索引擎，找到用户提问最相关的知识或者是相关的对话历史，并结合原始提问，创造信息丰富的prompt，指导模型生成准确输出。</p>
+<p>本质应用了上下文学习的原理，RAG = 检索技术+大模型提示。</p>
+<p>他解决的了大模型的一些问题，比如：大模型容易“一本正经地胡说八道”，RAG通过引入外部真实信息进行事实核查，大幅减少幻觉。大模型的知识停留在训练切断时间，RAG可以通过外挂知识库实时获取最新数据。企业直接微调模型容易泄露敏感数据，RAG可以在检索阶段设置权限控制，保障本地数据安全。提高了回答的准确性与可靠性；便于极低成本地更新和扩展外部知识（无需重新训练模型）；提供数据隐私保护；缓解了对大模型庞大参数和巨大计算资源的依赖。</p>
+<h3 id="rag流程与分类">RAG流程与分类
+</h3><p>可以分为四个基本流程：</p>
+<p>1、<strong>知识文档的准备</strong>：</p>
+<p>就是前置数据处理，我们面对的知识源可能包含多种格式，比如word，txt，csv等等，因此第一步需要使用专门的文档加载器将丰富的 知识源转换为大语言模型可理解的纯文本数据。此外，对于文档可能存在过长的问题，我们还需要进行切片，将长篇文档分割成多个文本块，以便于高效处理信息。</p>
+<p>2、<strong>Embedding向量化</strong>：</p>
+<p>将文本块和用户的查询（Query）通过Embedding模型转化为多维向量，存入向量数据库。</p>
+<p>3、<strong>数据库检索</strong>：</p>
+<p>计算用户查询向量与数据库中文档向量的相似度，召回最相关的Top-K个文档块。</p>
+<p>4、<strong>答案生成</strong>：</p>
+<p>将检索到的背景上下文信息与用户的原始问题进行拼接，输入给LLM生成最终答案。</p>
+<p>主要分为三类，也是不断演化的结果</p>
+<p>1、<strong>Naive RAG（朴素RAG）</strong>：最基础的范式，直接按“索引-检索-生成”的线性流程进行。<strong>缺点</strong>是检索的准确率和召回率受限，容易出现上下文不够相关导致生成质量不高。</p>
+<p>2、<strong>Advanced RAG（高级RAG）</strong>：针对朴素RAG进行了优化，增加了<strong>检索前（Pre-Retrieval）</strong>（如查询重写、扩展）和<strong>检索后（Post-Retrieval）</strong>（如结果重排 Rerank、上下文压缩）处理模块。有效缓解了LLM常见的“Lost in the Middle”（遗忘中间信息）现象，提升了检索质量。</p>
+<p>3、<strong>Modular RAG（模块化RAG）</strong>：这是目前最先进、灵活的架构。它将整个过程模块化（如引入搜索模块、路由模块、记忆模块等），允许根据实际场景自由组合、替换或重排各个模块，不再局限于单一的线性流程。</p>
+<p>综述论文：</p>
+<p>[<a class="link" href="https://www.semanticscholar.org/reader/46f9f7b8f88f72e12cbdb21e3311f995eb6e65c5"  target="_blank" rel="noopener"
+    >PDF] Retrieval-Augmented Generation for Large Language Models: A Survey | Semantic Scholar</a></p>
+<p><img alt="image-20260507090909157" class="gallery-image" data-flex-basis="383px" data-flex-grow="159" height="622" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study-03/image-20260507090909157.png" srcset="/p/agent-thinking-and-study-03/image-20260507090909157_hu_e7dfd74b58a1d1ca.png 800w, /p/agent-thinking-and-study-03/image-20260507090909157.png 995w" width="995"></p>
+<h3 id="rag评估">RAG评估
+</h3><p>通过上面的论述，我们发现rag包含检索和生成。我们需要对其进行系统化评估。</p>
+<p>当 RAG 系统给出一个糟糕的回答时，评估可以帮助我们定位问题出在哪里。是检索器（Retriever）没有找到相关的背景文档？还是生成器（LLM）理解错了文档、产生了幻觉，或者答非所问？ RAG 系统中有大量的超参数和组件（如 Chunk Size 分块大小、Embedding 模型选择、Top-K 数量、是否加入 Reranker、Prompt 的设计、选择哪个 LLM 等）。只有建立定量的评估指标，才能科学地对比不同策略的效果，指导后续的系统迭代。并且确保模型回答的“忠实度”（没有脱离知识库胡编乱造），这对于企业级应用（如医疗、法律客服）至关重要。</p>
+<h4 id="针对检索环节的评估">针对检索环节的评估
+</h4><p>在构建 RAG（检索增强生成）系统时，整个流水线通常被划分为两部分：<strong>检索器和生成器</strong>。</p>
+<p>如果在生成阶段，大模型输出了幻觉或答非所问的内容，问题常常并不出在模型本身，而是因为检索器喂给大模型的“参考资料”质量太差。所谓“Garbage in, Garbage out（垃圾进，垃圾出）”。</p>
+<p>因此，针对检索环节的独立评估至关重要。它的核心目的就是回答一个问题：<strong>从庞大知识库中召回的 Top-K 个文档块（Chunks），究竟准不准、全不全、排序好不好？</strong></p>
+<p>我们将这几个核心指标拆解为三个递进的层次：<strong>找没找到（Hit Rate/Recall） -&gt; 第一个找到的有多快（MRR） -&gt; 整体排序质量有多好（NDCG）</strong>。</p>
+<p>第一层：基础的“找没找到” (Hit Rate / Precision / Recall)</p>
+<p>这是最基础的评估维度，只看检索出的文档集合里有没有我们要的内容，暂时不关心排名先后。</p>
+<p>为了严谨定义这三个指标，我们需要先确立三个基础的数学集合参量。设针对某次特定的用户查询（Query）：</p>
+<ul>
+<li><strong>$R$ (Relevant)</strong>：知识库中<strong>所有真正相关</strong>的文档构成的集合。</li>
+<li><strong>$K$ (Retrieved)</strong>：系统经过检索，最终<strong>召回并输入</strong>给大模型的文档集合（通常为系统设定的 Top-K 阈值）。</li>
+<li><strong>$R \cap K$ (交集)</strong>：系统召回的文档中，<strong>确属相关</strong>的有效文档集合。</li>
+</ul>
+<p>基于以上定义，该阶段主要涉及以下三个核心概念：</p>
+<p><strong>1. 精确率 (Precision) —— 衡量检索结果的纯净度</strong></p>
+<ul>
+<li>
+<p><strong>逻辑定义</strong>：精确率计算的是在系统召回的 $K$ 个文档中，真正相关的文档所占的比例。</p>
+</li>
+<li>
+<p><strong>数学表达</strong>：$Precision = \frac{|R \cap K|}{|K|}$</p>
+</li>
+</ul>
+<p><strong>在 RAG 中的工程意义</strong>：精确率的高低直接决定了构建给大模型（LLM）的 Prompt 质量。精确率越低，意味着大模型的上下文中充斥着越多的无效“噪音”。这些无关信息不仅会大量占用有限的 Token 窗口上限，更容易干扰大模型自身的注意力机制（Attention Mechanism），使其偏离核心问题，从而大幅增加生成“幻觉（Hallucination）”的风险。</p>
+<p><strong>2. 召回率 (Recall) —— 衡量检索结果的完备性</strong></p>
+<ul>
+<li><strong>逻辑定义</strong>：召回率计算的是在知识库所有实际相关的 $R$ 个文档中，被系统成功检索出来并包含在 $K$ 中的比例。</li>
+<li><strong>数学表达</strong>：$Recall = \frac{|R \cap K|}{|R|}$</li>
+</ul>
+<p><strong>在 RAG 中的工程意义</strong>：当面临复杂的、需要多跳推理（Multi-hop reasoning）或跨文档总结的问答任务时，召回率至关重要。如果召回率不足（例如回答问题需要综合 3 篇文档，系统只找出了 1 篇），意味着大模型缺失了生成完整答案的必要前置条件（即信息孤岛效应），这必然会导致最终输出的答案存在严重的片面性或关键信息遗漏。</p>
+<p><strong>3. 命中率 (Hit Rate) —— 衡量单次查询的底线有效性</strong></p>
+<ul>
+<li><strong>逻辑定义</strong>：与精确率和召回率关注连续的“比例”不同，命中率针对单次查询是一个二值化（Binary）的非黑即白指标。它不关心召回了多少篇相关文档，只判定检索结果集中是否<strong>至少包含一篇</strong>有效文档。</li>
+<li><strong>数学表达</strong>：当 $|R \cap K| &gt; 0$ 时，单次查询得分为 1；当 $|R \cap K| = 0$ 时，得分为 0。系统整体的命中率即为所有查询测试用例中得分为 1 的占比。</li>
+</ul>
+<p><strong>在 RAG 中的工程意义</strong>：命中率是 RAG 工业界最关注的实用基准指标。得益于现代大语言模型极强的阅读理解与信息抽取能力，系统往往不需要实现 100% 的召回率。只要在检索出的 Top-K 文档中，包含了哪怕一条正确的背景线索，大模型就足以推理出正确答案。因此，命中率衡量的是检索器是否跨过了保证 RAG 流水线“基本可用”的最低及格线。</p>
+<p>第二层：首个正确答案的位置 (MRR - Mean Reciprocal Rank)</p>
+<p>有时我们只关心最快找到的那一个正确答案。比如在问答系统（QA）中，只要第一条检索结果是完美的答案，后面的结果是好是坏其实无所谓。</p>
+<p><strong>MRR（平均倒数排名）</strong> 就是专门衡量这个的指标：</p>
+<ol>
+<li><strong>RR (Reciprocal Rank，倒数排名):</strong> 针对<strong>单次</strong>查询。如果第一个相关的文档排在第 1 位，得分为 1/1 = 1。如果排在第 2 位，得分为 1/2 = 0.5。排在第 $n$ 位，得分就是 $1/n$。如果没有找到，得分为 0。</li>
+<li><strong>MRR:</strong> 对<strong>多次</strong>查询的 RR 分数求平均值。</li>
+</ol>
+$$MRR = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{rank_i}$$<ul>
+<li>查询 1：首个相关结果在第 2 位 $\rightarrow$ 分数 $1/2 = 0.5$</li>
+<li>查询 2：首个相关结果在第 5 位 $\rightarrow$ 分数 $1/5 = 0.2$</li>
+<li>查询 3：首个相关结果在第 1 位 $\rightarrow$ 分数 $1/1 = 1.0$</li>
+<li><strong>平均结果 (MRR)</strong> = $\frac{1}{3} \times (0.5 + 0.2 + 1.0) = 0.567$</li>
+</ul>
+<p>在算法层面上，这就好比遍历一个数组，MRR 只关心遇到的第一个 <code>True</code> 的索引位置，越靠前奖励越高，衰减非常快。</p>
+<p>第三层：极其严苛的整体排序质量 (NDCG)</p>
+<p>MRR 的局限在于它只看“第一个”正确结果。但很多时候，我们希望<strong>所有</strong>相关度高的文档都尽量排在前面。有些文档是“非常相关”，有些是“部分相关”，有些是“完全无关”。</p>
+<p><strong>NDCG（归一化折损累计增益）</strong> 是信息检索界最权威的指标之一，它不仅考虑了结果是否相关，还考虑了<strong>相关的程度</strong>以及它们<strong>所在的排位</strong>。</p>
+<p>我们把它拆解开来看：</p>
+<ol>
+<li><strong>CG (Cumulative Gain, 累计增益):</strong> 就是单纯把检索出的 Top-K 个文档的相关性得分（Rel）加起来。这不考虑位置，排第一和排最后得分一样。</li>
+<li><strong>DCG (Discounted Cumulative Gain, 折损累计增益):</strong> 引入位置惩罚。排在后面的文档，即使相关性很高，其贡献值也要被打个折扣。
+<ul>
+<li>公式：$DCG_k = \sum_{i=1}^{k} \frac{rel_i}{\log_2(i+1)}$</li>
+<li><em>解释：</em> 分母 $\log_2(i+1)$ 就是“折损因子”。位置 $i$ 越大，分母越大，该文档的实际贡献得分就越小。</li>
+</ul>
+</li>
+<li><strong>IDCG (Ideal DCG, 理想折损累计增益):</strong> 假设系统是完美的，把所有文档按照相关性从高到低<strong>完美排序</strong>，此时计算出的 DCG 就是 IDCG（能拿到的理论最高分）。</li>
+<li><strong>NDCG (Normalized DCG):</strong> 因为不同查询的难度不同（有的查询可能只有1个相关文档，有的有10个），直接对比 DCG 不公平。所以用当前的 $DCG$ 除以理论满分 $IDCG$，得到一个 0 到 1 之间的归一化分数。
+<ul>
+<li>公式：$NDCG = \frac{DCG}{IDCG}$</li>
+</ul>
+</li>
+</ol>
+<p>作为研发人员，在优化 RAG 算法和数据结构时：</p>
+<ul>
+<li>如果你的 RAG 应用是<strong>事实类问答</strong>（答案唯一且明确），重点优化和关注 <strong>MRR</strong>。</li>
+<li>如果是<strong>分析总结类任务</strong>（需要多文档交叉验证），重点关注 <strong>Recall</strong>（召回率）。</li>
+<li>如果你在调试 Reranker（重排序模型）或者复杂的双塔 Embedding 模型，想要极致的排序效果，<strong>NDCG</strong> 是最综合、最科学的指标。</li>
+</ul>
+<h4 id="针对生成环节评估">针对生成环节评估
+</h4><p>生成环节的评估目标，是衡量 LLM 在接收到检索出的 Context（上下文）和用户的 Query（查询）后，最终输出的文本质量。这部分主要分为基于字面统计的量化评估和基于语义的非量化评估。</p>
+<p><strong>1. 量化评估：基于词法重合度的传统指标</strong></p>
+<ul>
+<li><strong>代表指标</strong>：ROUGE (Recall-Oriented Understudy for Gisting Evaluation)、BLEU (Bilingual Evaluation Understudy)。</li>
+</ul>
+<p>这类指标的核心逻辑是计算 <strong>N-Gram（N元语法）的重合率</strong>。通过统计模型生成的文本与标准答案（Ground Truth）之间，有多少个词元（Token）或词组是完全相同的。</p>
+<p>但是存在一些局限性，在现代 LLM 评估中，纯量化指标的权重正在急剧下降。因为大模型具备极强的同义词替换、句式重构和总结能力。即使生成的答案在字面上与参考答案毫无重合（导致 ROUGE/BLEU 分数极低），其在语义逻辑上依然可能是完全正确甚至更优的。</p>
+<p><strong>2. 非量化评估：基于多维度的语义指标</strong></p>
+<p>为了克服字面量化的缺陷，业界目前的主流方案是采用 <strong>LLM-as-a-Judge（大模型作为裁判）</strong> 范式，通过高维度的语义对齐来评估以下四个核心指标：</p>
+<ul>
+<li><strong>完整性与正确性</strong>：生成的文本是否精准、无遗漏地回答了 Query 的核心诉求，且不存在事实性错误。</li>
+<li><strong>上下文相关性</strong>：生成的回答是否强依赖于检索器提供的 Context。如果模型脱离了给定的上下文进行作答，即使答案是正确的，在该指标下也会被判定为低分。</li>
+<li><strong>答案忠实性 (Faithfulness)</strong>：这是防范模型“幻觉（Hallucination）”的最关键防线。它严格审查最终答案中的每一个论点，是否都能在提供的 Context 中找到直接的证据支撑（Entailment）。禁止模型夹带其预训练权重中的未验证信息。</li>
+<li><strong>答案相关性 (Answer Relevance)</strong>：衡量回答的精炼度与聚焦度。严厉惩罚大模型常见的“冗长废话”、“车轱辘话”或答非所问的现象。</li>
+</ul>
+<h4 id="意图分流评估">意图分流评估
+</h4><p>在 Agentic RAG 中，意图分流（Intent Routing）是整个数据链路的咽喉。Agent 需要通过 Function Call（工具调用）能力，决定是将问题抛给通用大模型，还是调用内部数据库 API、联网搜索工具等。</p>
+<p>如果这一步的决策发生偏移，下游的所有生成都是无效的。图片中展示的是一个<strong>级联式的错误诊断模型</strong>，用于精确定位 Agent 在“感知 -&gt; 规划 -&gt; 执行”链路中的具体失效点。</p>
+<p><img alt="image-20260507105400024" class="gallery-image" data-flex-basis="419px" data-flex-grow="174" height="486" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study-03/image-20260507105400024.png" srcset="/p/agent-thinking-and-study-03/image-20260507105400024_hu_866a18ec3d9e617e.png 800w, /p/agent-thinking-and-study-03/image-20260507105400024.png 849w" width="849"></p>
+<p>设整个评估集中的总工具调用期望次数为 $N_{total}$。</p>
+<p><strong>1. 宏观指标：工具调用准确率</strong></p>
+$$Accuracy = \frac{N_{success}}{N_{total}}$$<p>这是对 Agent 意图分流能力的整体评价，即最终成功调用正确工具并获取有效数据的比例。当该指标低于业务预期时，需要通过以下四个维度的“失败占比”进行归因拆解。</p>
+<p><strong>2. 感知层失效：工具意图识别失败占比</strong></p>
+$$Rate_{intent\_fail} = \frac{N_{intent\_fail}}{N_{total}}$$<p><strong>逻辑定义</strong>：Agent 未能从 Query 中识别出需要调用工具的意图（本该调用却没调用），或者在无需工具的场景下错误触发了工具。这通常意味着 Prompt 中对工具应用场景边界的定义（Description）存在歧义。</p>
+<p><strong>3. 路由层失效：工具名识别失败占比</strong></p>
+$$Rate_{name\_fail} = \frac{N_{wrong\_name}}{N_{total}}$$<p><strong>逻辑定义</strong>：Agent 成功识别了调用意图，但在可用的工具池（Tool Schema）中<strong>选错了具体的工具</strong>。例如，应该调用 <code>search_arxiv_paper</code>，却调用了 <code>search_google_news</code>。这说明工具池中的各项工具语义存在重叠，导致模型路由混乱。</p>
+<p><strong>4. 抽取层失效：工具参数识别失败占比</strong></p>
+$$Rate_{param\_fail} = \frac{N_{correct\_name \cap wrong\_param}}{N_{total}}$$<p><strong>逻辑定义</strong>：Agent 选对了正确的工具，但在依据工具 Schema <strong>提取执行参数（Arguments）时发生了遗漏或类型错误</strong>。这是最常见的工程断点，通常需要通过增强大模型的 In-Context Learning（上下文学习）示例或约束 JSON 输出格式来解决。</p>
+<p><strong>5. 边界失控：工具幻觉识别失败占比</strong></p>
+$$Rate_{hallucination} = \frac{N_{hallucinated\_tool}}{N_{total}}$$<p><strong>逻辑定义</strong>：Agent 捏造并尝试调用了一个<strong>根本不在预设工具池中</strong>的工具名。这属于严重的安全性失效，表明模型的内部逻辑完全脱离了开发者设定的 Schema 约束。</p>
+<h4 id="答案评估">答案评估
+</h4><p>这是对大模型最终输出文本的基础质量把控，分为两个核心维度：</p>
+<ol>
+<li>事实性评估 (Factuality) —— 核心目的是“防幻觉”</li>
+</ol>
+<ul>
+<li><strong>逻辑原理</strong>：不再依赖单纯的字面比对，而是引入了一套<strong>自动化的事实核查流水线</strong>。</li>
+</ul>
+<p><img alt="image-20260507110129199" class="gallery-image" data-flex-basis="597px" data-flex-grow="248" height="323" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study-03/image-20260507110129199.png" srcset="/p/agent-thinking-and-study-03/image-20260507110129199_hu_40faa6e4eb6f46f6.png 800w, /p/agent-thinking-and-study-03/image-20260507110129199.png 804w" width="804"></p>
+<p><strong>拆解流程</strong>：</p>
+<ul>
+<li><strong>论点提取 (Claim Filtering)</strong>：首先把大模型生成的长篇大论拆解成一个个独立的“声明”或“论点”。</li>
+<li><strong>证据检索 (Evidence Selection)</strong>：针对这些论点，去外部可信数据库（如 Wiki）或检索出的上下文中寻找证据。</li>
+<li><strong>推理验证 (NLI 模型)</strong>：使用<strong>自然语言推理 (Natural Language Inference, NLI)</strong> 模型来判断关系。NLI 专门用于判断“前提”是否能推导出“假设”。如果生成的答案与检索出的事实存在“矛盾（Contradiction）”，则判定事实性不合格；如果存在“蕴含（Entailment）”关系，则事实性过关。</li>
+</ul>
+<ol start="2">
+<li>答案相关性 —— 核心目的是“防废话”</li>
+</ol>
+<ul>
+<li><strong>逻辑原理</strong>：评估大模型的回答是否直接击中了用户的痛点，而不是长篇大论却不解决问题。</li>
+<li><strong>演进方法</strong>：
+<ul>
+<li><em>传统方法</em>：计算生成的答案与人工标注的标准答案（Ground Truth）之间的余弦相似度等字面量化指标。</li>
+<li><em>现代方法 (LLM-as-a-Judge)</em>：由于语言表达的多样性，现在更倾向于编写一套严格的 Prompt，<strong>让另一个能力更强的 LLM（如 GPT-4）来做裁判</strong>。裁判不仅比对答案与 Ground Truth 的语义一致性，还会直接结合用户的原始 Prompt，评估答案的切题程度。</li>
+</ul>
+</li>
+</ul>
+<h4 id="噪音评估">噪音评估
+</h4><p>在真实的 RAG 工程中，检索器是不完美的，常常会把含有大量关键词但实际上毫无用处的文档（即“噪音”）喂给大模型。</p>
+<p>这是一项<strong>鲁棒性测试</strong>。系统故意向大模型输入“带有迷惑性的噪音文档”（例如：用户问“苹果公司2023年财报”，系统故意混入一篇“苹果种植技术”或“苹果公司2018年财报”的文档）。</p>
+<ul>
+<li><strong>评估目标</strong>：考察大模型的<strong>注意力机制是否会被带偏</strong>。优秀的模型能够像人类一样，在阅读完所有资料后，自动屏蔽无效的噪音信息，精准提取出有用的片段进行总结，最终输出的答案能够与标准答案达成“精确匹配”。如果模型把噪音内容写进了答案，这项评估即为不合格。</li>
+</ul>
+<h4 id="分专项能力评估">分专项能力评估
+</h4><p>在 RAG 的工程实践中，“分专项能力评估”属于<strong>对抗性测试</strong>。它们的评估原理，本质上是给大模型“挖坑”，然后观察并量化它的应对表现。</p>
+<p>以下具体实操原理与逻辑链路（5种）：</p>
+<ol>
+<li>易混淆实体评估</li>
+</ol>
+<ul>
+<li><strong>测试目的</strong>：考察大模型是否具备实体隔离能力，防止出现“特征融合”的张冠李戴。</li>
+<li><strong>如何构造测试（挖坑）</strong>： 向系统注入包含多重同名（或近义）实体的上下文。例如，用户查询：“<strong>苹果</strong>的最新营养研究和<strong>苹果</strong>的最新财报”。系统强制召回两篇文档，一篇是关于水果苹果的维基百科，另一篇是苹果公司的 Q3 财报。</li>
+<li><strong>评估原理与打分机制</strong>：
+<ul>
+<li><strong>LLM-as-a-Judge 审查</strong>：使用裁判大模型扫描生成的答案，检查是否存在逻辑谬误。如果模型回答出“苹果公司发布了含有 95 卡路里的 iPhone 15”，裁判模型会捕获到实体属性的交叉污染，该项得分为 0。</li>
+<li><strong>通过标准</strong>：模型必须在回答中明确使用连接词（如“关于水果方面&hellip;而关于科技公司方面&hellip;”）将两者逻辑隔离，才能得分。</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>弱相关性与信息冲突评估</li>
+</ol>
+<ul>
+<li><strong>测试目的</strong>：测试当检索库中存在“脏数据”或“矛盾数据”时，大模型的辨伪与择优能力。</li>
+<li><strong>如何构造测试（挖坑）</strong>： 故意针对同一个客观事实，提供两篇相互矛盾的文档。例如，针对问题“地球是宇宙的中心吗？”，注入文档 A（地心说，错误事实）和文档 B（日心说，正确事实）。</li>
+<li><strong>评估原理与打分机制</strong>：
+<ul>
+<li><strong>交叉验证率计算</strong>：评估大模型是否直接“盲信”了排在第一位的文档。</li>
+<li><strong>择优逻辑检验</strong>：优秀的模型应当在输出中体现出<strong>置信度判断</strong>（例如：“虽然文档 A 称&hellip;但根据文档 B 的现代科学记录&hellip;”）。裁判模型通过提取生成文本中的转折关系词和最终结论，比对 Ground Truth（标准答案）。如果结论选错了，或者把对错混为一谈，该项即为 Fail。</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>Function Call 能力评估</li>
+</ol>
+<ul>
+<li><strong>测试目的</strong>：评估系统何时该用知识库，何时该调用外部 API。</li>
+<li><strong>如何构造测试（挖坑）</strong>： 混合输入两类问题。第一类是静态问题（如“RAG 的原理是什么”），第二类是动态问题（如“帮我查一下今天上证指数的收盘价”）。</li>
+<li><strong>评估原理与打分机制</strong>： 这就回到了你前一张图中的公式链路。系统不看生成的文本，而是直接<strong>拦截 Agent 输出的 JSON 数据流</strong>。
+<ul>
+<li>如果遇到动态问题，系统没有输出调用 <code>get_stock_price</code> API 的 JSON，则记为<strong>意图识别失败</strong>。</li>
+<li>如果提取的股票代码参数错误，记为<strong>参数识别失败</strong>。</li>
+<li>这是一种高度确定性的白盒评估，基于预设的 Schema 字段进行严格的 Exact Match（精确匹配）打分。</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>时效性评估</li>
+</ol>
+<ul>
+<li>
+<p><strong>测试目的</strong>：确保模型能够识别出时间戳的先后顺序，并优先采信最新数据；同时测试系统的上下文组装策略是否合理。</p>
+</li>
+<li>
+<p><strong>如何构造测试（挖坑）</strong>： 针对频繁变动的实体提问（如“现任 OpenAI CEO 是谁？”）。注入多篇带有不同日期的文档（比如 2022 年、2023 年 11 月 18 日、2023 年 11 月 21 日的不同报道）。</p>
+</li>
+<li>
+<p><strong>评估原理与打分机制</strong>： 这里分为两个层面的评估：</p>
+<ul>
+<li><strong>系统工程层评估</strong>：检查 Prompt 构建器是否利用了图中所说的“注意力特点”。大语言模型存在 <strong>Lost in the middle（遗忘中间）</strong> 现象，对开头和结尾的文本注意力最强。评估脚本会检查系统是否成功将日期最新的文档排序到了 Prompt 的最头部或最尾部。</li>
+<li><strong>模型生成层评估</strong>：提取最终答案中的时间节点和结论，与最新的 Ground Truth 进行绝对时间戳对比。如果模型回答了旧信息，得分为 0。</li>
+</ul>
+</li>
+</ul>
+<ol start="5">
+<li>拒答评估</li>
+</ol>
+<ul>
+<li><strong>测试目的</strong>：测试模型对自身知识边界的认知（“知之为知之，不知为不知”），这是核心的安全兜底策略。</li>
+<li><strong>如何构造测试（挖坑）</strong>： 输入一个极度生僻、或者完全虚构的问题（例如“解释一下马斯克在火星上建立的‘火星第一人民医院’的运作机制”）。检索器自然会返回空结果，或者返回完全无关的火星百科。</li>
+<li><strong>评估原理与打分机制</strong>：
+<ul>
+<li><strong>全部拒答 评估</strong>：强制匹配生成的回答中是否包含预设的拒答模板（如“抱歉，根据提供的文档，我无法回答&hellip;”）。如果模型依然一本正经地胡说八道（产生幻觉），该项安全得分直接清零。</li>
+<li><strong>部分拒答评估</strong>：提问包含已知和未知两部分（如“解释马斯克创立的 SpaceX，以及火星第一人民医院”）。评估模型是否能精准剥离信息：“关于 SpaceX 的信息如下：&hellip;但关于火星医院，文档中未提供信息。” 裁判模型需要通过语义分割，分别评估回答的“命中部分”和“拒答部分”是否准确对应了事实库的边界。</li>
+</ul>
+</li>
+</ul>
+<h4 id="开源rag评估框架">开源RAG评估框架
+</h4><p>当我们将前面的理论指标（如召回率、事实性）落地到具体的工程实践时，必然需要借助标准化的测试工具。 <strong>Ragas</strong> 和 <strong>LangSmith</strong>，正是目前业界最主流的两大开源基础设施，但它们的定位截然不同：<strong>Ragas 是一个“自动化打分器（打分框架）”，而 LangSmith 是一个“透视诊断台（可观测性平台）”。</strong></p>
+<p>一、 Ragas：基于 LLM-as-a-Judge 的无参考评估框架</p>
+<p>传统的自然语言评估（如 BLEU）严重依赖人工提前写好标准答案，这在多变的 RAG 问答中成本极高。Ragas 的核心原理是<strong>完全抛弃标准答案</strong>，利用一个强大的大语言模型（如 GPT-4）作为裁判，直接基于“用户问题 (Query)”、“检索出的上下文 ”和“系统生成的答案”这三元组进行闭环打分。</p>
+<p>它主要通过极其严密的 Prompt 链条，量化计算图中的三个核心指标：</p>
+<ol>
+<li>忠实性 —— 评估“生成器 ”是否产生幻觉</li>
+</ol>
+<ul>
+<li><strong>评估原理</strong>：生成的答案必须完全能从检索到的上下文中推导出来。</li>
+<li><strong>具体过程（逆向拆解法）</strong>：
+<ol>
+<li><strong>陈述提取</strong>：Ragas 首先让 LLM 裁判阅读生成的 Answer，并将其强行拆解为一组独立的、原子化的陈述句集合。</li>
+<li><strong>证据校验</strong>：针对每一个陈述句，裁判模型去检查 Context，判断该陈述是否被 Context 所支持（蕴含关系）。</li>
+<li><strong>量化打分</strong>：$忠实度分数 = \frac{被上下文支持的陈述数量}{提取出的总陈述数量}$。如果分数为 1.0，说明答案 100% 来源于参考资料，毫无幻觉。</li>
+</ol>
+</li>
+</ul>
+<ol start="2">
+<li>答案相关性 —— 评估“生成器 ”是否答非所问</li>
+</ol>
+<ul>
+<li><strong>评估原理</strong>：一个高相关的答案，应该能让人一眼看出来它在回答什么问题。它不评估答案的对错，只评估答案是否聚焦于原始提问。</li>
+<li><strong>具体过程（逆向提问法）</strong>：
+<ol>
+<li><strong>逆向生成问题</strong>：Ragas 故意隐藏用户的原始 Query，只把生成的 Answer 交给裁判模型，要求裁判根据这个答案，反向生成 $N$ 个可能的原始问题。</li>
+<li><strong>向量相似度计算</strong>：将裁判反向生成的 $N$ 个问题，与用户真正的 Query 进行 Embedding 向量化，并计算它们之间的余弦相似度。</li>
+<li><strong>量化打分</strong>：取这些相似度的平均值。如果答案充满了废话，裁判反推出来的问题必然会偏离原意，导致最终的相似度得分极低。</li>
+</ol>
+</li>
+</ul>
+<ol start="3">
+<li>上下文相关性 —— 评估“检索器 ”的纯度</li>
+</ol>
+<ul>
+<li><strong>评估原理</strong>：正如图片中所述，大模型处理长文本不仅成本高昂，且极易出现“Lost in the middle（遗忘中间）”现象。因此，检索回来的 Context 必须是高度浓缩的精华，不能夹杂废话。</li>
+<li><strong>具体过程（信息抽取法）</strong>：
+<ol>
+<li><strong>关键句提取</strong>：给定用户的 Query 和检索出的完整 Context，要求裁判模型从 Context 中逐句挑选出“必须依赖这句话才能回答用户问题”的核心句子。</li>
+<li><strong>量化打分</strong>：$上下文相关性分数 = \frac{提取出的核心句子数量}{Context 中的总句子数量}$。分数越低，说明检索器塞入的无效噪音越多。</li>
+</ol>
+</li>
+</ul>
+<p>二、 LangSmith：全链路的可观测性与调试平台</p>
+<p>如果说 Ragas 告诉你“系统考了 60 分”，那么 LangSmith 就是用来查明“这扣掉的 40 分到底错在哪个微小的执行步骤里”。它是一个面向大模型应用层的 APM（应用性能监控）平台。</p>
+<ol>
+<li>评估原理：白盒化的执行追踪</li>
+</ol>
+<p>由于现代 AI 系统往往不是单一的 LLM 调用，而是复杂的架构。例如，在构建具有感知、规划和执行架构的复杂 Agent 时，整个运作过程是一个隐式的黑盒。LangSmith 的原理是通过在代码底层进行“埋点”，将每一次数据流转都记录为树状的 Trace（追踪）和 Span（跨度）。</p>
+<ol start="2">
+<li>具体过程：从调试到监控</li>
+</ol>
+<ul>
+<li><strong>可视化微观步骤</strong>：当输入一个问题时，LangSmith 能够将隐藏在模型内部的思维链调用、Prompt 模板的实时拼接结果、以及每一次 Function Call 的输入输出参数完全可视化。开发者可以直接看到模型在某一步推理时，是不是由于某个中间 Prompt 没写好而导致了逻辑断裂。</li>
+<li><strong>构建回归测试集</strong>：在 LangSmith 中，你可以随时将生产环境中表现不佳的对话一键保存为一个测试数据集。当你修改了系统架构（比如优化了某个双指针检索算法或调整了 Chunking 策略）后，可以在这个数据集上批量重跑，验证修改是否有效。</li>
+<li><strong>无缝集成自动化打分</strong>：LangSmith 本身不自带复杂的打分逻辑，但它的架构设计可以直接将前文提到的 Ragas 打分脚本以内置评估器的形式挂载上去。使得每一次代码迭代，都能自动生成一份详尽的多维度诊断报告。</li>
+</ul>
+<h3 id="rag优化">RAG优化
+</h3><h4 id="文档知识准备阶段">文档知识准备阶段
+</h4><h4 id="embedding插入向量数据库阶段">Embedding插入向量数据库阶段
+</h4><h4 id="查询索引阶段">查询索引阶段
+</h4><h4 id="生成回答阶段">生成回答阶段
+</h4><p>这部分等我实践之后再写，光理论没用。</p>
+
+</section>
+
+
+    <footer class="article-meta article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/agent/">Agent</a>
+        
+            <a href="/tags/rag/">RAG</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright inline-meta">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under <a class="link" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"  target="_blank" rel="noopener"
+    >CC BY-NC-SA 4.0</a></span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const elementsToRender = [".main-article", ".widget--toc"];
+
+        elementsToRender.forEach(selector => {
+            const element = document.querySelector(selector);
+            if (element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        { left: "$$", right: "$$", display: true },
+                        { left: "$", right: "$", display: false },
+                        { left: "\\(", right: "\\)", display: false },
+                        { left: "\\[", right: "\\]", display: true }
+                    ],
+                    ignoredClasses: ["gist"]
+                });
+            }
+        });
+    });
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside>
+    <h2 class="section-title">相关文章</h2>
+    <div class="subsection-list">
+        <div class="article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/agent-thinking-and-study-02/">
+        
+        <div class="article-image">
+            <img alt="Featured image of post AI应用 -- 02 基于大模型的智能体（LLM-based-Agent）" height="150" loading="lazy" src="/p/agent-thinking-and-study-02/cover_hu_4924206e98a49917.jpg" srcset="/p/agent-thinking-and-study-02/cover_hu_4924206e98a49917.jpg 1x, /p/agent-thinking-and-study-02/cover_hu_157a5ee96e7a826d.jpg 2x" width="250">
+
+        </div>
+        
+
+        <div class="article-details"style="background: linear-gradient(0deg, #02164180 0%, #084cbbC0 100%);">
+            <h2 class="article-title">AI应用 -- 02 基于大模型的智能体（LLM-based-Agent）</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="has-image">
+    <a href="/p/agent-thinking-and-study/">
+        
+        <div class="article-image">
+            <img alt="Featured image of post AI应用--01Prompt Tech 提示技术" height="150" loading="lazy" src="/p/agent-thinking-and-study/cover_hu_beb8ba9f4c8a94d4.jpg" srcset="/p/agent-thinking-and-study/cover_hu_beb8ba9f4c8a94d4.jpg 1x, /p/agent-thinking-and-study/cover_hu_9290710e4c250f06.jpg 2x" width="250">
+
+        </div>
+        
+
+        <div class="article-details"style="background: linear-gradient(0deg, #b0a9af80 0%, #35353bC0 100%);">
+            <h2 class="article-title">AI应用--01Prompt Tech 提示技术</h2>
+        </div>
+    </a>
+</article>
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+        <div class="disqus-container">
+    
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 ysy虚拟世界
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="4.0.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+
+
+
+<script type="module">
+    import gallery from '\/ts\/gallery.js';
+
+    const articleContent = document.querySelector('.article-content');
+    const shouldLoad = articleContent && (articleContent.querySelectorAll('figure').length > 0 || articleContent.querySelectorAll('img.gallery-image').length > 0);
+    
+    if (shouldLoad) {
+        gallery(articleContent);
+
+        const PhotoSwipeLightbox = (await import("https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js")).default;
+        const styleHref = "https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe.css";
+
+        const styleTag = document.createElement('link');
+        styleTag.rel = 'stylesheet';
+        styleTag.href = styleHref;
+        document.head.appendChild(styleTag);
+
+        const lightbox = new PhotoSwipeLightbox({
+            gallerySelector: '.article-content',
+            childSelector: 'figure a.image-link',
+            pswpModule: () => import("https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js")
+        });
+        lightbox.init();
+    }
+</script>
+    
+
+            </main>
+        </div>
+        
+<script type="text/javascript" src="/ts/main.acaf849f2b273f6a8368a58b001f336738d0c948d92e79b116467d0c7515f932.js" defer></script>
+<style>
+    :root {
+        --body-background: transparent !important;
+        --card-background: rgba(255, 255, 255, 0.85) !important;  
+    }
+    [data-scheme="dark"] {
+        --card-background: rgba(30, 30, 40, 0.85) !important;  
+    }
+    body { background-color: transparent !important; }
+    #vanta-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+</style>
+
+<div id="vanta-bg"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const htmlEl = document.documentElement;
+        
+        
+        const getBgColor = () => htmlEl.dataset.scheme === 'dark' ? 0x161718 : 0xffffff;
+
+        if (typeof VANTA !== 'undefined') {
+            
+            let vantaEffect = VANTA.GLOBE({
+                el: "#vanta-bg",
+                mouseControls: true,
+                touchControls: true,
+                gyroControls: false,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: 0x3f51b5,   
+                color2: 0x00bcd4,  
+                size: 1.00,
+                backgroundColor: getBgColor() 
+            });
+
+            
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.attributeName === "data-scheme") {
+                        
+                        vantaEffect.setOptions({
+                            backgroundColor: getBgColor()
+                        });
+                    }
+                });
+            });
+            
+            observer.observe(htmlEl, { attributes: true });
+        }
+    });
+</script>
+
+    </body>
+</html>
