@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Pages on ysy Virtual World</title>
+        <link>http://localhost:1313/en/page/</link>
+        <description>Recent content in Pages on ysy Virtual World</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <lastBuildDate>Mon, 26 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/en/page/index.xml" rel="self" type="application/rss+xml" /><item>
+            <title>About</title>
+            <link>http://localhost:1313/en/about/</link>
+            <pubDate>Mon, 26 Jan 2026 00:00:00 +0000</pubDate>
+            <guid>http://localhost:1313/en/about/</guid>
+            <description>&lt;h2 id=&#34;who-is-this-for&#34;&gt;Who is this for?&#xD;&#xA;&lt;/h2&gt;&lt;p&gt;This page introduces the author and this blog.&lt;/p&gt;&#xA;&lt;h2 id=&#34;about-the-author&#34;&gt;About the Author&#xD;&#xA;&lt;/h2&gt;&lt;p&gt;Hello, I am ysy. This blog records my thoughts, study notes, and reflections on technology, AI, philosophy, and daily life.&lt;/p&gt;&#xA;&lt;h2 id=&#34;contact&#34;&gt;Contact&#xD;&#xA;&lt;/h2&gt;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;GitHub&lt;/strong&gt;: &lt;a class=&#34;link&#34; href=&#34;https://github.com/shuyaoyu74-sys&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;&#xD;&#xA;    &gt;shuyaoyu74-sys&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;</description>
+        </item><item>
+            <title>Archives</title>
+            <link>http://localhost:1313/en/archives/</link>
+            <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+            <guid>http://localhost:1313/en/archives/</guid>
+            <description></description>
+        </item><item>
+            <title>Links</title>
+            <link>http://localhost:1313/en/links/</link>
+            <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+            <guid>http://localhost:1313/en/links/</guid>
+            <description></description>
+        </item><item>
+            <title>Search</title>
+            <link>http://localhost:1313/en/search/</link>
+            <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+            <guid>http://localhost:1313/en/search/</guid>
+            <description></description>
+        </item></channel>
+</rss>

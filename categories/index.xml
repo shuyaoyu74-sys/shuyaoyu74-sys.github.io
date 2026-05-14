@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Categories on ysy虚拟世界</title>
-        <link>https://shuyaoyu74-sys.github.io/categories/</link>
+        <link>http://localhost:1313/categories/</link>
         <description>Recent content in Categories on ysy虚拟世界</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>zh</language>
-        <lastBuildDate>Sat, 09 May 2026 11:21:45 +0800</lastBuildDate><atom:link href="https://shuyaoyu74-sys.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>zh-CN</language>
+        <lastBuildDate>Sat, 09 May 2026 11:21:45 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
             <title>AI</title>
-            <link>https://shuyaoyu74-sys.github.io/categories/ai/</link>
+            <link>http://localhost:1313/categories/ai/</link>
             <pubDate>Sat, 09 May 2026 11:21:45 +0800</pubDate>
-            <guid>https://shuyaoyu74-sys.github.io/categories/ai/</guid>
-            <description>&lt;img src=&#34;https://shuyaoyu74-sys.github.io/&#34; alt=&#34;Featured image of post AI&#34; /&gt;</description>
+            <guid>http://localhost:1313/categories/ai/</guid>
+            <description>&lt;img src=&#34;http://localhost:1313/&#34; alt=&#34;Featured image of post AI&#34; /&gt;</description>
         </item><item>
             <title>日记</title>
-            <link>https://shuyaoyu74-sys.github.io/categories/%E6%97%A5%E8%AE%B0/</link>
+            <link>http://localhost:1313/categories/%E6%97%A5%E8%AE%B0/</link>
             <pubDate>Wed, 06 May 2026 19:21:45 +0800</pubDate>
-            <guid>https://shuyaoyu74-sys.github.io/categories/%E6%97%A5%E8%AE%B0/</guid>
-            <description>&lt;img src=&#34;https://shuyaoyu74-sys.github.io/&#34; alt=&#34;Featured image of post 日记&#34; /&gt;</description>
+            <guid>http://localhost:1313/categories/%E6%97%A5%E8%AE%B0/</guid>
+            <description>&lt;img src=&#34;http://localhost:1313/&#34; alt=&#34;Featured image of post 日记&#34; /&gt;</description>
         </item><item>
             <title>哲学</title>
-            <link>https://shuyaoyu74-sys.github.io/categories/%E5%93%B2%E5%AD%A6/</link>
+            <link>http://localhost:1313/categories/%E5%93%B2%E5%AD%A6/</link>
             <pubDate>Sat, 25 Apr 2026 00:00:00 +0000</pubDate>
-            <guid>https://shuyaoyu74-sys.github.io/categories/%E5%93%B2%E5%AD%A6/</guid>
-            <description>&lt;img src=&#34;https://shuyaoyu74-sys.github.io/&#34; alt=&#34;Featured image of post 哲学&#34; /&gt;</description>
+            <guid>http://localhost:1313/categories/%E5%93%B2%E5%AD%A6/</guid>
+            <description>&lt;img src=&#34;http://localhost:1313/&#34; alt=&#34;Featured image of post 哲学&#34; /&gt;</description>
         </item></channel>
 </rss>
