@@ -2,157 +2,163 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2026-05-09T11:21:45+08:00</lastmod>
+    <loc>https://shuyaoyu74-sys.github.io/</loc>
+    <lastmod>2026-05-27T15:28:14+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/en/"
+                href="https://shuyaoyu74-sys.github.io/en/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="http://localhost:1313/"
+                href="https://shuyaoyu74-sys.github.io/"
                 />
   </url><url>
-    <loc>http://localhost:1313/tags/agent/</loc>
-    <lastmod>2026-05-09T11:21:45+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/ai/</loc>
-    <lastmod>2026-05-09T11:21:45+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/p/agent-thinking-and-study-04/</loc>
-    <lastmod>2026-05-09T11:21:45+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/</loc>
-    <lastmod>2026-05-09T11:21:45+08:00</lastmod>
+    <loc>https://shuyaoyu74-sys.github.io/categories/</loc>
+    <lastmod>2026-05-27T15:28:14+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/en/categories/"
+                href="https://shuyaoyu74-sys.github.io/en/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="http://localhost:1313/categories/"
+                href="https://shuyaoyu74-sys.github.io/categories/"
                 />
   </url><url>
-    <loc>http://localhost:1313/post/</loc>
-    <lastmod>2026-05-09T11:21:45+08:00</lastmod>
+    <loc>https://shuyaoyu74-sys.github.io/post/</loc>
+    <lastmod>2026-05-27T15:28:14+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/rag/</loc>
-    <lastmod>2026-05-09T11:21:45+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2026-05-09T11:21:45+08:00</lastmod>
+    <loc>https://shuyaoyu74-sys.github.io/tags/</loc>
+    <lastmod>2026-05-27T15:28:14+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/en/tags/"
+                href="https://shuyaoyu74-sys.github.io/en/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="http://localhost:1313/tags/"
+                href="https://shuyaoyu74-sys.github.io/tags/"
                 />
   </url><url>
-    <loc>http://localhost:1313/p/agent-thinking-and-study-03/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/categories/%E6%97%A5%E8%AE%B0/</loc>
+    <lastmod>2026-05-27T15:28:14+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/tags/%E5%BF%83%E7%90%86%E5%AD%A6%E5%93%B2%E5%AD%A6/</loc>
+    <lastmod>2026-05-27T15:28:14+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/p/developing/</loc>
+    <lastmod>2026-05-27T15:28:14+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/tags/agent/</loc>
+    <lastmod>2026-05-09T11:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/categories/ai/</loc>
+    <lastmod>2026-05-09T11:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study-04/</loc>
+    <lastmod>2026-05-09T11:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/tags/rag/</loc>
+    <lastmod>2026-05-09T11:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study-03/</loc>
     <lastmod>2026-05-07T11:21:45+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/p/ysy-thinking/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/p/ysy-thinking/</loc>
     <lastmod>2026-05-06T19:21:45+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E6%84%9F%E6%82%9F/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/tags/%E6%84%9F%E6%82%9F/</loc>
     <lastmod>2026-05-06T19:21:45+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/%E6%97%A5%E8%AE%B0/</loc>
-    <lastmod>2026-05-06T19:21:45+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/p/agent-thinking-and-study-02/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study-02/</loc>
     <lastmod>2026-05-02T19:21:45+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/p/agent-thinking-and-study/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study/</loc>
     <lastmod>2026-04-27T15:28:14+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/prompt/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/tags/prompt/</loc>
     <lastmod>2026-04-27T15:28:14+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E8%80%81%E5%AD%90/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/tags/%E8%80%81%E5%AD%90/</loc>
     <lastmod>2026-04-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E9%A9%AC%E5%85%8B%E6%80%9D/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/tags/%E9%A9%AC%E5%85%8B%E6%80%9D/</loc>
     <lastmod>2026-04-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/p/%E5%9C%A8%E4%BA%BA%E7%B1%BB%E7%A4%BE%E4%BC%9A%E8%83%8C%E6%99%AF%E4%B8%8B%E5%AE%A1%E8%A7%86%E7%A7%91%E6%8A%80%E5%8F%91%E5%B1%95%E4%BB%8E%E5%BC%82%E5%8C%96%E5%88%B0%E5%9B%9E%E5%BD%92/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/p/%E5%9C%A8%E4%BA%BA%E7%B1%BB%E7%A4%BE%E4%BC%9A%E8%83%8C%E6%99%AF%E4%B8%8B%E5%AE%A1%E8%A7%86%E7%A7%91%E6%8A%80%E5%8F%91%E5%B1%95%E4%BB%8E%E5%BC%82%E5%8C%96%E5%88%B0%E5%9B%9E%E5%BD%92/</loc>
     <lastmod>2026-04-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/%E5%93%B2%E5%AD%A6/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/categories/%E5%93%B2%E5%AD%A6/</loc>
     <lastmod>2026-04-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E8%87%AA%E7%84%B6%E8%BE%A9%E8%AF%81%E6%B3%95/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/tags/%E8%87%AA%E7%84%B6%E8%BE%A9%E8%AF%81%E6%B3%95/</loc>
     <lastmod>2026-04-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/page/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/page/</loc>
     <lastmod>2026-01-26T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/en/page/"
+                href="https://shuyaoyu74-sys.github.io/en/page/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="http://localhost:1313/page/"
+                href="https://shuyaoyu74-sys.github.io/page/"
                 />
   </url><url>
-    <loc>http://localhost:1313/%E5%85%B3%E4%BA%8E/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/%E5%85%B3%E4%BA%8E/</loc>
     <lastmod>2026-01-26T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/en/about/"
+                href="https://shuyaoyu74-sys.github.io/en/about/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="http://localhost:1313/%E5%85%B3%E4%BA%8E/"
+                href="https://shuyaoyu74-sys.github.io/%E5%85%B3%E4%BA%8E/"
                 />
   </url><url>
-    <loc>http://localhost:1313/archives/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/en/archives/"
+                href="https://shuyaoyu74-sys.github.io/en/archives/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="http://localhost:1313/archives/"
+                href="https://shuyaoyu74-sys.github.io/archives/"
                 />
   </url><url>
-    <loc>http://localhost:1313/%E9%93%BE%E6%8E%A5/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/%E9%93%BE%E6%8E%A5/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/en/links/"
+                href="https://shuyaoyu74-sys.github.io/en/links/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="http://localhost:1313/%E9%93%BE%E6%8E%A5/"
+                href="https://shuyaoyu74-sys.github.io/%E9%93%BE%E6%8E%A5/"
                 />
   </url><url>
-    <loc>http://localhost:1313/search/</loc>
+    <loc>https://shuyaoyu74-sys.github.io/search/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/en/search/"
+                href="https://shuyaoyu74-sys.github.io/en/search/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="http://localhost:1313/search/"
+                href="https://shuyaoyu74-sys.github.io/search/"
                 />
   </url>
 </urlset>
