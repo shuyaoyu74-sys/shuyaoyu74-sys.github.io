@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://shuyaoyu74-sys.github.io/</loc>
-    <lastmod>2026-06-03T11:21:45+08:00</lastmod>
+    <lastmod>2026-06-05T11:21:45+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -15,14 +15,11 @@
                 href="https://shuyaoyu74-sys.github.io/"
                 />
   </url><url>
-    <loc>https://shuyaoyu74-sys.github.io/p/algorithm-sorting-02/</loc>
-    <lastmod>2026-06-03T11:21:45+08:00</lastmod>
-  </url><url>
     <loc>https://shuyaoyu74-sys.github.io/categories/ai/</loc>
-    <lastmod>2026-06-03T11:21:45+08:00</lastmod>
+    <lastmod>2026-06-05T11:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/categories/</loc>
-    <lastmod>2026-06-03T11:21:45+08:00</lastmod>
+    <lastmod>2026-06-05T11:21:45+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -35,13 +32,16 @@
                 />
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/post/</loc>
-    <lastmod>2026-06-03T11:21:45+08:00</lastmod>
+    <lastmod>2026-06-05T11:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/tags/python/</loc>
-    <lastmod>2026-06-03T11:21:45+08:00</lastmod>
+    <lastmod>2026-06-05T11:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/p/python-%E5%88%B7%E5%88%B7%E5%88%B7/</loc>
+    <lastmod>2026-06-05T11:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/tags/</loc>
-    <lastmod>2026-06-03T11:21:45+08:00</lastmod>
+    <lastmod>2026-06-05T11:21:45+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -52,6 +52,9 @@
                 hreflang="zh-CN"
                 href="https://shuyaoyu74-sys.github.io/tags/"
                 />
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/p/algorithm-sorting-02/</loc>
+    <lastmod>2026-06-03T11:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/p/likou-01/</loc>
     <lastmod>2026-06-01T11:21:45+08:00</lastmod>
