@@ -2,7 +2,7 @@
 <html lang="zh-CN" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="回顾一些基础知识">
-<title>02-算法梳理（6.4继续更新）</title>
+<title>02-算法梳理（6.8更新）</title>
 
 
 <link rel="canonical" href="https://shuyaoyu74-sys.github.io/p/algorithm-sorting-02/">
@@ -12,12 +12,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
 
 
-<link rel="stylesheet" href="/scss/style.min.50d4f40c3b2ceaa3ec55c25b0f8bc3799acfa8124895a14edd07902abcf89cb0.css"><meta property='og:title' content="02-算法梳理（6.4继续更新）">
+<link rel="stylesheet" href="/scss/style.min.50d4f40c3b2ceaa3ec55c25b0f8bc3799acfa8124895a14edd07902abcf89cb0.css"><meta property='og:title' content="02-算法梳理（6.8更新）">
 <meta property='og:description' content="回顾一些基础知识">
 <meta property='og:url' content='https://shuyaoyu74-sys.github.io/p/algorithm-sorting-02/'>
 <meta property='og:site_name' content='ysy虚拟世界'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='python' /><meta property='article:published_time' content='2026-06-03T11:21:45&#43;08:00'/><meta property='article:modified_time' content='2026-06-03T11:21:45&#43;08:00'/><meta property='og:image' content='https://shuyaoyu74-sys.github.io/' />
-<meta name="twitter:title" content="02-算法梳理（6.4继续更新）">
+<meta name="twitter:title" content="02-算法梳理（6.8更新）">
 <meta name="twitter:description" content="回顾一些基础知识"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://shuyaoyu74-sys.github.io/' />
     <link rel="shortcut icon" href="/img/cursor_text.png" />
@@ -290,25 +290,8 @@
             <nav class="toc-nav" id="TableOfContents">
                 
   <ol>
-    <li><a href="#第八章-树">第八章 树</a>
-      <ol>
-        <li><a href="#81--数的基本概念">8.1  数的基本概念</a>
-          <ol>
-            <li><a href="#811-树的定义和属性">8.1.1 树的定义和属性</a></li>
-            <li><a href="#812-树的抽象数据类型">8.1.2 树的抽象数据类型</a></li>
-            <li><a href="#813-计算深度和高度">8.1.3 计算深度和高度</a></li>
-          </ol>
-        </li>
-        <li><a href="#82-二叉树">8.2 二叉树</a>
-          <ol>
-            <li><a href="#821二叉树的抽象数据类型">8.2.1二叉树的抽象数据类型</a></li>
-            <li><a href="#822-二叉树的属性">8.2.2 二叉树的属性</a></li>
-          </ol>
-        </li>
-        <li><a href="#83-树的实现">8.3 树的实现</a></li>
-        <li><a href="#树的遍历算法">树的遍历算法</a></li>
-      </ol>
-    </li>
+    <li><a href="#8树">8、树</a></li>
+    <li><a href="#14图算法">14、图算法</a></li>
   </ol>
 
             </nav>
@@ -325,7 +308,7 @@
     <header class="article-header">
     <div class="article-image">
         <a href="/p/algorithm-sorting-02/">
-            <img alt="Featured image of post 02-算法梳理（6.4继续更新）" height="1080" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/algorithm-sorting-02/cover.jpg" srcset="/p/algorithm-sorting-02/cover_hu_d14a33da199fe145.jpg 800w, /p/algorithm-sorting-02/cover_hu_c857a1e402564f15.jpg 1600w, /p/algorithm-sorting-02/cover.jpg 1941w" width="1941">
+            <img alt="Featured image of post 02-算法梳理（6.8更新）" height="1080" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/algorithm-sorting-02/cover.jpg" srcset="/p/algorithm-sorting-02/cover_hu_d14a33da199fe145.jpg 800w, /p/algorithm-sorting-02/cover_hu_c857a1e402564f15.jpg 1600w, /p/algorithm-sorting-02/cover.jpg 1941w" width="1941">
         </a>
     </div>
     
@@ -346,7 +329,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/algorithm-sorting-02/">02-算法梳理（6.4继续更新）</a>
+            <a href="/p/algorithm-sorting-02/">02-算法梳理（6.8更新）</a>
         </h2>
     
         
@@ -416,25 +399,8 @@
             <nav class="toc-nav">
                 
   <ol>
-    <li><a href="#第八章-树">第八章 树</a>
-      <ol>
-        <li><a href="#81--数的基本概念">8.1  数的基本概念</a>
-          <ol>
-            <li><a href="#811-树的定义和属性">8.1.1 树的定义和属性</a></li>
-            <li><a href="#812-树的抽象数据类型">8.1.2 树的抽象数据类型</a></li>
-            <li><a href="#813-计算深度和高度">8.1.3 计算深度和高度</a></li>
-          </ol>
-        </li>
-        <li><a href="#82-二叉树">8.2 二叉树</a>
-          <ol>
-            <li><a href="#821二叉树的抽象数据类型">8.2.1二叉树的抽象数据类型</a></li>
-            <li><a href="#822-二叉树的属性">8.2.2 二叉树的属性</a></li>
-          </ol>
-        </li>
-        <li><a href="#83-树的实现">8.3 树的实现</a></li>
-        <li><a href="#树的遍历算法">树的遍历算法</a></li>
-      </ol>
-    </li>
+    <li><a href="#8树">8、树</a></li>
+    <li><a href="#14图算法">14、图算法</a></li>
   </ol>
 
             </nav>
@@ -445,25 +411,25 @@
     <section class="article-content">
     
     
-    <h2 id="第八章-树">第八章 树
-</h2><h3 id="81--数的基本概念">8.1  数的基本概念
-</h3><h4 id="811-树的定义和属性">8.1.1 树的定义和属性
-</h4><p>通常将树T定义为存储一系列元素的有限节点集合，具有parent-children关系并且满足以下：</p>
+    <h2 id="8树">8、树
+</h2><p>8.1  数的基本概念</p>
+<p>8.1.1 树的定义和属性</p>
+<p>通常将树T定义为存储一系列元素的有限节点集合，具有parent-children关系并且满足以下：</p>
 <p>如果树T不为空，则它一定具有一个称为根节点的特殊节点，该节点没有父节点。</p>
 <p>每个儿子都有一个爹，一个没孩子的节点称为外部节点，一个有一个或者多个孩子的节点称为内部节点。</p>
 <p>树的一条边指的是一对节点（u，v），路径指的是一系列节点。</p>
 <p>在一个python程序中，当使用单继承时，类与类之间的继承关系形成一棵树，所有类被组织成单一的层次结构，因为存在一个名为object的内置类作为最终的基类。</p>
-<h4 id="812-树的抽象数据类型">8.1.2 树的抽象数据类型
-</h4><p>是很抽象了</p>
-<h4 id="813-计算深度和高度">8.1.3 计算深度和高度
-</h4><p>深度就是祖先的个数，高度就是最高层减去最底层。</p>
-<h3 id="82-二叉树">8.2 二叉树
-</h3><h4 id="821二叉树的抽象数据类型">8.2.1二叉树的抽象数据类型
-</h4><h4 id="822-二叉树的属性">8.2.2 二叉树的属性
-</h4><h3 id="83-树的实现">8.3 树的实现
-</h3><p>链式存储，数组表示等等。</p>
-<h3 id="树的遍历算法">树的遍历算法
-</h3><p>A
+<p>8.1.2 树的抽象数据类型</p>
+<p>是很抽象了</p>
+<p>8.1.3 计算深度和高度</p>
+<p>深度就是祖先的个数，高度就是最高层减去最底层。</p>
+<p>8.2 二叉树</p>
+<p>8.2.1二叉树的抽象数据类型</p>
+<p>8.2.2 二叉树的属性</p>
+<p>8.3 树的实现</p>
+<p>链式存储，数组表示等等。</p>
+<p>树的遍历算法</p>
+<p>A
 / <br>
 B   C
 / \   <br>
@@ -478,7 +444,9 @@ D   E   F</p>
 <p>结果：A B C D E F</p>
 <p>二叉树的欧拉遍历：沿着树的边走一圈，每次进入节点，从左子树回来，从右子树回来，都可以记录一次。一个节点经过三次，统一先序，中序，后序。</p>
 <p>结果：A B D D D B E E E B A C C F F F C A</p>
-<p>6.4 更新</p>
+<p>6.8</p>
+<h2 id="14图算法">14、图算法
+</h2><p>图表示对象之间的存在关系的一种方式</p>
 
 </section>
 
@@ -554,6 +522,22 @@ D   E   F</p>
             
                 
 <article class="has-image">
+    <a href="/p/python-mythematics/">
+        
+        <div class="article-image">
+            <img alt="Featured image of post 用python手撕数学基础" height="150" loading="lazy" src="/p/python-mythematics/cover_hu_29570e6ed82b67a4.jpg" srcset="/p/python-mythematics/cover_hu_29570e6ed82b67a4.jpg 1x, /p/python-mythematics/cover_hu_a7faabb1dfe3c62a.jpg 2x" width="250">
+
+        </div>
+        
+
+        <div class="article-details"style="background: linear-gradient(0deg, #d7d8c080 0%, #2dbadbC0 100%);">
+            <h2 class="article-title">用python手撕数学基础</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="has-image">
     <a href="/p/python-%E5%88%B7%E5%88%B7%E5%88%B7/">
         
         <div class="article-image">
@@ -573,13 +557,13 @@ D   E   F</p>
     <a href="/p/likou-01/">
         
         <div class="article-image">
-            <img alt="Featured image of post 力扣合集（更新中）" height="150" loading="lazy" src="/p/likou-01/cover_hu_c0b0fa0de8ebfe36.jpg" srcset="/p/likou-01/cover_hu_c0b0fa0de8ebfe36.jpg 1x, /p/likou-01/cover_hu_168d4d2e9bf8d4fa.jpg 2x" width="250">
+            <img alt="Featured image of post 力扣合集（6.8更新）" height="150" loading="lazy" src="/p/likou-01/cover_hu_c0b0fa0de8ebfe36.jpg" srcset="/p/likou-01/cover_hu_c0b0fa0de8ebfe36.jpg 1x, /p/likou-01/cover_hu_168d4d2e9bf8d4fa.jpg 2x" width="250">
 
         </div>
         
 
         <div class="article-details"style="background: linear-gradient(0deg, #352e2e80 0%, #c1904aC0 100%);">
-            <h2 class="article-title">力扣合集（更新中）</h2>
+            <h2 class="article-title">力扣合集（6.8更新）</h2>
         </div>
     </a>
 </article>
@@ -612,22 +596,6 @@ D   E   F</p>
 
         <div class="article-details"style="background: linear-gradient(0deg, #59536480 0%, #d0c6ccC0 100%);">
             <h2 class="article-title">AI应用 -- 04 github项目学习（pguso/ai-agents-from-scratch）</h2>
-        </div>
-    </a>
-</article>
-            
-                
-<article class="has-image">
-    <a href="/p/agent-thinking-and-study-03/">
-        
-        <div class="article-image">
-            <img alt="Featured image of post AI应用 -- 03 RAG检索增强生成" height="150" loading="lazy" src="/p/agent-thinking-and-study-03/cover_hu_f2425a0074bff524.jpg" srcset="/p/agent-thinking-and-study-03/cover_hu_f2425a0074bff524.jpg 1x, /p/agent-thinking-and-study-03/cover_hu_46b5f106a410e9e8.jpg 2x" width="250">
-
-        </div>
-        
-
-        <div class="article-details"style="background: linear-gradient(0deg, #1a435180 0%, #4caec8C0 100%);">
-            <h2 class="article-title">AI应用 -- 03 RAG检索增强生成</h2>
         </div>
     </a>
 </article>
