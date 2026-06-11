@@ -5,7 +5,13 @@
         <description>Recent content in Tags on ysy虚拟世界</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-CN</language>
-        <lastBuildDate>Tue, 09 Jun 2026 11:21:45 +0800</lastBuildDate><atom:link href="https://shuyaoyu74-sys.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 10 Jun 2026 15:28:14 +0800</lastBuildDate><atom:link href="https://shuyaoyu74-sys.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+            <title>Agent</title>
+            <link>https://shuyaoyu74-sys.github.io/tags/agent/</link>
+            <pubDate>Tue, 09 Jun 2026 11:21:45 +0800</pubDate>
+            <guid>https://shuyaoyu74-sys.github.io/tags/agent/</guid>
+            <description></description>
+        </item><item>
             <title>Python</title>
             <link>https://shuyaoyu74-sys.github.io/tags/python/</link>
             <pubDate>Tue, 09 Jun 2026 11:21:45 +0800</pubDate>
@@ -18,6 +24,12 @@
             <guid>https://shuyaoyu74-sys.github.io/tags/pytorch/</guid>
             <description></description>
         </item><item>
+            <title>RAG</title>
+            <link>https://shuyaoyu74-sys.github.io/tags/rag/</link>
+            <pubDate>Tue, 09 Jun 2026 11:21:45 +0800</pubDate>
+            <guid>https://shuyaoyu74-sys.github.io/tags/rag/</guid>
+            <description></description>
+        </item><item>
             <title>心理学</title>
             <link>https://shuyaoyu74-sys.github.io/tags/%E5%BF%83%E7%90%86%E5%AD%A6/</link>
             <pubDate>Wed, 27 May 2026 15:28:14 +0800</pubDate>
@@ -28,18 +40,6 @@
             <link>https://shuyaoyu74-sys.github.io/tags/%E5%93%B2%E5%AD%A6/</link>
             <pubDate>Wed, 27 May 2026 15:28:14 +0800</pubDate>
             <guid>https://shuyaoyu74-sys.github.io/tags/%E5%93%B2%E5%AD%A6/</guid>
-            <description></description>
-        </item><item>
-            <title>Agent</title>
-            <link>https://shuyaoyu74-sys.github.io/tags/agent/</link>
-            <pubDate>Sat, 09 May 2026 11:21:45 +0800</pubDate>
-            <guid>https://shuyaoyu74-sys.github.io/tags/agent/</guid>
-            <description></description>
-        </item><item>
-            <title>RAG</title>
-            <link>https://shuyaoyu74-sys.github.io/tags/rag/</link>
-            <pubDate>Sat, 09 May 2026 11:21:45 +0800</pubDate>
-            <guid>https://shuyaoyu74-sys.github.io/tags/rag/</guid>
             <description></description>
         </item><item>
             <title>感悟</title>

@@ -16,7 +16,7 @@
 <meta property='og:description' content="记录AI学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。">
 <meta property='og:url' content='https://shuyaoyu74-sys.github.io/p/agent-thinking-and-study/'>
 <meta property='og:site_name' content='ysy虚拟世界'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='prompt' /><meta property='article:published_time' content='2026-04-27T15:28:14&#43;08:00'/><meta property='article:modified_time' content='2026-04-27T15:28:14&#43;08:00'/><meta property='og:image' content='https://shuyaoyu74-sys.github.io/' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='prompt' /><meta property='article:published_time' content='2026-04-27T15:28:14&#43;08:00'/><meta property='article:modified_time' content='2026-06-10T15:28:14&#43;08:00'/><meta property='og:image' content='https://shuyaoyu74-sys.github.io/' />
 <meta name="twitter:title" content="AI应用--01Prompt Tech 提示技术">
 <meta name="twitter:description" content="记录AI学习过程与思考，探讨 AI Agent 的感知、规划与执行架构。"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://shuyaoyu74-sys.github.io/' />
@@ -300,6 +300,10 @@
         <li><a href="#chain-of-thoughtcot思维链">Chain-of-Thought（CoT）思维链</a></li>
       </ol>
     </li>
+    <li><a href="#一调好接口">一、调好接口</a></li>
+    <li><a href="#二zero-shot--one-shot--few-shots">二、Zero shot / One Shot / Few Shots</a></li>
+    <li><a href="#三角色扮演和思维链">三、角色扮演和思维链</a></li>
+    <li><a href="#四多轮对话管理">四、多轮对话管理</a></li>
   </ol>
 
             </nav>
@@ -380,7 +384,7 @@
 
 
                     <time class="article-time--reading">
-                        阅读时长: 12 分钟
+                        阅读时长: 18 分钟
                     </time>
                 
             </div>
@@ -417,6 +421,10 @@
         <li><a href="#chain-of-thoughtcot思维链">Chain-of-Thought（CoT）思维链</a></li>
       </ol>
     </li>
+    <li><a href="#一调好接口">一、调好接口</a></li>
+    <li><a href="#二zero-shot--one-shot--few-shots">二、Zero shot / One Shot / Few Shots</a></li>
+    <li><a href="#三角色扮演和思维链">三、角色扮演和思维链</a></li>
+    <li><a href="#四多轮对话管理">四、多轮对话管理</a></li>
   </ol>
 
             </nav>
@@ -570,6 +578,601 @@ $$\text{Similarity}(V_{query}, V_{doc\_i}) = \frac{V_{query} \cdot V_{doc\_i}}{|
 <p>改进方法3，GoT: Graph-of-Thoughts (思维图)</p>
 <p>论文：《Graph of Thoughts: Solving Elaborate Problems with Large Language Models》</p>
 <p>主要核心思想是有向无环图 (DAG)，允许思维的交叉、合并与协同。这里弄明白还是好好去看论文吧。</p>
+<p>6.10更新</p>
+<h2 id="一调好接口">一、调好接口
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">openai</span> <span class="kn">import</span> <span class="n">OpenAI</span>
+</span></span><span class="line"><span class="cl"><span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>a、基础调用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 基础调用</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">responses</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-4.1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">input</span><span class="o">=</span><span class="s2">&#34;写一个关于大模型算法工程师的段子&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">output_text</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>b、带系统提示词的调用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 包含系统消息和用户消息的调用</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">responses</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-4.1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">input</span><span class="o">=</span><span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;developer&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;你是一名经验丰富的Python开发助手，只回答与代码相关的问题。不是python相关问题拒绝回答.&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;请编写一个matlab函数判断一个整数是否为质数。&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">output_text</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>c、图片调用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 包含图片的调用</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">base64</span><span class="o">,</span> <span class="nn">mimetypes</span><span class="o">,</span> <span class="nn">pathlib</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">local_image_to_data_url</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mime</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">mime</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mime</span> <span class="o">=</span> <span class="s2">&#34;application/octet-stream&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b64</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="sa">f</span><span class="s2">&#34;data:</span><span class="si">{</span><span class="n">mime</span><span class="si">}</span><span class="s2">;base64,</span><span class="si">{</span><span class="n">b64</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">data_url</span> <span class="o">=</span> <span class="n">local_image_to_data_url</span><span class="p">(</span><span class="s2">&#34;25年高考作文.jpeg&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">responses</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-4.1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">input</span><span class="o">=</span><span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span> <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;描述一下张图&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;input_image&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;image_url&#34;</span><span class="p">:</span> <span class="n">data_url</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">output_text</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>d、带工具的调用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">responses</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-4o&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tools</span><span class="o">=</span><span class="p">[{</span><span class="s2">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;web_search_preview&#34;</span><span class="p">}],</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">input</span><span class="o">=</span><span class="s2">&#34;特朗普和马斯克吵得怎么样了?&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">output_text</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>e、流式输出</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">responses</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-4.1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">input</span><span class="o">=</span><span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;Say &#39;你是谁.&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>f、结构化输出</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">CalendarEvent</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+</span></span><span class="line"><span class="cl">    <span class="n">date</span><span class="p">:</span> <span class="nb">str</span>
+</span></span><span class="line"><span class="cl">    <span class="n">participants</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">responses</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-4o-2024-08-06&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">input</span><span class="o">=</span><span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;system&#34;</span><span class="p">,</span> <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;Extract the event information.&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;Alice and Bob are going to a science fair on Friday.务必要用中文回答&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="n">text_format</span><span class="o">=</span><span class="n">CalendarEvent</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">event</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">output_parsed</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>g、示例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">openai</span> <span class="kn">import</span> <span class="n">OpenAI</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Step</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">explanation</span><span class="p">:</span> <span class="nb">str</span>
+</span></span><span class="line"><span class="cl">    <span class="n">output</span><span class="p">:</span> <span class="nb">str</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MathReasoning</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">steps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Step</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">final_answer</span><span class="p">:</span> <span class="nb">str</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">responses</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-4o-2024-08-06&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">input</span><span class="o">=</span><span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;system&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;You are a helpful math tutor. Guide the user through the solution step by step.&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span> <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;how can I solve 8x + 7 = -23，用中文回答&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="n">text_format</span><span class="o">=</span><span class="n">MathReasoning</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">math_reasoning</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">output_parsed</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">math_reasoning</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="二zero-shot--one-shot--few-shots">二、Zero shot / One Shot / Few Shots
+</h2><p>a、零样本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">conversation</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;developer&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">     <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;你是一名经验丰富的Python开发助手，只回答与代码相关的问题。不是python相关问题拒绝回答.&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">     <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;请编写一个matlab函数判断一个整数是否为质数。&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-4o-mini&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">messages</span><span class="o">=</span><span class="n">conversation</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img alt="78105541916" class="gallery-image" data-flex-basis="599px" data-flex-grow="249" height="498" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study/1781055419162.png" srcset="/p/agent-thinking-and-study/1781055419162_hu_4f9e7d5ee5f63ea1.png 800w, /p/agent-thinking-and-study/1781055419162.png 1243w" width="1243"></p>
+<p>b、少样本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">conversation</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;developer&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">     <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;你是一名经验丰富的Python开发助手，只回答与代码相关的问题。不是python相关问题拒绝回答.&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># ✨--- 示例 1: 正确拒绝非 Python 请求 ---✨</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span> <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;请用 Java 画一个 GUI 界面示例&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;assistant&#34;</span><span class="p">,</span> <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;抱歉，我只能回答与 Python 代码直接相关的问题。&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># ✨--- 示例 2: 回答 Python 请求 ---✨</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span> <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;写一个 Python 函数检测质数&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;assistant&#34;</span><span class="p">,</span> <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;```python</span><span class="se">\n</span><span class="s2">def is_prime(n):</span><span class="se">\n</span><span class="s2">    ...```&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 目标询问</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span> <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;请编写一个matlab函数判断一个整数是否为质数。&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-4o-mini&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">messages</span><span class="o">=</span><span class="n">conversation</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img alt="78105544765" class="gallery-image" data-flex-basis="2723px" data-flex-grow="1134" height="89" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study/1781055447658.png" srcset="/p/agent-thinking-and-study/1781055447658_hu_1b8dee8a07df7c4a.png 800w, /p/agent-thinking-and-study/1781055447658.png 1010w" width="1010"></p>
+<h2 id="三角色扮演和思维链">三、角色扮演和思维链
+</h2><p>无角色和思维链</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">openai</span> <span class="kn">import</span> <span class="n">OpenAI</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># --- 1. 无角色扮演和思维链的提示 ---</span>
+</span></span><span class="line"><span class="cl"><span class="n">prompt_without_rp_cot</span> <span class="o">=</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;我最近上线了一款新的社交网络应用，目标用户是本地艺术家。&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;初期用户获取还可以，但现在用户参与度非常低。&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;用户注册后，随便看看就走了，不再回来。&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;请问有什么通用的策略可以提高这类新应用的用户参与度吗？&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">conversation_without_rp_cot</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;system&#34;</span><span class="p">,</span> <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;回答用户的问题。&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span> <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="n">prompt_without_rp_cot</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;--- 无角色扮演和思维链的回答 ---&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">response_without_rp_cot</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-4o&#34;</span><span class="p">,</span>  <span class="c1"># 或者 gpt-3.5-turbo</span>
+</span></span><span class="line"><span class="cl">        <span class="n">messages</span><span class="o">=</span><span class="n">conversation_without_rp_cot</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">response_without_rp_cot</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;发生错误: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span> <span class="o">+</span> <span class="s2">&#34;=&#34;</span><span class="o">*</span><span class="mi">50</span> <span class="o">+</span> <span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># --- 2. 有角色扮演和思维链的提示 ---</span>
+</span></span><span class="line"><span class="cl"><span class="n">prompt_with_rp_cot</span> <span class="o">=</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;背景：我最近上线了一款新的社交网络应用，目标用户是本地艺术家。&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;初期用户获取还可以，但现在用户参与度非常低。&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;用户注册后，随便看看就走了，不再回来。</span><span class="se">\n\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;你的角色：你是一位经验丰富的创业导师和增长黑客，以其深刻的洞察力和切实可行的建议而闻名。&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;你曾帮助数十家初创公司克服增长瓶颈。</span><span class="se">\n\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;你的任务：针对上述应用面临的用户参与度低的问题，请你按照以下思维链进行分析并提供建议：</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;1.  **诊断根本原因：** 首先，深入思考可能导致用户参与度低的几个核心原因。不要只停留在表面现象。&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;    请列出至少3-5个你认为最可能的潜在根本原因，并简要解释为什么你认为它们是关键。</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;2.  **分类问题并提出假设：** 将这些原因归类（例如：价值主张问题、用户体验问题、社区氛围问题、留存机制问题等）。&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;    针对每个类别，提出一个或多个可验证的假设。</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;3.  **制定行动方案：** 基于你的诊断和假设，为每个问题类别提供2-3个具体的、可操作的、有针对性的改进建议。&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;    解释每个建议背后的逻辑，以及预期它如何解决特定的根本原因并提升用户参与度。</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;4.  **优先级和衡量：** 简要说明你认为哪些建议应该优先实施，以及创始人应该如何衡量这些改进措施的成效。</span><span class="se">\n\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;请以清晰、结构化的方式呈现你的分析和建议，就像你在给一位寻求帮助的创始人提供咨询一样。&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">conversation_with_rp_cot</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;system&#34;</span><span class="p">,</span> <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;你是一位经验丰富的创业导师和增长黑客。请根据用户的问题，运用你的专业知识和思维链进行分析和解答。&#34;</span><span class="p">},</span> <span class="c1"># 系统消息强化角色</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span> <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="n">prompt_with_rp_cot</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;--- 有角色扮演和思维链的回答 ---&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">response_with_rp_cot</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-4o&#34;</span><span class="p">,</span> <span class="c1"># 或者 gpt-3.5-turbo</span>
+</span></span><span class="line"><span class="cl">        <span class="n">messages</span><span class="o">=</span><span class="n">conversation_with_rp_cot</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span> <span class="c1"># 稍微提高一点创造性，但仍保持逻辑</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">response_with_rp_cot</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;发生错误: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img alt="78105555481" class="gallery-image" data-flex-basis="278px" data-flex-grow="116" height="774" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/agent-thinking-and-study/1781055554810.png" srcset="/p/agent-thinking-and-study/1781055554810_hu_4ad67233e83b91d6.png 800w, /p/agent-thinking-and-study/1781055554810.png 899w" width="899"></p>
+<h2 id="四多轮对话管理">四、多轮对话管理
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">conversation</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;developer&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">     <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;你是一名经验丰富的Python开发助手，只回答与代码相关的问题。不是python相关问题拒绝回答.&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s2">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">     <span class="s2">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;请编写一个matlab函数判断一个整数是否为质数。&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.
+</span></span></span><span class="line"><span class="cl"><span class="nd">def</span> <span class="n">llm</span><span class="p">(</span><span class="n">conversation</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-4o-mini&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">messages</span><span class="o">=</span><span class="n">conversation</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span>
+</span></span><span class="line"><span class="cl"><span class="n">conversation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;role&#34;</span><span class="p">:</span><span class="s2">&#34;assistant&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;content&#34;</span><span class="p">:</span><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">        抱歉，我只能帮助您处理Python相关的问题。如果您需要使用Python编写一个判断整数是否为质数的函数，我很乐意帮助您。以下是一个简单的示例：
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">​```python
+</span></span></span><span class="line"><span class="cl"><span class="s1">def is_prime(n):
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#34;&#34;&#34;判断一个整数是否为质数&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">    if n &lt;= 1:
+</span></span></span><span class="line"><span class="cl"><span class="s1">        return False
+</span></span></span><span class="line"><span class="cl"><span class="s1">    for i in range(2, int(n**0.5) + 1):
+</span></span></span><span class="line"><span class="cl"><span class="s1">        if n </span><span class="si">% i</span><span class="s1"> == 0:
+</span></span></span><span class="line"><span class="cl"><span class="s1">            return False
+</span></span></span><span class="line"><span class="cl"><span class="s1">    return True
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1"># 示例用法
+</span></span></span><span class="line"><span class="cl"><span class="s1">number = 29
+</span></span></span><span class="line"><span class="cl"><span class="s1">if is_prime(number):
+</span></span></span><span class="line"><span class="cl"><span class="s1">    print(f&#34;</span><span class="si">{number}</span><span class="s1"> 是质数&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="s1">else:
+</span></span></span><span class="line"><span class="cl"><span class="s1">    print(f&#34;</span><span class="si">{number}</span><span class="s1"> 不是质数&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="s1">​```
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">您可以根据需要调整和使用这个函数！&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">    }
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>提示词核心，就是系统化，标准化，持续化</p>
 
 </section>
 
@@ -596,7 +1199,19 @@ $$\text{Similarity}(V_{query}, V_{doc\_i}) = \frac{V_{query} \cdot V_{doc\_i}}{|
         <span>Licensed under <a class="link" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"  target="_blank" rel="noopener"
     >CC BY-NC-SA 4.0</a></span>
     </section>
-    </footer>
+    <section class="article-lastmod inline-meta">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2026年6月10日星期三
+        </span>
+    </section></footer>
 
 
     
@@ -661,6 +1276,22 @@ $$\text{Similarity}(V_{query}, V_{doc\_i}) = \frac{V_{query} \cdot V_{doc\_i}}{|
             
                 
 <article class="has-image">
+    <a href="/p/hr-i-love-you-please-love-me-too/">
+        
+        <div class="article-image">
+            <img alt="Featured image of post 假装面试官提问自己" height="150" loading="lazy" src="/p/hr-i-love-you-please-love-me-too/cover_hu_4fdc54aa00b26e85.jpg" srcset="/p/hr-i-love-you-please-love-me-too/cover_hu_4fdc54aa00b26e85.jpg 1x, /p/hr-i-love-you-please-love-me-too/cover_hu_ef6fa2d8550305f5.jpg 2x" width="250">
+
+        </div>
+        
+
+        <div class="article-details"style="background: linear-gradient(0deg, #100f1180 0%, #ece9e9C0 100%);">
+            <h2 class="article-title">假装面试官提问自己</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="has-image">
     <a href="/p/python-mythematics/">
         
         <div class="article-image">
@@ -703,22 +1334,6 @@ $$\text{Similarity}(V_{query}, V_{doc\_i}) = \frac{V_{query} \cdot V_{doc\_i}}{|
 
         <div class="article-details"style="background: linear-gradient(0deg, #4b514d80 0%, #cfcdbfC0 100%);">
             <h2 class="article-title">02-算法梳理（6.8更新）</h2>
-        </div>
-    </a>
-</article>
-            
-                
-<article class="has-image">
-    <a href="/p/likou-01/">
-        
-        <div class="article-image">
-            <img alt="Featured image of post 力扣合集（6.8更新）" height="150" loading="lazy" src="/p/likou-01/cover_hu_c0b0fa0de8ebfe36.jpg" srcset="/p/likou-01/cover_hu_c0b0fa0de8ebfe36.jpg 1x, /p/likou-01/cover_hu_168d4d2e9bf8d4fa.jpg 2x" width="250">
-
-        </div>
-        
-
-        <div class="article-details"style="background: linear-gradient(0deg, #352e2e80 0%, #c1904aC0 100%);">
-            <h2 class="article-title">力扣合集（6.8更新）</h2>
         </div>
     </a>
 </article>
