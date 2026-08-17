@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="关于RAG">
+<title>RAG 相关</title>
+
+
+<link rel="canonical" href="https://shuyaoyu74-sys.github.io/p/rag-i-love-you-please-love-me-too/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
+
+
+<link rel="stylesheet" href="/scss/style.min.50d4f40c3b2ceaa3ec55c25b0f8bc3799acfa8124895a14edd07902abcf89cb0.css"><meta property='og:title' content="RAG 相关">
+<meta property='og:description' content="关于RAG">
+<meta property='og:url' content='https://shuyaoyu74-sys.github.io/p/rag-i-love-you-please-love-me-too/'>
+<meta property='og:site_name' content='ysy虚拟世界'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Agent' /><meta property='article:tag' content='RAG' /><meta property='article:published_time' content='2026-06-20T11:21:45&#43;08:00'/><meta property='article:modified_time' content='2026-06-20T11:21:45&#43;08:00'/><meta property='og:image' content='https://shuyaoyu74-sys.github.io/' />
+<meta name="twitter:title" content="RAG 相关">
+<meta name="twitter:description" content="关于RAG"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://shuyaoyu74-sys.github.io/' />
+    <link rel="shortcut icon" href="/img/cursor_text.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        <figure class="site-avatar">
+                <a href="/">
+                    <img src="/img/avatar.jpg" 
+                        width="690"
+                        height="690"
+                        class="site-logo"
+                        loading="lazy"
+                        alt="Avatar">
+                </a>
+                
+                    <span class="emoji">💻</span>
+                
+            </figure>
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">ysy虚拟世界</a></h1>
+            <h2 class="site-description">ai时代精神世界的建立</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E9%93%BE%E6%8E%A5/' >
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    <li id="i18n-switch">  
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                        <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                            
+                                
+                                
+                                    
+                                        
+                                    
+                                
+                                <option value="/p/rag-i-love-you-please-love-me-too/" selected>简体中文</option>
+                            
+                                
+                                
+                                    
+                                
+                                <option value="/en/" >English</option>
+                            
+                        </select>
+                    </li>
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+    <div class="article-image">
+        <a href="/p/rag-i-love-you-please-love-me-too/">
+            <img alt="Featured image of post RAG 相关" height="1921" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/cover.jpg" srcset="/p/rag-i-love-you-please-love-me-too/cover_hu_ad210bb5590deab1.jpg 800w, /p/rag-i-love-you-please-love-me-too/cover.jpg 1080w" width="1080">
+        </a>
+    </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/ai/" style="background-color: hsl(167, 60%, 84%); color: hsl(167, 60%, 15%);">
+                AI
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/rag-i-love-you-please-love-me-too/">RAG 相关</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            关于RAG
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    
+    
+    
+    <footer class="article-meta">
+        
+            <div class="inline-meta">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                    <time class="article-time--published" datetime='2026-06-20T11:21:45&#43;08:00'>2026年6月20日星期六</time>
+                
+
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                    <time class="article-time--reading">
+                        阅读时长: 14 分钟
+                    </time>
+                
+            </div>
+        
+
+        
+
+        
+    </footer>
+    
+</div>
+
+</header>
+
+    
+
+    <section class="article-content">
+    
+    
+    <p>1、基础</p>
+<p>数据处理：加载并预处理文本数据 &mdash;&ndash;&gt; 分块：将数据拆分为更小的部分，以提高检索性能&mdash;&ndash;&gt; 嵌入创建：使用嵌入模型将文本块转换为数值表示 &mdash;&ndash;&gt; 语义搜索：根据用户查询检索相关的文本块 &mdash;&ndash;&gt; 回复生成：利用语言模型基于检索到的文本生成回复。</p>
+<p>2、语义分块</p>
+<p>大段文本被划分为有意义的片段，以提高检索准确性。  与固定长度的分块不同，语义分块基于句子之间的内容相似性来划分文本。</p>
+<p>断点方法：</p>
+<p>百分位法：找到所有相似度差异的第X百分位，并在下降幅度大于该值的位置进行分块。</p>
+<p>标准差法：在相似度低于平均值X个标准差的位置进行分块。</p>
+<p>四分位距法：使用四分位距（Q3 - Q1）来确定分块点。</p>
+<p><img alt="78210892340" class="gallery-image" data-flex-basis="324px" data-flex-grow="135" height="790" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782108923408.png" srcset="/p/rag-i-love-you-please-love-me-too/1782108923408_hu_51bd6000290fdd5c.png 800w, /p/rag-i-love-you-please-love-me-too/1782108923408.png 1068w" width="1068"></p>
+<p>代码设置：详见第五周</p>
+<p>环境设置&mdash;从pdf中提取文本&ndash;初始化openai api客户端&ndash;创建句子级嵌入&ndash;计算相似性差异&ndash;实现语义分块&ndash;将文本切割为语义块&ndash;创建语义片段的嵌入&ndash;执行语义搜索&ndash;基于检索块生成回复&ndash;评估ai回复。</p>
+<p>3、切块大小选择</p>
+<p>从PDF中提取文本。&mdash; 将文本拆分为不同大小的块。&mdash;为每个块创建嵌入向量。&mdash;根据查询检索相关的块。&mdash;使用检索到的块生成回复。&mdash;评估忠实性和相关性。&mdash;比较不同块大小的结果。</p>
+<p><img alt="78210994191" class="gallery-image" data-flex-basis="362px" data-flex-grow="150" height="904" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782109941912.png" srcset="/p/rag-i-love-you-please-love-me-too/1782109941912_hu_4a379e6c8bfc8959.png 800w, /p/rag-i-love-you-please-love-me-too/1782109941912.png 1365w" width="1365"></p>
+<p>代码设置：环境设置（导入必要的库）&ndash;设置openai api 客户端&ndash;从pdf中提取文本&ndash;提取文本的分块&mdash;创建文本块的嵌入&ndash;进行语义搜索&ndash;基于检索块生成回复&ndash;评估回复</p>
+<p>4、RAG的上下文增强检索</p>
+<p>RAG通过从外部来源检索相关知识来增强AI回复。传统的检索方法返回孤立的文本片段，这可能导致不完整的答案。为了解决这个问题，我们引入了上下文增强检索，确保检索到的信息包括相邻片段以提高连贯性。</p>
+<p>- 数据处理：从PDF中提取文本。</p>
+<p>- 带有重叠上下文的分块：将文本分割为带有重叠的片段以保留上下文。</p>
+<p>- 嵌入创建：将文本片段转换为数值表示。</p>
+<p>- 上下文感知检索：检索相关片段及其邻居以提高完整性。</p>
+<p>- 回复生成：使用语言模型根据检索到的上下文生成回复。</p>
+<p>- 评估：评估模型回复的准确性。</p>
+<p><img alt="78211026234" class="gallery-image" data-flex-basis="336px" data-flex-grow="140" height="961" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782110262346.png" srcset="/p/rag-i-love-you-please-love-me-too/1782110262346_hu_a1236e67ca85ae11.png 800w, /p/rag-i-love-you-please-love-me-too/1782110262346.png 1349w" width="1349"></p>
+<p>代码设置：环境设置&ndash;从pdf中提取文本&ndash;提取文本的分块&ndash;初始化客户端生成嵌入向量和回复&ndash;从pdf文件中提取和分块文本&mdash;创建文本块的嵌入&ndash;实现上下文感知语义搜索&ndash;使用上下文检索运行查询&ndash;使用检索到的上下文生成回复&ndash;ai评估回复。</p>
+<p>5、上下文片段标题</p>
+<p>检索增强生成（RAG）通过在生成回复之前检索相关的外部知识来提高语言模型的事实准确性。然而，标准的分块方法经常丢失重要上下文，从而使检索效果降低。</p>
+<p>上下文片段标题（CCH）通过在嵌入每个片段之前为其添加高级上下文（如文档标题或章节标题）来增强RAG。这提高了检索质量并防止了脱离上下文的回复。</p>
+<p><img alt="78211084462" class="gallery-image" data-flex-basis="295px" data-flex-grow="123" height="1129" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782110844628.png" srcset="/p/rag-i-love-you-please-love-me-too/1782110844628_hu_cfd16f5ab4f2a434.png 800w, /p/rag-i-love-you-please-love-me-too/1782110844628.png 1392w" width="1392"></p>
+<p>代码设置：</p>
+<p>6、文档增强的rag</p>
+<p>本笔记本实现了一种通过问题生成进行文档增强的改进型RAG方法。通过对每个文本块生成相关的问题，优化了检索过程，从而提高了语言模型的回答质量。</p>
+<p>在本实现中，我们遵循以下步骤：</p>
+<p>\1. <strong>数据处理</strong>：从PDF文件中提取文本。</p>
+<p>\2. <strong>分块处理</strong>：将文本分割为可管理的小块。</p>
+<p>\3. <strong>问题生成</strong>：为每个小块生成相关的问题。</p>
+<p>\4. <strong>嵌入创建</strong>：为文本块和生成的问题创建嵌入向量。</p>
+<p>\5. <strong>向量存储创建</strong>：使用NumPy构建一个简单的向量存储。</p>
+<p>\6. <strong>语义搜索</strong>：为用户查询检索相关的文本块和问题。</p>
+<p>\7. <strong>回复生成</strong>：基于检索到的内容生成答案。</p>
+<p>\8. <strong>评估</strong>：评估生成回答的质量。</p>
+<p><img alt="78213385281" class="gallery-image" data-flex-basis="278px" data-flex-grow="116" height="1157" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782133852811.png" srcset="/p/rag-i-love-you-please-love-me-too/1782133852811_hu_d64272239e6746e9.png 800w, /p/rag-i-love-you-please-love-me-too/1782133852811.png 1344w" width="1344"></p>
+<p>7、查询转换</p>
+<p>本笔记本实现了三种查询转换技术，以在不依赖LangChain等专用库的情况下提升RAG系统中的检索性能。通过修改用户查询，可以显著提高检索到的信息的相关性和全面性。</p>
+<p>## 关键转换技术</p>
+<p>\1. <strong>查询重写</strong>：使查询更加具体和详细，从而提高搜索的精确度。</p>
+<p>\2. <strong>后退提示生成</strong>：生成更广泛的查询以检索有用的上下文信息。</p>
+<p>\3. <strong>子查询分解</strong>：将复杂的查询分解为更简单的组件，以实现全面检索。</p>
+<p><img alt="78213393973" class="gallery-image" data-flex-basis="260px" data-flex-grow="108" height="1235" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782133939737.png" srcset="/p/rag-i-love-you-please-love-me-too/1782133939737_hu_2b373d25bbcfe089.png 800w, /p/rag-i-love-you-please-love-me-too/1782133939737.png 1339w" width="1339"></p>
+<p>代码设置：</p>
+<p>环境设置&ndash;设置openai api客户端&ndash;实现查询转换技术（查询重写，后退提示，子查询分解）&ndash;基于转换查询生成回复&ndash;运行包含查询转换的完整rag管道&ndash;评估变换技术&ndash;查询转换的评估</p>
+<p>8、重排序</p>
+<p>本笔记本实现了一种reranking（重排序）技术，以提高RAG系统中的检索质量。Reranking作为初始检索后的第二道过滤步骤，确保使用最相关的内容进行回复生成。</p>
+<p>## Reranking 的关键概念</p>
+<p>\1. <strong>初始检索</strong>：第一轮使用基本的相似性搜索（准确性较低但速度较快）</p>
+<p>\2. <strong>文档评分</strong>：评估每个检索到的文档与查询的相关性</p>
+<p>\3. <strong>重新排序</strong>：根据相关性分数对文档进行排序</p>
+<p>\4. <strong>选择</strong>：仅使用最相关的文档进行回复生成</p>
+<p><img alt="78213424152" class="gallery-image" data-flex-basis="381px" data-flex-grow="159" height="846" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782134241522.png" srcset="/p/rag-i-love-you-please-love-me-too/1782134241522_hu_4651e33ba88dc314.png 800w, /p/rag-i-love-you-please-love-me-too/1782134241522.png 1346w" width="1346"></p>
+<p>代码设置：环境设置&ndash;从pdf文件中提取文本&ndash;提取文本的分块&ndash;初始化openAI API 客户端&ndash;构建一个简单的向量存储系统&ndash;创建嵌入&ndash;文档管理通道&ndash;基于LLM的重排序实现&ndash;简单基于关键词的重新排序&ndash;基于rerank模型的重排&ndash;回复生成&ndash;完整的rag管道与重排序&ndash;重排序质量评估</p>
+<p>9、增强型rag的相关段落提取</p>
+<p>本笔记实现了一种相关段落提取（RSE）技术，以提高RAG系统中的上下文质量。相比简单地检索一组孤立的片段，我们识别并重构连续的文本段落，为语言模型提供更好的上下文。</p>
+<p>相关片段往往在文档中聚集在一起。通过识别这些聚类并保留其连续性，可以为LLM提供更连贯的上下文。</p>
+<p><img alt="78213465073" class="gallery-image" data-flex-basis="294px" data-flex-grow="122" height="945" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782134650739.png" srcset="/p/rag-i-love-you-please-love-me-too/1782134650739_hu_7ca880fcf837c5f.png 800w, /p/rag-i-love-you-please-love-me-too/1782134650739.png 1160w" width="1160"></p>
+<p>代码设置：环境设置&ndash;从pdf文件中提取文本&ndash;提取文本的分块&ndash;配置openai api客户端&ndash;构建一个简单的向量存储系统&ndash;创建文本块的嵌入&ndash;使用rse处理文档（核心算法是计算块值与寻找最佳段落）&ndash; 用于rag的片段重构与使用&ndash;使用rse上下文生成回复&ndash;完整rse管道功能&ndash;与标准检索的比较&ndash;rse评估</p>
+<p>10、增强rag系统的上下文压缩</p>
+<p>本笔记实现了一种上下文压缩技术以提高RAG系统效率。我们将过滤并压缩检索到的文本块，仅保留最相关的内容，从而减少噪声并提升回复质量。</p>
+<p>在为RAG检索文档时，通常会得到包含相关和不相关信息的片段。上下文压缩帮助我们：</p>
+<p>- 移除无关的句子和段落</p>
+<p>- 仅关注与查询相关的信息</p>
+<p>- 最大化上下文窗口中的有用信号</p>
+<p><img alt="78213511592" class="gallery-image" data-flex-basis="319px" data-flex-grow="133" height="1027" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782135115921.png" srcset="/p/rag-i-love-you-please-love-me-too/1782135115921_hu_4b5e40d534d05957.png 800w, /p/rag-i-love-you-please-love-me-too/1782135115921.png 1366w" width="1366"></p>
+<p>代码设置：环境设置 &ndash;从PDF文件中提取文本&ndash;提取文本的分块&ndash;初始化OpenAI API客户端 &ndash;构建一个简单的向量存储库&ndash;嵌入生成&ndash;构建我们的文档处理管道&ndash;实现上下文压缩&ndash;批量压缩的实现&ndash;回复生成函数&ndash;完整的RAG管道与上下文压缩&ndash;比较有无压缩的RAG&ndash;评估我们的方法。</p>
+<p>什么时候进行上下文压缩呢？</p>
+<p><img alt="78213540677" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px"></p>
+<p>11、rag中的反馈回路</p>
+<p>实现了一个带有反馈回路机制的RAG系统，该系统随着时间推移不断改进。通过收集和整合用户反馈，系统在每次交互中都能提供更相关、更高质量的回复。</p>
+<p>传统的RAG系统是静态的——它们仅根据嵌入相似性检索信息。通过引入反馈回路，我们创建了一个动态系统，该系统：</p>
+<p>- 记录下哪些方法有效（以及哪些无效）</p>
+<p>- 随着时间调整文档的相关性分数</p>
+<p>- 将成功的问答对纳入其知识库</p>
+<p>- 每次与用户交互后变得更智能</p>
+<p><img alt="78213788958" class="gallery-image" data-flex-basis="323px" data-flex-grow="134" height="1006" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782137889583.png" srcset="/p/rag-i-love-you-please-love-me-too/1782137889583_hu_c01fbb8ac226dce9.png 800w, /p/rag-i-love-you-please-love-me-too/1782137889583.png 1356w" width="1356"></p>
+<p>代码设置：环境设置 &ndash;从PDF文件中提取文本 &ndash; 提取文本的分块&ndash;设置OpenAI API客户端&ndash;简单向量存储实现&ndash;创建嵌入&ndash;反馈系统功能。</p>
+<p>12、自适应检索</p>
+<p>实现了一个自适应检索系统，该系统能够根据查询类型动态选择最合适的检索策略。这种方法显著提升了RAG系统在各种问题上提供准确且相关回复的能力。</p>
+<p>不同的问题需要不同的检索策略。我们的系统：</p>
+<p>\1. 对查询类型进行分类（事实性、分析性、观点性或情境性）</p>
+<p>\2. 选择适当的检索策略</p>
+<p>\3. 执行专门的检索技术</p>
+<p>\4. 生成定制化的回复</p>
+<p><img alt="78220276792" class="gallery-image" data-flex-basis="306px" data-flex-grow="127" height="1054" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782202767922.png" srcset="/p/rag-i-love-you-please-love-me-too/1782202767922_hu_911927ded9fd6991.png 800w, /p/rag-i-love-you-please-love-me-too/1782202767922.png 1345w" width="1345"></p>
+<p>代码设置：环境设置&ndash;从pdf文件中提取文本&ndash;提取文本的分块&ndash;设置open ai api 客户端&ndash;简单向量存储实现&ndash;创建嵌入&ndash;文档处理管道&ndash;查询分类&ndash;实现专门的检索策略（事实性策略【注重精确性】、分析策略-全面覆盖、观点策略&ndash;多样化视角、上下文策略&ndash;用户上下文集成）&ndash;文档评分的辅助函数&ndash;核心自适应检索器&ndash;回复生成&ndash;完整的自适应检索rag管道&ndash;评估框架&ndash;评估自适应检索系统。</p>
+<p>13、自适应rag</p>
+<p>实现了自适应RAG（Self-RAG），这是一种先进的RAG系统，能够动态决定何时以及如何使用检索到的信息。与传统的RAG方法不同，Self-RAG 在检索和生成过程中引入了反思点，从而提高了回复的质量和可靠性。</p>
+<p>Self-RAG 的关键组件</p>
+<p>\1. <strong>检索决策</strong>：确定给定查询是否需要检索</p>
+<p>\2. <strong>文档检索</strong>：在需要时获取可能相关的文档</p>
+<p>\3. <strong>相关性评估</strong>：评估每个检索到的文档的相关性</p>
+<p>\4. <strong>回复生成</strong>：基于相关上下文生成回复</p>
+<p>\5. <strong>支持评估</strong>：评估回复是否正确地基于上下文生成</p>
+<p>\6. <strong>效用评估</strong>：对生成回复的整体实用性进行评分</p>
+<p>代码设置：环境设置&ndash;从pdf文件中提取文本&ndash;提取文本的分块&ndash;配置openai api客户端&ndash;简单向量存储实现&ndash;创建嵌入&ndash;文档处理管道&ndash;自适应rag组件（检索决策、相关性评估&ndash;支持评估&ndash;实用性评估）&ndash;回复生成&ndash;完整的self-rag实现&ndash;运行完整的self-rag系统&ndash;评估self-rag与传统rag&ndash;自我评估rag系统。</p>
+<p>14、命题分块增强rag</p>
+<p>实现了命题分块——一种先进的技术，用于将文档分解为原子化的、事实性的陈述，以实现更准确的检索。与传统分块方法不同，传统方法只是通过字符数量来分割文本，命题分块能够保留各个事实的语义完整性。</p>
+<p>命题分块通过以下方式提供更精确的检索：</p>
+<ol>
+<li>将内容分解为原子化且自包含的事实</li>
+<li>创建更小、更细粒度的单位以供检索</li>
+<li>实现查询与相关内容之间的更精确匹配</li>
+<li>过滤掉低质量或不完整的命题</li>
+</ol>
+<p><img alt="78220531265" class="gallery-image" data-flex-basis="270px" data-flex-grow="112" height="1220" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782205312654.png" srcset="/p/rag-i-love-you-please-love-me-too/1782205312654_hu_bb87fbf67a8b2d20.png 800w, /p/rag-i-love-you-please-love-me-too/1782205312654.png 1375w" width="1375"></p>
+<p>代码设置：环境设置&ndash;从pdf文件中提取文本&ndash;提取文本的分块&ndash;配置openai api客户端&ndash;简单向量存储实现&ndash;创建嵌入&ndash;命题生成&ndash;命题的质量检查&ndash;<img alt="78220558304" class="gallery-image" data-flex-basis="273px" data-flex-grow="113" height="1225" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782205583045.png" srcset="/p/rag-i-love-you-please-love-me-too/1782205583045_hu_16f9d8f22e7f9af.png 800w, /p/rag-i-love-you-please-love-me-too/1782205583045.png 1394w" width="1394"></p>
+<p>完整命题处理管道&ndash;构建两种方法的向量存储库&ndash;查询与检索功能&ndash;回复生成与评估&ndash;完整端到端评估管道&ndash;命题分块的评估</p>
+<p>15、多模态rag与图像描述</p>
+<p>实现了一个多模态RAG系统，该系统从文档中提取文本和图像，为图像生成描述，并使用这两种内容类型来回复查询。这种方法通过将视觉信息纳入知识库中增强了传统的RAG。</p>
+<p>传统的RAG系统仅处理文本，但许多文档包含以图像、图表和表格形式存在的关键信息。通过为这些视觉元素添加描述并将它们纳入检索系统，我们可以：</p>
+<p>- 访问图表和示意图中锁定的信息</p>
+<p>- 理解补充文本的表格和图表</p>
+<p>- 构建更全面的知识库</p>
+<p>- 回答依赖于视觉数据的问题</p>
+<p><img alt="78220602577" class="gallery-image" data-flex-basis="320px" data-flex-grow="133" height="1005" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782206025772.png" srcset="/p/rag-i-love-you-please-love-me-too/1782206025772_hu_ef118019dd5432ee.png 800w, /p/rag-i-love-you-please-love-me-too/1782206025772.png 1341w" width="1341"></p>
+<p>直接图片embedding 进行检索的方法</p>
+<p><a class="link" href="https://milvus.io/docs/zh/image_similarity_search.md"  target="_blank" rel="noopener"
+    >https://milvus.io/docs/zh/image_similarity_search.md</a></p>
+<p>代码设置：环境设置&ndash;初始化openai api客户端&ndash;文档处理功能&ndash;分块文本内容&ndash;使用open ai vision 进行图像描述生成&ndash;简单向量存储实现&ndash;创建嵌入&ndash;完整处理管道线&ndash;查询处理与回复生成&ndash;对比文本only rag的评估&ndash;多模态rag与纯文本rag的评估。</p>
+<p>16、融合检索</p>
+<p>实现了一个融合检索系统，该系统结合了语义向量搜索和基于关键词的BM25检索的优势。这种方法通过捕获概念相似性和精确关键词匹配，提升了检索质量。</p>
+<p>为什么融合检索很重要</p>
+<p>传统的RAG系统通常仅依赖于向量搜索，但这种方法存在局限性：</p>
+<p>- 向量搜索在语义相似性方面表现出色，但可能会遗漏精确的关键词匹配</p>
+<p>- 关键词搜索对于特定术语非常有用，但缺乏语义理解能力</p>
+<p>- 不同查询在不同的检索方法上表现更佳</p>
+<p>融合检索通过以下方式提供了两者的最佳组合：</p>
+<p>- 执行基于向量和基于关键词的检索</p>
+<p>- 对每种方法的得分进行归一化处理</p>
+<p>- 使用加权公式将它们结合起来</p>
+<p>- 根据综合得分对文档进行排名</p>
+<p><img alt="78220643267" class="gallery-image" data-flex-basis="306px" data-flex-grow="127" height="1075" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782206432670.png" srcset="/p/rag-i-love-you-please-love-me-too/1782206432670_hu_ad075e8828e7f415.png 800w, /p/rag-i-love-you-please-love-me-too/1782206432670.png 1371w" width="1371"></p>
+<p>代码设置：环境设置&ndash;配置OpenAI API客户端&ndash;文档处理功能&ndash;创建我们的向量存储库&ndash;bm25实现&ndash;融合检索函数&ndash;文档处理管道&ndash;回复生成&ndash;主检索功能&ndash;检索方法的比较&ndash;评估函数&ndash;完整评估流程pipeline&ndash;评估融合检索。</p>
+<p>17、图增强型RAG</p>
+<p>实现了图增强型检索增强生成（Graph RAG）——一种通过将知识组织为连接的图而不是扁平的文档集合来增强传统RAG系统的技术。这使得系统能够导航相关概念并检索比标准向量相似性方法更具上下文相关的更多信息。</p>
+<p>图增强型RAG的主要优势</p>
+<p>- 保留了信息之间的关系</p>
+<p>- 支持通过连接的概念进行遍历以找到相关的上下文</p>
+<p>- 改进对复杂、多部分查询的处理能力</p>
+<p>- 通过可视化知识路径提供更好的可解释性</p>
+<p><img alt="78220699017" class="gallery-image" data-flex-basis="365px" data-flex-grow="152" height="903" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782206990175.png" srcset="/p/rag-i-love-you-please-love-me-too/1782206990175_hu_63470bd458b692b8.png 800w, /p/rag-i-love-you-please-love-me-too/1782206990175.png 1377w" width="1377"></p>
+<p>代码设置：环境设置&ndash; 配置OpenAI API客户端 &ndash;文档处理功能&ndash;创建嵌入（Embeddings）&ndash; 知识图谱构建&ndash;图遍历与查询处理&ndash;回复生成&ndash;可视化&ndash;完整图RAG管道&ndash;评估函数&ndash;样本文档上Graph RAG的评估</p>
+<p><img alt="78220720717" class="gallery-image" data-flex-basis="288px" data-flex-grow="120" height="989" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782207207173.png" srcset="/p/rag-i-love-you-please-love-me-too/1782207207173_hu_ea12501b03d688d.png 800w, /p/rag-i-love-you-please-love-me-too/1782207207173.png 1189w" width="1189"></p>
+<p>18、分层检索</p>
+<p>为RAG系统实现了一种分层索引方法。该技术通过使用两级搜索方法来改进检索：首先通过摘要识别相关的文档部分，然后从这些部分检索具体细节。</p>
+<p>传统的RAG方法对所有文本片段一视同仁，这可能导致：</p>
+<p>- 当片段过小时丢失上下文</p>
+<p>- 当文档集合较大时产生不相关的结果</p>
+<p>- 在整个语料库中进行低效的搜索</p>
+<p>分层检索通过以下方式解决了这些问题：</p>
+<p>- 为较大的文档部分创建简洁的摘要</p>
+<p>- 首先搜索这些摘要以识别相关部分</p>
+<p>- 然后仅从这些部分检索详细信息</p>
+<p>- 在保留具体细节的同时维护上下文</p>
+<p><img alt="78220727633" class="gallery-image" data-flex-basis="272px" data-flex-grow="113" height="1193" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782207276330.png" srcset="/p/rag-i-love-you-please-love-me-too/1782207276330_hu_a56307b60280caeb.png 800w, /p/rag-i-love-you-please-love-me-too/1782207276330.png 1354w" width="1354"></p>
+<p>代码设置：环境设置&ndash;设置OpenAI API客户端&ndash;文档处理功能&ndash;简单向量存储实现&ndash;创建嵌入&ndash;摘要功能&ndash;分层文档处理&ndash;层次检索&ndash;带上下文的回复生成&ndash;完整的rag管道与分层检索&ndash;对比非分层RAG&ndash;评估函数&ndash;层次化与标准rag方法的评估。</p>
+<p>19、假设文档嵌入</p>
+<p>实现了HyDE（假设文档嵌入）——一种创新的检索技术，该技术在执行检索之前将用户查询转换为假设的答案文档。这种方法弥合了短查询与长文档之间的语义差距。</p>
+<p>传统的RAG系统直接将用户的简短查询进行嵌入，但这种方法通常无法捕捉到最佳检索所需的语义丰富性。HyDE通过以下方式解决了这一问题：</p>
+<p>- 生成一个回答查询的假设文档</p>
+<p>- 将此扩展后的文档进行嵌入，而不是原始查询</p>
+<p>- 检索与该假设文档相似的文档</p>
+<p>- 生成更具上下文相关性的答案</p>
+<p><img alt="78220793127" class="gallery-image" data-flex-basis="307px" data-flex-grow="127" height="966" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782207931279.png" srcset="/p/rag-i-love-you-please-love-me-too/1782207931279_hu_55cb64b4c98208eb.png 800w, /p/rag-i-love-you-please-love-me-too/1782207931279.png 1236w" width="1236"></p>
+<p>代码设置：环境设置&ndash;设置OpenAI API客户端&ndash;文档处理功能&ndash;简单向量存储实现&ndash;创建嵌入&ndash;文档处理管道&ndash;假设文档生成&ndash;完整的hyde rag实现&ndash;对比标准rag实现&ndash;回复生成&ndash;评估函数&ndash;可视化函数&ndash;假设文档嵌入（HyDE）与标准RAG的评估</p>
+<p>20、动态纠正RAG</p>
+<p>实现了CRAG（Corrective RAG）——一种先进的方法，该方法动态评估检索到的信息，并在必要时通过网络搜索纠正检索过程，以作为本地知识的补充。</p>
+<p>CRAG通过以下方式改进了传统的RAG：</p>
+<p>- 在使用检索到的内容之前对其进行评估</p>
+<p>- 根据相关性动态切换知识源</p>
+<p>- 当本地知识不足时，通过网络搜索纠正检索</p>
+<p>- 在适当的情况下结合多个来源的信息</p>
+<p>代码设置：环境设置&ndash;配置open ai api 客户端&ndash;文档处理功能&ndash;简单向量存储实现&ndash;创建嵌入（Embeddings）&ndash;文档处理管道&ndash;相关性评估函数&ndash;网络搜索功能&ndash;知识精炼功能&ndash;核心CRAG过程&ndash;回复生成&ndash;评估函数&ndash;完整评估管道&ndash;测试查询的CRAG评估</p>
+<p>21、Simple RAG与强化学习</p>
+<p><img alt="78220854475" class="gallery-image" data-flex-basis="164px" data-flex-grow="68" height="695" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782208544756.png" width="477"></p>
+<p><img alt="78220868941" class="gallery-image" data-flex-basis="113px" data-flex-grow="47" height="1493" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/p/rag-i-love-you-please-love-me-too/1782208689416.png" width="705"></p>
+
+</section>
+
+
+    <footer class="article-meta article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/agent/">Agent</a>
+        
+            <a href="/tags/rag/">RAG</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright inline-meta">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under <a class="link" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"  target="_blank" rel="noopener"
+    >CC BY-NC-SA 4.0</a></span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const elementsToRender = [".main-article", ".widget--toc"];
+
+        elementsToRender.forEach(selector => {
+            const element = document.querySelector(selector);
+            if (element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        { left: "$$", right: "$$", display: true },
+                        { left: "$", right: "$", display: false },
+                        { left: "\\(", right: "\\)", display: false },
+                        { left: "\\[", right: "\\]", display: true }
+                    ],
+                    ignoredClasses: ["gist"]
+                });
+            }
+        });
+    });
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside>
+    <h2 class="section-title">相关文章</h2>
+    <div class="subsection-list">
+        <div class="article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/fsatapi-i-love-you-please-love-me-too/">
+        
+        <div class="article-image">
+            <img alt="Featured image of post FastAPI" height="150" loading="lazy" src="/p/fsatapi-i-love-you-please-love-me-too/cover_hu_24170d065fd02854.jpg" srcset="/p/fsatapi-i-love-you-please-love-me-too/cover_hu_24170d065fd02854.jpg 1x, /p/fsatapi-i-love-you-please-love-me-too/cover_hu_9e38e1de4c1bafdf.jpg 2x" width="250">
+
+        </div>
+        
+
+        <div class="article-details"style="background: linear-gradient(0deg, #12100f80 0%, #f7f5f3C0 100%);">
+            <h2 class="article-title">FastAPI</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="has-image">
+    <a href="/p/hr-i-love-you-please-love-me-too/">
+        
+        <div class="article-image">
+            <img alt="Featured image of post 假装面试官提问自己" height="150" loading="lazy" src="/p/hr-i-love-you-please-love-me-too/cover_hu_4fdc54aa00b26e85.jpg" srcset="/p/hr-i-love-you-please-love-me-too/cover_hu_4fdc54aa00b26e85.jpg 1x, /p/hr-i-love-you-please-love-me-too/cover_hu_ef6fa2d8550305f5.jpg 2x" width="250">
+
+        </div>
+        
+
+        <div class="article-details"style="background: linear-gradient(0deg, #100f1180 0%, #ece9e9C0 100%);">
+            <h2 class="article-title">假装面试官提问自己</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="has-image">
+    <a href="/p/agent-thinking-and-study-04/">
+        
+        <div class="article-image">
+            <img alt="Featured image of post AI应用 -- 04 github项目学习（pguso/ai-agents-from-scratch）" height="150" loading="lazy" src="/p/agent-thinking-and-study-04/cover_hu_e399e1d61979ab50.jpg" srcset="/p/agent-thinking-and-study-04/cover_hu_e399e1d61979ab50.jpg 1x, /p/agent-thinking-and-study-04/cover_hu_a825f46519095e64.jpg 2x" width="250">
+
+        </div>
+        
+
+        <div class="article-details"style="background: linear-gradient(0deg, #59536480 0%, #d0c6ccC0 100%);">
+            <h2 class="article-title">AI应用 -- 04 github项目学习（pguso/ai-agents-from-scratch）</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="has-image">
+    <a href="/p/agent-thinking-and-study-03/">
+        
+        <div class="article-image">
+            <img alt="Featured image of post AI应用 -- 03 RAG检索增强生成" height="150" loading="lazy" src="/p/agent-thinking-and-study-03/cover_hu_f2425a0074bff524.jpg" srcset="/p/agent-thinking-and-study-03/cover_hu_f2425a0074bff524.jpg 1x, /p/agent-thinking-and-study-03/cover_hu_46b5f106a410e9e8.jpg 2x" width="250">
+
+        </div>
+        
+
+        <div class="article-details"style="background: linear-gradient(0deg, #1a435180 0%, #4caec8C0 100%);">
+            <h2 class="article-title">AI应用 -- 03 RAG检索增强生成</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="has-image">
+    <a href="/p/agent-thinking-and-study-02/">
+        
+        <div class="article-image">
+            <img alt="Featured image of post AI应用 -- 02 基于大模型的智能体（LLM-based-Agent）" height="150" loading="lazy" src="/p/agent-thinking-and-study-02/cover_hu_4924206e98a49917.jpg" srcset="/p/agent-thinking-and-study-02/cover_hu_4924206e98a49917.jpg 1x, /p/agent-thinking-and-study-02/cover_hu_157a5ee96e7a826d.jpg 2x" width="250">
+
+        </div>
+        
+
+        <div class="article-details"style="background: linear-gradient(0deg, #02164180 0%, #084cbbC0 100%);">
+            <h2 class="article-title">AI应用 -- 02 基于大模型的智能体（LLM-based-Agent）</h2>
+        </div>
+    </a>
+</article>
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+        <div class="disqus-container">
+    
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 ysy虚拟世界
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="4.0.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+
+
+
+<script type="module">
+    import gallery from '\/ts\/gallery.js';
+
+    const articleContent = document.querySelector('.article-content');
+    const shouldLoad = articleContent && (articleContent.querySelectorAll('figure').length > 0 || articleContent.querySelectorAll('img.gallery-image').length > 0);
+    
+    if (shouldLoad) {
+        gallery(articleContent);
+
+        const PhotoSwipeLightbox = (await import("https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js")).default;
+        const styleHref = "https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe.css";
+
+        const styleTag = document.createElement('link');
+        styleTag.rel = 'stylesheet';
+        styleTag.href = styleHref;
+        document.head.appendChild(styleTag);
+
+        const lightbox = new PhotoSwipeLightbox({
+            gallerySelector: '.article-content',
+            childSelector: 'figure a.image-link',
+            pswpModule: () => import("https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js")
+        });
+        lightbox.init();
+    }
+</script>
+    
+
+            </main>
+        </div>
+        
+<script type="text/javascript" src="/ts/main.acaf849f2b273f6a8368a58b001f336738d0c948d92e79b116467d0c7515f932.js" defer></script>
+<style>
+    :root {
+        --body-background: transparent !important;
+        --card-background: rgba(255, 255, 255, 0.85) !important;  
+    }
+    [data-scheme="dark"] {
+        --card-background: rgba(30, 30, 40, 0.85) !important;  
+    }
+    body { background-color: transparent !important; }
+    #vanta-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+</style>
+
+<div id="vanta-bg"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const htmlEl = document.documentElement;
+        
+        
+        const getBgColor = () => htmlEl.dataset.scheme === 'dark' ? 0x161718 : 0xffffff;
+
+        if (typeof VANTA !== 'undefined') {
+            
+            let vantaEffect = VANTA.GLOBE({
+                el: "#vanta-bg",
+                mouseControls: true,
+                touchControls: true,
+                gyroControls: false,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: 0x3f51b5,   
+                color2: 0x00bcd4,  
+                size: 1.00,
+                backgroundColor: getBgColor() 
+            });
+
+            
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.attributeName === "data-scheme") {
+                        
+                        vantaEffect.setOptions({
+                            backgroundColor: getBgColor()
+                        });
+                    }
+                });
+            });
+            
+            observer.observe(htmlEl, { attributes: true });
+        }
+    });
+</script>
+
+    </body>
+</html>
