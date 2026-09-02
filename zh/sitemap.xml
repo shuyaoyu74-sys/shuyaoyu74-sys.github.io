@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://shuyaoyu74-sys.github.io/</loc>
-    <lastmod>2026-08-18T11:21:45+08:00</lastmod>
+    <lastmod>2026-08-25T11:21:45+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -16,13 +16,13 @@
                 />
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/categories/ai/</loc>
-    <lastmod>2026-08-18T11:21:45+08:00</lastmod>
+    <lastmod>2026-08-25T11:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/tags/ai-tool/</loc>
-    <lastmod>2026-08-16T11:21:45+08:00</lastmod>
+    <lastmod>2026-08-25T11:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/categories/</loc>
-    <lastmod>2026-08-18T11:21:45+08:00</lastmod>
+    <lastmod>2026-08-25T11:21:45+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -34,17 +34,11 @@
                 href="https://shuyaoyu74-sys.github.io/categories/"
                 />
   </url><url>
-    <loc>https://shuyaoyu74-sys.github.io/tags/git/</loc>
-    <lastmod>2026-08-16T11:21:45+08:00</lastmod>
-  </url><url>
-    <loc>https://shuyaoyu74-sys.github.io/p/git-i-love-you-please-love-me-too/</loc>
-    <lastmod>2026-08-16T11:21:45+08:00</lastmod>
-  </url><url>
     <loc>https://shuyaoyu74-sys.github.io/post/</loc>
-    <lastmod>2026-08-18T11:21:45+08:00</lastmod>
+    <lastmod>2026-08-25T11:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/tags/</loc>
-    <lastmod>2026-08-18T11:21:45+08:00</lastmod>
+    <lastmod>2026-08-25T11:21:45+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -55,6 +49,24 @@
                 hreflang="zh-CN"
                 href="https://shuyaoyu74-sys.github.io/tags/"
                 />
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/p/0609-i-love-you-please-love-me/</loc>
+    <lastmod>2026-08-25T11:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/tags/3dgs/</loc>
+    <lastmod>2026-08-24T11:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/p/3dgs-i-love-you-please-love-me-too/</loc>
+    <lastmod>2026-08-24T11:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/p/0609-i-love-you-please-love-me-too/</loc>
+    <lastmod>2026-08-24T11:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/tags/git/</loc>
+    <lastmod>2026-08-16T11:21:45+08:00</lastmod>
+  </url><url>
+    <loc>https://shuyaoyu74-sys.github.io/p/git-i-love-you-please-love-me-too/</loc>
+    <lastmod>2026-08-16T11:21:45+08:00</lastmod>
   </url><url>
     <loc>https://shuyaoyu74-sys.github.io/p/world-i-love-you-please-love-me-too/</loc>
     <lastmod>2026-08-15T11:21:45+08:00</lastmod>
